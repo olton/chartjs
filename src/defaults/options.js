@@ -34,6 +34,7 @@ export const defaultOptions = {
         color: '#bbb'
     },
     showLines: true,
+    accuracy: 10,
 
     axis: {
         lineColor: '#e3e3e3',

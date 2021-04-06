@@ -25,7 +25,8 @@ const lines = [
         data: buildData(chartData.columns, 1),
         dots: {
             type: 'dot', // dot, square, triangle, diamond
-            fill: '#fff'
+            fill: '#fff',
+            size: 2
         }
     },
     {
@@ -34,7 +35,8 @@ const lines = [
         size: 1,
         data: buildData(chartData.columns, 2),
         dots: {
-            type: 'square'
+            type: 'square',
+            size: 2
         }
     },
 ]
@@ -56,10 +58,10 @@ const chart = lineChart("#chart", lines, {
     height: 600,
     showLines: true,
     padding: {
-        top: 80
+        top: 40
     },
     title: {
-        text: 'This is a simple chart system,\nThis system are written for fun!',
+        text: 'Line Chart',
         font: {
             lineHeight: 1
         }

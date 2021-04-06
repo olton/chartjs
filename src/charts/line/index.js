@@ -93,19 +93,39 @@ export class LineChart extends Chart {
                 coords.map(([x, y]) => {
                     drawPointFn(ctx, [x, y], opt)
                 })
+            }
 
-                if (this.proxy.mouse) {
-                    const {x: mx, y: my} = this.proxy.mouse
+            this.coords[line.name] = {
+                line,
+                coords,
+                drawPointFn,
+                opt
+            }
+        }
+    }
 
-                    for (const [x, y] of coords) {
-                        const lx = x - 10, rx = x + 10
-                        const ly = y - 10, ry = y + 10
+    drawFloatPoint(){
+        const o = this.options
+        const ctx = this.ctx
 
-                        if ((mx > lx && mx < rx) && (my > ly && my < ry)) {
-                            drawPointFn(ctx, [x, y], {color: opt.color, radius: opt.radius * 2})
-                            break
-                        }
-                    }
+        if (!this.proxy.mouse) return
+
+        for (const name in this.coords) {
+            const item = this.coords[name]
+            const coords = item.coords
+            const drawPointFn = item.drawPointFn
+            const opt = item.opt
+
+            const {x: mx, y: my} = this.proxy.mouse
+
+            for (const [x, y] of coords) {
+                const accuracy = +o.accuracy
+                const lx = x - accuracy, rx = x + accuracy
+                const ly = y - accuracy, ry = y + accuracy
+
+                if ((mx > lx && mx < rx) && (my > ly && my < ry)) {
+                    drawPointFn(ctx, [x, y], {color: opt.color, radius: opt.radius * 2, fill: opt.fill})
+                    break
                 }
             }
         }
@@ -117,6 +137,7 @@ export class LineChart extends Chart {
         this.drawAxis()
         this.drawData()
         this.drawCross()
+        this.drawFloatPoint()
     }
 }
 
