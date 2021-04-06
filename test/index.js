@@ -22,13 +22,20 @@ const lines = [
         name: "Line 1",
         color: chartData.colors.y0,
         size: 1,
-        data: buildData(chartData.columns, 1)
+        data: buildData(chartData.columns, 1),
+        dots: {
+            type: 'dot', // dot, square, triangle, diamond
+            fill: '#fff'
+        }
     },
     {
         name: "Line 2",
         color: chartData.colors.y1,
         size: 1,
-        data: buildData(chartData.columns, 2)
+        data: buildData(chartData.columns, 2),
+        dots: {
+            type: 'square'
+        }
     },
 ]
 
@@ -52,7 +59,7 @@ const chart = lineChart("#chart", lines, {
         top: 80
     },
     title: {
-        text: 'When toasting nutty tofus,\nbe sure they are room temperature.',
+        text: 'This is a simple chart system,\nThis system are written for fun!',
         font: {
             lineHeight: 1
         }

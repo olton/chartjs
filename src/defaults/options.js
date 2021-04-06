@@ -33,9 +33,6 @@ export const defaultOptions = {
         size: 1,
         color: '#bbb'
     },
-    dots: {
-        size: 2,
-    },
     showLines: true,
 
     axis: {
@@ -117,6 +114,10 @@ export const defaultOptions = {
         onHover: () => {},
         onEnter: () => {},
         onLeave: () => {}
+    },
+
+    tooltip: {
+
     },
 
     onClick: () => {},

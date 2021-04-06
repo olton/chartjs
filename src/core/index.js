@@ -281,13 +281,23 @@ export class Chart {
         }
     }
 
+    mouseLeave(){
+        const fn = this.options.onLeave
+
+        if (typeof fn === "function") fn()
+
+        this.proxy.mouse = null
+    }
+
     addEvents(){
         this.canvas.addEventListener("mousemove", this.mouseMove.bind(this))
+        this.canvas.addEventListener("mouseleave", this.mouseLeave.bind(this))
     }
 
     destroy(){
         cancelAnimationFrame(this.raf)
 
         this.canvas.removeEventListener("mousemove", this.mouseMove.bind(this))
+        this.canvas.removeEventListener("mouseleave", this.mouseLeave.bind(this))
     }
 }

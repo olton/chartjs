@@ -1,5 +1,10 @@
 import {Chart} from "../../core"
 import {minMax} from "../../helpers/min-max"
+import {circle} from "../../draw/circle";
+import {lineTo} from "../../draw/line";
+import {square} from "../../draw/square";
+import {triangle} from "../../draw/triangle";
+import {diamond} from "../../draw/diamond";
 
 export class LineChart extends Chart {
     constructor(el, data = [], options = {}) {
@@ -56,38 +61,54 @@ export class LineChart extends Chart {
                 coords.push([_x, _y])
             }
 
-            this.coords[line.color] = coords
-
-            ctx.lineWidth = line.size
-            ctx.strokeStyle = line.color
-            ctx.fillStyle = line.color
-            ctx.setLineDash([])
-
             if (o.showLines) {
-                ctx.beginPath()
-
-                coords.map( ([x, y]) => {
-                    ctx.lineTo(x, y)
-                })
-
-                ctx.stroke()
-                ctx.closePath()
+                lineTo(ctx, coords, {color: line.color, size: line.size})
             }
 
-            if (o.dots) {
+            let dots = line.dots ? line.dots : {
+                type: 'dot', // dot, square, triangle
+            }
+            let opt = {
+                color: dots.color ?? line.color,
+                fill: dots.fill ?? line.color,
+                radius: dots.size || 4,
+            }
+
+            let drawPointFn
+
+            switch (dots.type) {
+                case 'square':
+                    drawPointFn = square
+                    break
+                case 'triangle':
+                    drawPointFn = triangle
+                    break
+                case 'diamond':
+                    drawPointFn = diamond
+                    break
+                default: drawPointFn = circle
+            }
+
+            if (line.dots) {
                 coords.map(([x, y]) => {
-                    ctx.beginPath()
-                    ctx.setLineDash([])
-
-                    ctx.arc(x, y, o.dots.size, 0, 2 * Math.PI)
-
-                    ctx.fill()
-                    ctx.stroke()
-                    ctx.closePath()
+                    drawPointFn(ctx, [x, y], opt)
                 })
+
+                if (this.proxy.mouse) {
+                    const {x: mx, y: my} = this.proxy.mouse
+
+                    for (const [x, y] of coords) {
+                        const lx = x - 10, rx = x + 10
+                        const ly = y - 10, ry = y + 10
+
+                        if ((mx > lx && mx < rx) && (my > ly && my < ry)) {
+                            drawPointFn(ctx, [x, y], {color: opt.color, radius: opt.radius * 2})
+                            break
+                        }
+                    }
+                }
             }
         }
-
     }
 
     draw(){
@@ -96,15 +117,6 @@ export class LineChart extends Chart {
         this.drawAxis()
         this.drawData()
         this.drawCross()
-        this.drawPoints()
-    }
-
-    drawPoints(){
-        const ctx = this.ctx
-
-        if (!this.proxy.mouse) return
-
-        const {x, y} = this.proxy.mouse
     }
 }
 
