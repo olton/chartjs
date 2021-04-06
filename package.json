@@ -1,0 +1,37 @@
+{
+    "name": "@olton/chart",
+    "version": "1.0.0",
+    "main": "./src/index.js",
+    "license": "MIT",
+    "type": "module",
+    "files": [
+        "LICENSE",
+        "README.md",
+        "dist",
+        "src"
+    ],
+    "scripts": {
+        "serve": "parcel test/index.html --open --out-dir output"
+    },
+    "devDependencies": {
+        "@babel/cli": "^7.13.10",
+        "@babel/core": "^7.13.10",
+        "@babel/plugin-proposal-class-properties": "^7.13.0",
+        "@babel/plugin-transform-modules-commonjs": "^7.13.8",
+        "@babel/plugin-transform-runtime": "^7.13.10",
+        "@babel/preset-env": "^7.13.10",
+        "@babel/runtime": "^7.13.10",
+        "@rollup/plugin-babel": "^5.3.0",
+        "babel-loader": "^8.2.2",
+        "eslint": "^7.22.0",
+        "glob": "^7.1.6",
+        "jest": "^26.6.3",
+        "rimraf": "^3.0.2",
+        "rollup": "^2.41.2",
+        "rollup-plugin-babel": "^4.4.0",
+        "rollup-plugin-commonjs": "^10.1.0",
+        "rollup-plugin-exclude-dependencies-from-bundle": "^1.1.17",
+        "rollup-plugin-node-resolve": "^5.2.0",
+        "rollup-plugin-terser": "^7.0.2"
+    }
+}
