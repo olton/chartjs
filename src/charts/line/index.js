@@ -1,5 +1,5 @@
-import {Chart} from "../core"
-import {minMax} from "../helpers/min-max"
+import {Chart} from "../../core"
+import {minMax} from "../../helpers/min-max"
 
 export class LineChart extends Chart {
     constructor(el, data = [], options = {}) {

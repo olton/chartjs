@@ -1,4 +1,4 @@
-import {lineChart} from "../src/line"
+import {lineChart} from "../src"
 import {getChartData} from "./data"
 
 const logContainer = document.querySelector("#log")

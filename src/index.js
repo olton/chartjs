@@ -1,5 +1,6 @@
-import {Chart} from "./core"
+import {lineChart} from "./charts"
 
 export {
-    Chart
+    lineChart
 }
+
