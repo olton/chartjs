@@ -9,6 +9,7 @@ export class Chart {
         this.canvas = null
         this.ctx = null
         this.raf = null
+        this.tooltip = null
 
         const that = this
 
@@ -46,7 +47,7 @@ export class Chart {
         this.maxX = 0
         this.minY = 0
         this.maxY = 0
-        this.count = 0
+        this.coords = {}
 
         if (o.legend && o.legend.width) {
             this.viewWidth -= o.legend.width + o.legend.margin.left + o.legend.margin.right
@@ -208,16 +209,20 @@ export class Chart {
     drawCross(){
         const o = this.options, cross = o.cross
         const ctx = this.ctx
+        const rect = this.canvas.getBoundingClientRect()
 
         if (!o.cross || (o.cross && !this.proxy.mouse)) return
 
-        const {x, y} = this.proxy.mouse
+        let {x, y} = this.proxy.mouse
+
+        x -= rect.left
+        y -= rect.top
 
         if ((x - o.padding.left + 1 < 0) || (x > this.viewWidth + o.padding.left + 1)) return
         if ((y - o.padding.top + 1 < 0) || (y > this.viewHeight + o.padding.top + 1)) return
 
         ctx.beginPath()
-        ctx.setLineDash([5, 3])
+        ctx.setLineDash(o.cross.dash)
         ctx.lineWidth = cross.size
         ctx.strokeStyle = cross.color
 
@@ -263,7 +268,44 @@ export class Chart {
         return this
     }
 
-    draw(){}
+    draw(){
+        this.clear()
+        this.drawTitle()
+        this.drawAxis()
+    }
+
+    showTooltip(data){
+        const o = this.options
+
+        if (this.tooltip) {
+            this.tooltip.remove()
+            this.tooltip = null
+        }
+
+        if (!o.tooltip) return
+
+        let {x, y} = this.proxy.mouse
+        const tooltip = document.createElement("div")
+        const onShow = o.tooltip.onShow
+
+        tooltip.style.position = 'fixed'
+        tooltip.style.border = `${o.tooltip.border.width}px ${o.tooltip.border.lineType} ${o.tooltip.border.color}`
+        tooltip.style.paddingTop = `${o.tooltip.padding.top}px`
+        tooltip.style.paddingBottom = `${o.tooltip.padding.bottom}px`
+        tooltip.style.paddingLeft = `${o.tooltip.padding.left}px`
+        tooltip.style.paddingRight = `${o.tooltip.padding.right}px`
+        tooltip.style.background = `${o.tooltip.background}`
+        tooltip.style.font = `${o.tooltip.font.style} ${o.tooltip.font.weight} ${o.tooltip.font.size}px/${o.tooltip.font.lineHeight} ${o.tooltip.font.family}`
+
+        tooltip.innerHTML = onShow && typeof onShow === 'function' ? onShow.apply(null, [data]) : data
+
+        document.querySelector('body').appendChild(tooltip)
+
+        tooltip.style.top = `${y - tooltip.clientHeight - 5}px`
+        tooltip.style.left = `${x - tooltip.clientWidth / 2 - 5}px`
+
+        this.tooltip = tooltip
+    }
 
     clear(){
         this.ctx.clearRect(0, 0, this.dpiWidth, this.dpiHeight)
@@ -271,7 +313,7 @@ export class Chart {
 
     mouseMove(e){
         const onHover = this.options.onHover
-        const {offsetX: x, offsetY: y} = e
+        const {clientX: x, clientY: y} = e
 
         if (typeof onHover === "function") onHover(x, y)
 
@@ -289,15 +331,27 @@ export class Chart {
         this.proxy.mouse = null
     }
 
+    resize(){
+        this.calcInternalValues()
+        this.setCanvasStyle()
+        this.draw()
+    }
+
     addEvents(){
-        this.canvas.addEventListener("mousemove", this.mouseMove.bind(this))
-        this.canvas.addEventListener("mouseleave", this.mouseLeave.bind(this))
+        const canvas = this.canvas
+
+        canvas.addEventListener("mousemove", this.mouseMove.bind(this))
+        canvas.addEventListener("mouseleave", this.mouseLeave.bind(this))
+        window.addEventListener("resize", this.resize.bind(this))
     }
 
     destroy(){
+        const canvas = this.canvas
+
         cancelAnimationFrame(this.raf)
 
-        this.canvas.removeEventListener("mousemove", this.mouseMove.bind(this))
-        this.canvas.removeEventListener("mouseleave", this.mouseLeave.bind(this))
+        canvas.removeEventListener("mousemove", this.mouseMove.bind(this))
+        canvas.removeEventListener("mouseleave", this.mouseLeave.bind(this))
+        window.removeEventListener("resize", this.resize.bind(this))
     }
 }

@@ -1,43 +1,42 @@
 import {Chart} from "../../core"
 import {minMax} from "../../helpers/min-max"
-import {circle} from "../../draw/circle";
-import {lineTo} from "../../draw/line";
-import {square} from "../../draw/square";
-import {triangle} from "../../draw/triangle";
-import {diamond} from "../../draw/diamond";
+import {circle} from "../../draw/circle"
+import {lineTo} from "../../draw/line"
+import {square} from "../../draw/square"
+import {triangle} from "../../draw/triangle"
+import {diamond} from "../../draw/diamond"
+import {defaultLineChartOptions} from "../../defaults/line-chart"
+import {merge} from "../../helpers/merge"
 
 export class LineChart extends Chart {
     constructor(el, data = [], options = {}) {
-        super(el, data, options)
+        super(el, data, merge({}, defaultLineChartOptions, options))
 
-        this.coords = {}
         this.calcMinMax()
         this.draw()
     }
 
     calcMinMax(){
-        let a = [], b = 0
+        const o = this.options
+        let a = []
 
         for (let k in this.data) {
             let _data = this.data[k].data
 
             if (!Array.isArray(_data)) continue
 
-            if (b < _data.length) b = _data.length
-
             for( const [x, y] of _data) {
                 a.push([x, y])
             }
         }
 
-        const [minX, maxX] = minMax(a, 'x')
-        const [minY, maxY] = minMax(a, 'y')
+        const [minX, maxX] = minMax(a, 'x');
+        const [minY, maxY] = minMax(a, 'y');
 
-        this.minX = minX
-        this.maxX = maxX
-        this.minY = minY
-        this.maxY = maxY
-        this.count = b
+        this.minX = o.boundaries && !isNaN(o.boundaries.minX) ? o.boundaries.minX : minX
+        this.maxX = o.boundaries && !isNaN(o.boundaries.maxX) ? o.boundaries.maxX : maxX
+        this.minY = o.boundaries && !isNaN(o.boundaries.minY) ? o.boundaries.minY : minY
+        this.maxY = o.boundaries && !isNaN(o.boundaries.maxY) ? o.boundaries.maxY : maxY
 
         this.ratioX = this.viewWidth / (this.maxX - this.minX)
         this.ratioY = this.viewHeight / (this.maxY - this.minY)
@@ -58,7 +57,7 @@ export class LineChart extends Chart {
                 let _x = Math.floor((x - this.minX) * this.ratioX + o.padding.left)
                 let _y = Math.floor(this.viewHeight + o.padding.top - (y - this.minY) * this.ratioY)
 
-                coords.push([_x, _y])
+                coords.push([_x, _y, x, y])
             }
 
             if (o.showLines) {
@@ -91,6 +90,7 @@ export class LineChart extends Chart {
 
             if (line.dots) {
                 coords.map(([x, y]) => {
+                    // console.log(x, y)
                     drawPointFn(ctx, [x, y], opt)
                 })
             }
@@ -107,34 +107,46 @@ export class LineChart extends Chart {
     drawFloatPoint(){
         const o = this.options
         const ctx = this.ctx
+        const rect = this.canvas.getBoundingClientRect()
+        let tooltip = false
 
         if (!this.proxy.mouse) return
 
         for (const name in this.coords) {
             const item = this.coords[name]
-            const coords = item.coords
             const drawPointFn = item.drawPointFn
             const opt = item.opt
 
-            const {x: mx, y: my} = this.proxy.mouse
+            let {x, y} = this.proxy.mouse
 
-            for (const [x, y] of coords) {
-                const accuracy = +o.accuracy
-                const lx = x - accuracy, rx = x + accuracy
-                const ly = y - accuracy, ry = y + accuracy
+            const mx = x - rect.left
+            const my = y - rect.top
+
+            for (const [px, py, _x, _y] of item.coords) {
+                const accuracy = +(o.accuracy || opt.radius)
+                const lx = px - accuracy, rx = px + accuracy
+                const ly = py - accuracy, ry = py + accuracy
 
                 if ((mx > lx && mx < rx) && (my > ly && my < ry)) {
-                    drawPointFn(ctx, [x, y], {color: opt.color, radius: opt.radius * 2, fill: opt.fill})
+                    drawPointFn(ctx, [px, py], {color: opt.color, radius: opt.radius * 2, fill: opt.fill})
+                    this.showTooltip([_x, _y])
+                    tooltip = true
                     break
                 }
+            }
+
+            if (!tooltip && this.tooltip) {
+                this.tooltip.remove()
+                this.tooltip = null
             }
         }
     }
 
     draw(){
-        this.clear()
-        this.drawTitle()
-        this.drawAxis()
+        this.calcMinMax()
+
+        super.draw()
+
         this.drawData()
         this.drawCross()
         this.drawFloatPoint()

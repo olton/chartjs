@@ -58,7 +58,15 @@ const chart = lineChart("#chart", lines, {
     height: 600,
     showLines: true,
     padding: {
-        top: 40
+        top: 40,
+        bottom: 40,
+        left: 40,
+        right: 40
+    },
+    accuracy: 4,
+    boundaries: {
+        maxY: 300,
+        minY: 0
     },
     title: {
         text: 'Line Chart',
@@ -80,5 +88,22 @@ const chart = lineChart("#chart", lines, {
     legend: {
         width: 0
     },
+    tooltip: {
+        onShow: ([x, y]) => {
+            const d = new Date(x)
+            const date = [d.getDate(), d.getMonth() + 1, d.getFullYear()].join("/")
+            return `
+                <h3 style="margin: 0 0 5px 0">Clients</h3>
+                <table>
+                    <tr>
+                        <td>Date:</td><td><b>${date}</b></td>     
+                    </tr>                   
+                    <tr>                   
+                        <td>Count:</td><td><b>${y}</b></td>                        
+                    </tr>                
+                </table>
+            `
+        }
+    }
     //onHover: (x, y) => console.log(x, y)
 })
