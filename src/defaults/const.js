@@ -1,1 +1,1 @@
-export const DPI = window.devicePixelRatio
+export const DPI = 2

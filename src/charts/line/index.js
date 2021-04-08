@@ -1,7 +1,7 @@
 import {Chart} from "../../core"
 import {minMax} from "../../helpers/min-max"
 import {circle} from "../../draw/circle"
-import {lineTo} from "../../draw/line"
+import {line} from "../../draw/line"
 import {square} from "../../draw/square"
 import {triangle} from "../../draw/triangle"
 import {diamond} from "../../draw/diamond"
@@ -12,7 +12,10 @@ export class LineChart extends Chart {
     constructor(el, data = [], options = {}) {
         super(el, data, merge({}, defaultLineChartOptions, options))
 
+        this.coords = {}
+
         this.calcMinMax()
+        this.calcRatio()
         this.draw()
     }
 
@@ -38,6 +41,10 @@ export class LineChart extends Chart {
         this.minY = o.boundaries && !isNaN(o.boundaries.minY) ? o.boundaries.minY : minY
         this.maxY = o.boundaries && !isNaN(o.boundaries.maxY) ? o.boundaries.maxY : maxY
 
+        return this
+    }
+
+    calcRatio(){
         this.ratioX = this.viewWidth / (this.maxX - this.minX)
         this.ratioY = this.viewHeight / (this.maxY - this.minY)
 
@@ -49,11 +56,11 @@ export class LineChart extends Chart {
         const ctx = this.ctx
         let coords
 
-        for (const line of this.data) {
+        for (const graph of this.data) {
 
             coords = []
 
-            for (const [x, y] of line.data) {
+            for (const [x, y] of graph.data) {
                 let _x = Math.floor((x - this.minX) * this.ratioX + o.padding.left)
                 let _y = Math.floor(this.viewHeight + o.padding.top - (y - this.minY) * this.ratioY)
 
@@ -61,15 +68,15 @@ export class LineChart extends Chart {
             }
 
             if (o.showLines) {
-                lineTo(ctx, coords, {color: line.color, size: line.size})
+                line(ctx, coords, {color: graph.color, size: graph.size})
             }
 
-            let dots = line.dots ? line.dots : {
+            let dots = graph.dots ? graph.dots : {
                 type: 'dot', // dot, square, triangle
             }
             let opt = {
-                color: dots.color ?? line.color,
-                fill: dots.fill ?? line.color,
+                color: dots.color ?? graph.color,
+                fill: dots.fill ?? graph.color,
                 radius: dots.size || 4,
             }
 
@@ -88,15 +95,15 @@ export class LineChart extends Chart {
                 default: drawPointFn = circle
             }
 
-            if (line.dots) {
+            if (graph.dots) {
                 coords.map(([x, y]) => {
                     // console.log(x, y)
                     drawPointFn(ctx, [x, y], opt)
                 })
             }
 
-            this.coords[line.name] = {
-                line,
+            this.coords[graph.name] = {
+                graph,
                 coords,
                 drawPointFn,
                 opt
@@ -129,8 +136,10 @@ export class LineChart extends Chart {
 
                 if ((mx > lx && mx < rx) && (my > ly && my < ry)) {
                     drawPointFn(ctx, [px, py], {color: opt.color, radius: opt.radius * 2, fill: opt.fill})
-                    this.showTooltip([_x, _y])
-                    tooltip = true
+                    if ( o.tooltip ) {
+                        this.showTooltip([_x, _y], item.graph)
+                        tooltip = true
+                    }
                     break
                 }
             }
@@ -143,7 +152,7 @@ export class LineChart extends Chart {
     }
 
     draw(){
-        this.calcMinMax()
+        this.calcRatio()
 
         super.draw()
 

@@ -1,4 +1,6 @@
-export const diamond = (ctx, [x, y], {color = '#000', fill = '#fff', radius = 4, size = 1}) => {
+import {DPI} from "../defaults/const";
+
+export const diamond = (ctx, [x, y], {color = '#000', fill = '#fff', radius = 1, size = 1}) => {
     ctx.beginPath()
     ctx.save()
     ctx.setLineDash([])
@@ -6,10 +8,13 @@ export const diamond = (ctx, [x, y], {color = '#000', fill = '#fff', radius = 4,
     ctx.strokeStyle = color
     ctx.fillStyle = fill
 
-    ctx.moveTo(x, y - radius);
-    ctx.lineTo(x + radius, y);
-    ctx.lineTo(x, y + radius);
-    ctx.lineTo(x - radius, y);
+    let r = radius
+
+    ctx.moveTo(x, y - r);
+    ctx.lineTo(x + r, y);
+    ctx.lineTo(x, y + r);
+    ctx.lineTo(x - r, y);
+    ctx.lineTo(x, y - r);
 
     ctx.fill()
     ctx.stroke()

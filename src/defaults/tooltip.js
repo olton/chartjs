@@ -1,14 +1,25 @@
 import {defaultFont} from "./font";
 import {defaultBorder} from "./border";
-import {defaultPadding} from "./padding";
 
 export const defaultTooltip = {
     width: "auto",
-    background: "#fffcd5",
+    background: "#fff",
     color: "#000",
     font: defaultFont,
     border: defaultBorder,
-    padding: defaultPadding,
+    padding: {
+        top: 10,
+        bottom: 10,
+        left: 10,
+        right: 10
+    },
     timeout: 3000,
-    onShow: null
+    onShow: null,
+    shadow: {
+        shiftX: 2,
+        shiftY: 2,
+        blur: 2,
+        stretch: 0,
+        color: '#bbb'
+    }
 }

@@ -1,4 +1,6 @@
-export const lineTo = (ctx, coords = [], {color = '#000', size = 1, dash = []}) => {
+import {DPI} from "../defaults/const";
+
+export const line = (ctx, coords = [], {color = '#000', size = 1, dash = []}) => {
     ctx.beginPath()
     ctx.save()
     ctx.setLineDash(dash)

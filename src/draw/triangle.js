@@ -1,3 +1,5 @@
+import {DPI} from "../defaults/const";
+
 export const triangle = (ctx, [x, y], {color = '#000', fill = '#fff', radius = 4, size = 1}) => {
     ctx.beginPath()
     ctx.save()
@@ -6,7 +8,7 @@ export const triangle = (ctx, [x, y], {color = '#000', fill = '#fff', radius = 4
     ctx.strokeStyle = color
     ctx.fillStyle = fill
 
-    const d = radius / 2
+    const d = radius
 
     ctx.moveTo(x, y - d);
     ctx.lineTo(x + d, y + d);

@@ -1,5 +1,6 @@
 import {defaultOptions} from "../defaults/options"
-import {merge} from "../helpers/merge";
+import {isObject, merge} from "../helpers/merge";
+import {drawText} from "../draw/text";
 
 export class Chart {
     constructor(el, data, options = {}) {
@@ -10,6 +11,10 @@ export class Chart {
         this.ctx = null
         this.raf = null
         this.tooltip = null
+        this.minX = 0
+        this.maxX = 0
+        this.minY = 0
+        this.maxY = 0
 
         const that = this
 
@@ -43,14 +48,9 @@ export class Chart {
         this.dpiWidth = o.dpi * width
         this.viewHeight = this.dpiHeight - (o.padding.top + o.padding.bottom)
         this.viewWidth = this.dpiWidth - (o.padding.left + o.padding.right)
-        this.minX = 0
-        this.maxX = 0
-        this.minY = 0
-        this.maxY = 0
-        this.coords = {}
 
-        if (o.legend && o.legend.width) {
-            this.viewWidth -= o.legend.width + o.legend.margin.left + o.legend.margin.right
+        if (o.legend) {
+            this.viewHeight -= o.legend.margin.top + o.legend.margin.bottom
         }
 
         return this
@@ -107,18 +107,18 @@ export class Chart {
     drawArrowY(){
         const o = this.options, ctx = this.ctx
         const top = o.padding.top, left = o.padding.left
-        const x = this.viewWidth + left, y = this.viewHeight + top
+        const x = left, y = this.viewHeight + top
 
         ctx.beginPath()
         ctx.strokeStyle = o.axis.arrowY.color
 
-        ctx.moveTo(left, top)
-        ctx.lineTo(left, y)
+        ctx.moveTo(x, top)
+        ctx.lineTo(x, y)
 
-        ctx.moveTo(left, top)
-        ctx.lineTo(left - 5, top + 15)
-        ctx.moveTo(left, top)
-        ctx.lineTo(left + 5, top + 15)
+        ctx.moveTo(x, top)
+        ctx.lineTo(x - 5, top + 15)
+        ctx.moveTo(x, top)
+        ctx.lineTo(x + 5, top + 15)
 
         ctx.stroke()
         ctx.closePath()
@@ -243,27 +243,77 @@ export class Chart {
     drawTitle(){
         const title = this.options.title
         const ctx = this.ctx
-        let text, y
+        const magic = 5
+        let x
 
         if (!title || !title.text) {
             return
         }
 
-        ctx.beginPath()
-        ctx.textAlign = title.align
-        ctx.fillStyle = title.color
-        ctx.strokeStyle = title.color
-        ctx.font = `${title.font.style} ${title.font.weight} ${title.font.size}px/${title.font.lineHeight} ${title.font.family}`
+        const {text, align, color, font} = title
 
-        text = title.text.split('\n')
+        switch (align) {
+            case 'center':
+                x = this.dpiWidth / 2
+                break
+            case 'right':
+                x = this.dpiWidth - magic
+                break
+            default: x = magic
+        }
 
-        y = title.font.size + 5
-
-        text.map( (v, i) => {
-            ctx.fillText(v, (this.width) / 2, y + (y * i * title.font.lineHeight))
+        drawText(ctx, text, [x, font.size + magic], {
+            align: title.align,
+            color: title.color,
+            stroke: title.color,
+            font: title.font
         })
 
+        return this
+    }
+
+    drawLegend(){
+        const o = this.options, legend = o.legend
+        let lh, x, y, magic = 5, box = o.legend.font.size
+        const ctx = this.ctx
+
+        if (!legend || !isObject(legend)) return
+
+        lh = legend.font.size * legend.font.lineHeight
+        y = o.padding.top + this.viewHeight + legend.font.size + legend.padding.top + legend.margin.top
+        x = o.padding.left + legend.padding.left + legend.margin.left
+
+        console.log(legend.margin.top)
+
+        ctx.save()
+        ctx.beginPath()
+        ctx.font = `${legend.font.style} ${legend.font.weight} ${legend.font.size}px ${legend.font.family}`
+        ctx.setLineDash([])
+
+        for (const graph of this.data) {
+            ctx.lineWidth = 1
+            ctx.strokeStyle = graph.color
+            ctx.fillStyle = graph.color
+
+            const nameWidth = ctx.measureText(graph.name).width
+
+            if (x + nameWidth > this.viewWidth) {
+                x = o.padding.left + legend.padding.left + legend.margin.left
+                y += lh
+
+                console.log(x, y)
+            }
+
+            ctx.moveTo(x, y)
+            ctx.lineTo(x, y + 100)
+            ctx.fillRect(x, y, box, box)
+            ctx.fillText(graph.name, x + box + magic, y + legend.font.size - 2)
+
+            x += box + nameWidth + 20
+        }
+
         ctx.closePath()
+        ctx.restore()
 
         return this
     }
@@ -271,10 +321,11 @@ export class Chart {
     draw(){
         this.clear()
         this.drawTitle()
+        this.drawLegend()
         this.drawAxis()
     }
 
-    showTooltip(data){
+    showTooltip(data, graph){
         const o = this.options
 
         if (this.tooltip) {
@@ -287,17 +338,20 @@ export class Chart {
         let {x, y} = this.proxy.mouse
         const tooltip = document.createElement("div")
         const onShow = o.tooltip.onShow
+        const font = o.tooltip.font
+        const shadow = o.tooltip.shadow
+        const border = o.tooltip.border
+        const padding = o.tooltip.padding
 
         tooltip.style.position = 'fixed'
-        tooltip.style.border = `${o.tooltip.border.width}px ${o.tooltip.border.lineType} ${o.tooltip.border.color}`
-        tooltip.style.paddingTop = `${o.tooltip.padding.top}px`
-        tooltip.style.paddingBottom = `${o.tooltip.padding.bottom}px`
-        tooltip.style.paddingLeft = `${o.tooltip.padding.left}px`
-        tooltip.style.paddingRight = `${o.tooltip.padding.right}px`
+        tooltip.style.border = `${border.width}px ${border.lineType} ${border.color}`
+        tooltip.style.borderRadius = `${border.radius}`
+        tooltip.style.padding = `${padding.top}px ${padding.right}px ${padding.bottom}px ${padding.left}px`
         tooltip.style.background = `${o.tooltip.background}`
-        tooltip.style.font = `${o.tooltip.font.style} ${o.tooltip.font.weight} ${o.tooltip.font.size}px/${o.tooltip.font.lineHeight} ${o.tooltip.font.family}`
+        tooltip.style.font = `${font.style} ${font.weight} ${font.size}px/${font.lineHeight} ${font.family}`
+        tooltip.style.boxShadow = `${shadow.shiftX}px ${shadow.shiftY}px ${shadow.blur}px ${shadow.color}`
 
-        tooltip.innerHTML = onShow && typeof onShow === 'function' ? onShow.apply(null, [data]) : data
+        tooltip.innerHTML = onShow && typeof onShow === 'function' ? onShow.apply(null, [data, graph]) : data
 
         document.querySelector('body').appendChild(tooltip)
 
