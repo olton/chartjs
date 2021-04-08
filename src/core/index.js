@@ -283,8 +283,6 @@ export class Chart {
         y = o.padding.top + this.viewHeight + legend.font.size + legend.padding.top + legend.margin.top
         x = o.padding.left + legend.padding.left + legend.margin.left
 
-        console.log(legend.margin.top)
-
         ctx.save()
         ctx.beginPath()
         ctx.font = `${legend.font.style} ${legend.font.weight} ${legend.font.size}px ${legend.font.family}`
@@ -300,8 +298,6 @@ export class Chart {
             if (x + nameWidth > this.viewWidth) {
                 x = o.padding.left + legend.padding.left + legend.margin.left
                 y += lh
-
-                console.log(x, y)
             }
 
             ctx.moveTo(x, y)

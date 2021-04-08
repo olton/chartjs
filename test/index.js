@@ -10,6 +10,9 @@ const chart = lineChart("#chart", lines, {
         minY: 3800,
         maxY: 7300
     },
+    padding: {
+        right: 10
+    },
     title: {
         text: 'The LineChart Example',
         align: 'center',
