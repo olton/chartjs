@@ -34,7 +34,7 @@ const bars2 = [
     {
         name: "Austin",
         color: color,
-        data: [300, 350, 600, 640, 620, 950, 220],
+        data: [300, 350, 600, 840, 620, 950, 220],
     },
     {
         name: "Denver",
@@ -58,7 +58,6 @@ barChart("#bar-chart-1", bars1, {
         }
     },
     boundaries: {
-        minY: 0,
         maxY: 10
     },
 })
@@ -76,9 +75,6 @@ barChart("#bar-chart-2", bars2, {
         font: {
             lineHeight: 1
         }
-    },
-    boundaries: {
-        minY: 0
     },
     barDistance: 0,
     groupDistance: 50,

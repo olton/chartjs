@@ -1,9 +1,9 @@
 import {Chart} from "../base"
-import {isObject, merge} from "../../helpers/merge";
+import {merge} from "../../helpers/merge";
 import {defaultBarChartOptions} from "../../defaults/bar-chart"
 import {minMaxLinear} from "../../helpers/min-max";
 import {drawText} from "../../draw/text";
-import {drawSquare} from "../../draw/square";
+import {drawRect} from "../../draw/rect";
 
 export class BarChart extends Chart {
     constructor(el, data, options) {
@@ -38,12 +38,8 @@ export class BarChart extends Chart {
             this.groups++
         }
 
-        const [minX, maxX] = [0, length]
-        const [minY, maxY] = minMaxLinear(a)
+        const [, maxY] = minMaxLinear(a)
 
-        this.minX = o.boundaries && !isNaN(o.boundaries.minX) ? o.boundaries.minX : minX
-        this.maxX = o.boundaries && !isNaN(o.boundaries.maxX) ? o.boundaries.maxX : maxX
-        this.minY = (o.boundaries && !isNaN(o.boundaries.minY) ? o.boundaries.minY : minY).toFixed(fixed)
         this.maxY = (o.boundaries && !isNaN(o.boundaries.maxY) ? o.boundaries.maxY : maxY).toFixed(fixed)
 
         return this
@@ -60,16 +56,21 @@ export class BarChart extends Chart {
         this.barWidth = Math.round((this.viewWidth - (this.data.length * +o.groupDistance) - (bars * +o.barDistance)) / bars) - magic
     }
 
-    drawAxisX() {
-    }
+    drawAxisX() {}
 
     drawData(){
         const o = this.options
         const ctx = this.ctx
-        let x = o.padding.left + o.groupDistance
-        let y = this.viewHeight + o.padding.top
+        let px = o.padding.left + o.groupDistance
+        let py = this.viewHeight + o.padding.top
+        const rect = this.canvas.getBoundingClientRect()
+        let mx, my
+        let tooltip = false
 
-        ctx.beginPath()
+        if (this.proxy.mouse) {
+            mx = this.proxy.mouse.x - rect.left
+            my = this.proxy.mouse.y - rect.top
+        }
 
         for (const graph of this.data) {
             let colors = graph.color.split(",").map( c => c.trim() )
@@ -80,27 +81,38 @@ export class BarChart extends Chart {
             let barsWidth = 0
             for (let i = 0; i < data.length; i++) {
                 let delta = data[i] * this.ratioY
+                let color = colors[i]
+                let fill = colors[i]
 
-                ctx.fillStyle = colors[i]
-                ctx.fillRect(x, y - delta, this.barWidth, delta)
+                drawRect(ctx, [px, py - delta, this.barWidth-1, delta], {color, fill})
+                if ((mx > px && mx < px + this.barWidth - 1) && (my > py - delta && my < py )) {
+                    drawRect(ctx, [px, py - delta, this.barWidth-1, delta], {color, fill: 'rgba(255,255,255,.3)'})
+                    if ( o.tooltip ) {
+                        this.showTooltip([(o.legend.titles ? o.legend.titles[i] : ''), data[i]], graph)
+                        tooltip = true
+                    }
+                }
 
                 barsWidth += this.barWidth
 
-                x += o.barDistance + this.barWidth
+                px += o.barDistance + this.barWidth
             }
 
             if (typeof o.onDrawLabel === 'function') {
                 name = o.onDrawLabel.apply(null, name)
             }
 
-            drawText(ctx, name, [x - barsWidth / 2 - o.barDistance, y + 20], {
+            drawText(ctx, name, [px - barsWidth / 2 - o.barDistance, py + 20], {
                 align: 'center', color: labelColor, stroke: labelColor, font: o.font
             })
 
-            x += o.groupDistance
+            px += o.groupDistance
         }
 
-        ctx.closePath()
+        if (!tooltip && this.tooltip) {
+            this.tooltip.remove()
+            this.tooltip = null
+        }
 
         return this
     }

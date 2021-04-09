@@ -120,15 +120,15 @@ export class LineChart extends Chart {
 
         if (!this.proxy.mouse) return
 
+        let {x, y} = this.proxy.mouse
+
+        const mx = x - rect.left
+        const my = y - rect.top
+
         for (const name in this.coords) {
             const item = this.coords[name]
             const drawPointFn = item.drawPointFn
             const opt = item.opt
-
-            let {x, y} = this.proxy.mouse
-
-            const mx = x - rect.left
-            const my = y - rect.top
 
             for (const [px, py, _x, _y] of item.coords) {
                 const accuracy = +(o.accuracy || opt.radius)
