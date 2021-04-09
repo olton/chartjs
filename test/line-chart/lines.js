@@ -21,7 +21,7 @@ export const lines = [
         dots: {
             type: 'dot', // dot, square, triangle, diamond
             fill: '#fff',
-            size: 4
+            size: 3
         }
     },
     {
@@ -32,31 +32,36 @@ export const lines = [
         dots: {
             type: 'triangle', // dot, square, triangle, diamond
             fill: '#fff',
-            size: 4
+            size: 3
         }
     },
-    // {
-    //     name: "Line 3",
-    //     color: data[4].colors.y2,
-    //     size: 1,
-    //     data: buildData(data[4].columns, 3),
-    //     dots: {
-    //         type: 'dot', // dot, square, triangle, diamond
-    //         fill: '#fff',
-    //         size: 2
-    //     }
-    // },
-    // {
-    //     name: "Line 4",
-    //     color: data[4].colors.y3,
-    //     size: 1,
-    //     data: buildData(data[4].columns, 4),
-    //     dots: {
-    //         type: 'dot', // dot, square, triangle, diamond
-    //         fill: '#fff',
-    //         size: 2
-    //     }
-    // },
+]
+
+export const lines2 = [
+    {
+        name: "Clients who visit a site",
+        color: data[DATA_INDEX].colors.y0,
+        size: 2,
+        data: buildData(data[DATA_INDEX].columns, 1),
+        dots: {
+            type: 'dot', // dot, square, triangle, diamond
+            fill: '#fff',
+            size: 3
+        },
+        showLines: false
+    },
+    {
+        name: "Clients who visit a forum",
+        color: data[DATA_INDEX].colors.y1,
+        size: 2,
+        data: buildData(data[DATA_INDEX].columns, 2),
+        dots: {
+            type: 'triangle', // dot, square, triangle, diamond
+            fill: '#fff',
+            size: 3
+        },
+        showLines: false
+    },
 ]
 
 export const line = [

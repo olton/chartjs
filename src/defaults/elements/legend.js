@@ -1,6 +1,4 @@
-import {defaultMargin} from "./margin";
 import {labelFont} from "./font";
-import {defaultPadding} from "./padding";
 
 export const defaultLegend = {
     rtl: false,
@@ -17,10 +15,4 @@ export const defaultLegend = {
         bottom: 0
     },
     font: labelFont,
-    label: {
-        color: '#000',
-        font: labelFont,
-        margin: defaultMargin,
-        align: 'center'
-    },
 }

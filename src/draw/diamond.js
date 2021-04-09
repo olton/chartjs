@@ -1,5 +1,3 @@
-import {DPI} from "../defaults/const";
-
 export const diamond = (ctx, [x, y], {color = '#000', fill = '#fff', radius = 1, size = 1}) => {
     ctx.beginPath()
     ctx.save()

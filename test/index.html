@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Title</title>
+    <title>Pimenov's Chart System</title>
     <style>
         h1, h2 {
             text-align: center;
@@ -16,12 +15,28 @@
             font-weight: normal;
             font-size: 36px;
         }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .chart {
+            width: 50%;
+        }
     </style>
 </head>
 <body>
-    <div id="log"></div>
-    <h1>Metro 4 Chart System</h1>
-    <div id="chart"></div>
+    <div class="container">
+        <div class="chart" id="bar-chart-1"></div>
+        <div class="chart" id="bar-chart-2"></div>
+        <div class="chart" id="line-chart-1"></div>
+        <div class="chart" id="line-chart-2"></div>
+    </div>
+
+
     <script src="index.js"></script>
+    <script src="line-chart/index.js"></script>
+    <script src="bar-chart/index.js"></script>
 </body>
 </html>

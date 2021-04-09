@@ -11,7 +11,9 @@
         "src"
     ],
     "scripts": {
-        "serve": "parcel test/index.html --open --out-dir output",
+        "serve": "parcel test/index.html --open --out-dir output -p 1234",
+        "serve_line": "parcel test/line-chart/index.html --open --out-dir output -p 1235",
+        "serve_bar": "parcel test/bar-chart/index.html --open --out-dir output -p 1236",
         "build": "parcel build test/index.html --out-dir dist"
     },
     "devDependencies": {

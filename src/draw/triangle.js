@@ -1,5 +1,3 @@
-import {DPI} from "../defaults/const";
-
 export const triangle = (ctx, [x, y], {color = '#000', fill = '#fff', radius = 4, size = 1}) => {
     ctx.beginPath()
     ctx.save()

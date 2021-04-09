@@ -11,3 +11,11 @@ export const minMax = (data = [], by = 'x') => {
     return [min, max]
 }
 
+export const minMaxLinear = (data = []) => {
+    let min, max
+
+    min = Math.min.apply(null, data)
+    max = Math.max.apply(null, data)
+
+    return [min, max]
+}

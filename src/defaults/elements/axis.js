@@ -7,10 +7,11 @@ export const defaultAxis = {
     showYAxis: true,
     showXLines: true,
     showYLines: true,
+    showXLabel: true,
+    showYLabel: true,
+    showMinMax: false,
     linesX: 5,
     linesY: 5,
-    labelsX: 5,
-    labelsY: 5,
     font: labelFont,
     arrowX: {
         color: '#000'

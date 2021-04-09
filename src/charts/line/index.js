@@ -1,4 +1,4 @@
-import {Chart} from "../../core"
+import {Chart} from "../base"
 import {minMax} from "../../helpers/min-max"
 import {circle} from "../../draw/circle"
 import {line} from "../../draw/line"
@@ -15,7 +15,7 @@ export class LineChart extends Chart {
         this.coords = {}
 
         this.calcMinMax()
-        this.calcRatio()
+
         this.draw()
     }
 
@@ -44,13 +44,6 @@ export class LineChart extends Chart {
         return this
     }
 
-    calcRatio(){
-        this.ratioX = this.viewWidth / (this.maxX - this.minX)
-        this.ratioY = this.viewHeight / (this.maxY - this.minY)
-
-        return this
-    }
-
     drawData(){
         const o = this.options
         const ctx = this.ctx
@@ -67,7 +60,7 @@ export class LineChart extends Chart {
                 coords.push([_x, _y, x, y])
             }
 
-            if (o.showLines) {
+            if (o.showLines && graph.showLines !== false) {
                 line(ctx, coords, {color: graph.color, size: graph.size})
             }
 
@@ -152,12 +145,9 @@ export class LineChart extends Chart {
     }
 
     draw(){
-        this.calcRatio()
-
         super.draw()
 
         this.drawData()
-        this.drawCross()
         this.drawFloatPoint()
     }
 }

@@ -1,6 +1,6 @@
-import {defaultOptions} from "../defaults/options"
-import {isObject, merge} from "../helpers/merge";
-import {drawText} from "../draw/text";
+import {defaultOptions} from "../../defaults/chart"
+import {isObject, merge} from "../../helpers/merge";
+import {drawText} from "../../draw/text";
 
 export class Chart {
     constructor(el, data, options = {}) {
@@ -52,6 +52,13 @@ export class Chart {
         if (o.legend) {
             this.viewHeight -= o.legend.margin.top + o.legend.margin.bottom
         }
+
+        return this
+    }
+
+    calcRatio(){
+        this.ratioX = this.viewWidth / (this.maxX - this.minX)
+        this.ratioY = this.viewHeight / (this.maxY - this.minY)
 
         return this
     }
@@ -125,7 +132,7 @@ export class Chart {
     }
 
     drawAxisY(){
-        const o = this.options
+        const o = this.options, {fixed = 0} = o.value.fixed
         const step = this.viewHeight / o.axis.linesY
         const textStep = (this.maxY - this.minY) / o.axis.linesY
         const ctx = this.ctx
@@ -143,11 +150,20 @@ export class Chart {
                 printY = o.axis.onDrawLabelY.apply(null, [printY])
             }
 
+            printY = printY.toFixed(fixed)
+
             if (o.axis.showYLines) {
                 ctx.moveTo(o.padding.left, y)
                 ctx.lineTo(x, y)
             }
-            if (i !== 0) ctx.fillText(printY.toString(), o.padding.left - 5, y)
+
+            if (o.axis.showMinMax) {
+                if (i === 0  || i === o.axis.linesY)
+                    ctx.fillText(printY.toString(), o.padding.left - 5, y - 5)
+            } else {
+                if (i !== 0  && o.axis.showYLabel)
+                    ctx.fillText(printY.toString(), o.padding.left - 5, y - 5)
+            }
         }
 
         ctx.stroke()
@@ -177,7 +193,8 @@ export class Chart {
                 ctx.moveTo(x, o.padding.top)
                 ctx.lineTo(x, this.viewHeight + o.padding.top)
             }
-            if (i < o.axis.linesX)
+
+            if (i < o.axis.linesX && o.axis.showXLabel)
                 ctx.fillText(printX.toString(), x, this.viewHeight + o.padding.top + font.size + 5)
         }
 
@@ -319,6 +336,8 @@ export class Chart {
         this.drawTitle()
         this.drawLegend()
         this.drawAxis()
+        this.calcRatio()
+        this.drawCross()
     }
 
     showTooltip(data, graph){

@@ -1,5 +1,3 @@
-import {DPI} from "../defaults/const";
-
 export const drawText = (ctx, text, [x, y], {align = 'left', color = '#000', stroke = '#000', font}) => {
     const {
         style = 'normal',

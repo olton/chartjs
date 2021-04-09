@@ -2,7 +2,6 @@ import {titleFont} from "./font";
 
 export const defaultTitle = {
     display: true,
-    position: 'top', // top, left, bottom, right
     align: 'center', // start, center, end
     rtl: false,
     color: '#000',
