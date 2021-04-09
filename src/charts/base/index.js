@@ -1,6 +1,7 @@
 import {defaultOptions} from "../../defaults/chart"
 import {isObject, merge} from "../../helpers/merge";
 import {drawText} from "../../draw/text";
+import {drawSquare} from "../../draw/square";
 
 export class Chart {
     constructor(el, data, options = {}) {
@@ -15,6 +16,7 @@ export class Chart {
         this.maxX = 0
         this.minY = 0
         this.maxY = 0
+        this.legendItems = []
 
         const that = this
 
@@ -288,6 +290,64 @@ export class Chart {
 
         return this
     }
+
+    drawLegend(){
+        const o = this.options, legend = o.legend
+        let lh, x, y, magic = 5, box = o.legend.font.size / 2
+        const ctx = this.ctx
+        const items = this.legendItems
+
+        if (!legend || !isObject(legend)) return
+        if (!items || !Array.isArray(items) || !items.length) return
+
+        lh = legend.font.size * legend.font.lineHeight
+        y = o.padding.top + this.viewHeight + legend.font.size + legend.padding.top + legend.margin.top
+        x = o.padding.left + legend.padding.left + legend.margin.left
+
+        for (let i = 0; i < items.length; i++) {
+            let [name, color] = items[i]
+
+            const nameWidth = ctx.measureText(name).width
+
+            if (x + nameWidth > this.viewWidth) {
+                x = o.padding.left + legend.padding.left + legend.margin.left
+                y += lh
+            }
+
+            drawSquare(ctx, [x, y], {color, fill: color, radius: box})
+            drawText(ctx, name, [x + box +magic, y + box / 2], {color: o.font.color, stroke: o.font.color, font: o.font})
+
+            x += box + nameWidth + 20
+        }
+
+        return this
+    }
+
+    drawLegendVertical(){
+        const o = this.options, legend = o.legend
+        let lh, x, y, magic = 5, box = o.legend.font.size / 2
+        const ctx = this.ctx
+        const items = this.legendItems
+
+        if (!legend || !isObject(legend)) return
+        if (!items || !Array.isArray(items) || !items.length) return
+
+        lh = legend.font.size * legend.font.lineHeight
+        y = o.padding.top + legend.font.size + legend.padding.top + legend.margin.top
+        x = o.padding.left + legend.padding.left + legend.margin.left
+
+        for (let i = 0; i < items.length; i++) {
+            let [name, color] = items[i]
+
+            drawSquare(ctx, [x, y], {color, fill: color, radius: box})
+            drawText(ctx, name, [x + box +magic, y + box / 2 + 2], {color: o.font.color, stroke: o.font.color, font: o.font})
+
+            y += lh
+        }
+
+        return this
+    }
+
 
     draw(){
         this.clear()

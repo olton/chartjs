@@ -95,6 +95,12 @@ lineChart("#line-chart-2", lines2, {
                 </table>
             `
         }
+    },
+    legend: {
+        vertical: true,
+        margin: {
+            left: 20
+        }
     }
     //onHover: (x, y) => console.log(x, y)
 })

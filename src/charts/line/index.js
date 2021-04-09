@@ -7,6 +7,7 @@ import {drawTriangle} from "../../draw/triangle"
 import {drawDiamond} from "../../draw/diamond"
 import {defaultLineChartOptions} from "../../defaults/line-chart"
 import {isObject, merge} from "../../helpers/merge"
+import {drawText} from "../../draw/text";
 
 export class LineChart extends Chart {
     constructor(el, data = [], options = {}) {
@@ -14,8 +15,15 @@ export class LineChart extends Chart {
 
         this.coords = {}
 
-        this.calcMinMax()
+        this.legendItems = []
+        const legend = this.options.legend
+        if (legend) {
+            for (const graph of this.data) {
+                this.legendItems.push([graph.name, graph.color])
+            }
+        }
 
+        this.calcMinMax()
         this.draw()
     }
 
@@ -40,46 +48,6 @@ export class LineChart extends Chart {
         this.maxX = o.boundaries && !isNaN(o.boundaries.maxX) ? o.boundaries.maxX : maxX
         this.minY = o.boundaries && !isNaN(o.boundaries.minY) ? o.boundaries.minY : minY
         this.maxY = o.boundaries && !isNaN(o.boundaries.maxY) ? o.boundaries.maxY : maxY
-
-        return this
-    }
-
-    drawLegend(){
-        const o = this.options, legend = o.legend
-        let lh, x, y, magic = 5, box = o.legend.font.size
-        const ctx = this.ctx
-
-        if (!legend || !isObject(legend)) return
-
-        lh = legend.font.size * legend.font.lineHeight
-        y = o.padding.top + this.viewHeight + legend.font.size + legend.padding.top + legend.margin.top
-        x = o.padding.left + legend.padding.left + legend.margin.left
-
-        ctx.save()
-        ctx.beginPath()
-        ctx.font = `${legend.font.style} ${legend.font.weight} ${legend.font.size}px ${legend.font.family}`
-        ctx.setLineDash([])
-
-        for (const graph of this.data) {
-            ctx.lineWidth = 1
-            ctx.strokeStyle = graph.color
-            ctx.fillStyle = graph.color
-
-            const nameWidth = ctx.measureText(graph.name).width
-
-            if (x + nameWidth > this.viewWidth) {
-                x = o.padding.left + legend.padding.left + legend.margin.left
-                y += lh
-            }
-
-            ctx.fillRect(x, y, box, box)
-            ctx.fillText(graph.name, x + box + magic, y + legend.font.size - 2)
-
-            x += box + nameWidth + 20
-        }
-
-        ctx.closePath()
-        ctx.restore()
 
         return this
     }
@@ -185,11 +153,16 @@ export class LineChart extends Chart {
     }
 
     draw(){
+        const o = this.options
+
         super.draw()
         this.drawData()
         this.drawFloatPoint()
         this.drawCross()
-        this.drawLegend()
+        if (o.legend.vertical === true)
+            this.drawLegendVertical()
+        else
+            this.drawLegend()
     }
 }
 

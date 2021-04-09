@@ -83,10 +83,10 @@ barChart("#bar-chart-2", bars2, {
     barDistance: 0,
     groupDistance: 50,
     legend: {
+        vertical: true,
         titles: ['paper', 'laptop', 'pens', 'envelopes', 'binder', 'notepad', 'backpack'],
-        padding: {
-            left: 5,
-            top: 10
+        margin: {
+            left: 20,
         }
     }
 })
