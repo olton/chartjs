@@ -1,12 +1,12 @@
 import {Chart} from "../base"
 import {minMax} from "../../helpers/min-max"
-import {circle} from "../../draw/circle"
-import {line} from "../../draw/line"
-import {square} from "../../draw/square"
-import {triangle} from "../../draw/triangle"
-import {diamond} from "../../draw/diamond"
+import {drawCircle} from "../../draw/circle"
+import {drawLine} from "../../draw/line"
+import {drawSquare} from "../../draw/square"
+import {drawTriangle} from "../../draw/triangle"
+import {drawDiamond} from "../../draw/diamond"
 import {defaultLineChartOptions} from "../../defaults/line-chart"
-import {merge} from "../../helpers/merge"
+import {isObject, merge} from "../../helpers/merge"
 
 export class LineChart extends Chart {
     constructor(el, data = [], options = {}) {
@@ -44,6 +44,46 @@ export class LineChart extends Chart {
         return this
     }
 
+    drawLegend(){
+        const o = this.options, legend = o.legend
+        let lh, x, y, magic = 5, box = o.legend.font.size
+        const ctx = this.ctx
+
+        if (!legend || !isObject(legend)) return
+
+        lh = legend.font.size * legend.font.lineHeight
+        y = o.padding.top + this.viewHeight + legend.font.size + legend.padding.top + legend.margin.top
+        x = o.padding.left + legend.padding.left + legend.margin.left
+
+        ctx.save()
+        ctx.beginPath()
+        ctx.font = `${legend.font.style} ${legend.font.weight} ${legend.font.size}px ${legend.font.family}`
+        ctx.setLineDash([])
+
+        for (const graph of this.data) {
+            ctx.lineWidth = 1
+            ctx.strokeStyle = graph.color
+            ctx.fillStyle = graph.color
+
+            const nameWidth = ctx.measureText(graph.name).width
+
+            if (x + nameWidth > this.viewWidth) {
+                x = o.padding.left + legend.padding.left + legend.margin.left
+                y += lh
+            }
+
+            ctx.fillRect(x, y, box, box)
+            ctx.fillText(graph.name, x + box + magic, y + legend.font.size - 2)
+
+            x += box + nameWidth + 20
+        }
+
+        ctx.closePath()
+        ctx.restore()
+
+        return this
+    }
+
     drawData(){
         const o = this.options
         const ctx = this.ctx
@@ -61,7 +101,7 @@ export class LineChart extends Chart {
             }
 
             if (o.showLines && graph.showLines !== false) {
-                line(ctx, coords, {color: graph.color, size: graph.size})
+                drawLine(ctx, coords, {color: graph.color, size: graph.size})
             }
 
             let dots = graph.dots ? graph.dots : {
@@ -77,15 +117,15 @@ export class LineChart extends Chart {
 
             switch (dots.type) {
                 case 'square':
-                    drawPointFn = square
+                    drawPointFn = drawSquare
                     break
                 case 'triangle':
-                    drawPointFn = triangle
+                    drawPointFn = drawTriangle
                     break
                 case 'diamond':
-                    drawPointFn = diamond
+                    drawPointFn = drawDiamond
                     break
-                default: drawPointFn = circle
+                default: drawPointFn = drawCircle
             }
 
             if (graph.dots) {
@@ -146,9 +186,10 @@ export class LineChart extends Chart {
 
     draw(){
         super.draw()
-
         this.drawData()
         this.drawFloatPoint()
+        this.drawCross()
+        this.drawLegend()
     }
 }
 

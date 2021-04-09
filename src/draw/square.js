@@ -1,4 +1,4 @@
-export const square = (ctx, [x, y], {color = '#000', fill = '#fff', radius = 4, size = 1}) => {
+export const drawSquare = (ctx, [x, y], {color = '#000', fill = '#fff', radius = 4, size = 1}) => {
     ctx.beginPath()
     ctx.save()
     ctx.setLineDash([])

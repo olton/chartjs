@@ -289,55 +289,11 @@ export class Chart {
         return this
     }
 
-    drawLegend(){
-        const o = this.options, legend = o.legend
-        let lh, x, y, magic = 5, box = o.legend.font.size
-        const ctx = this.ctx
-
-        if (!legend || !isObject(legend)) return
-
-        lh = legend.font.size * legend.font.lineHeight
-        y = o.padding.top + this.viewHeight + legend.font.size + legend.padding.top + legend.margin.top
-        x = o.padding.left + legend.padding.left + legend.margin.left
-
-        ctx.save()
-        ctx.beginPath()
-        ctx.font = `${legend.font.style} ${legend.font.weight} ${legend.font.size}px ${legend.font.family}`
-        ctx.setLineDash([])
-
-        for (const graph of this.data) {
-            ctx.lineWidth = 1
-            ctx.strokeStyle = graph.color
-            ctx.fillStyle = graph.color
-
-            const nameWidth = ctx.measureText(graph.name).width
-
-            if (x + nameWidth > this.viewWidth) {
-                x = o.padding.left + legend.padding.left + legend.margin.left
-                y += lh
-            }
-
-            ctx.moveTo(x, y)
-            ctx.lineTo(x, y + 100)
-            ctx.fillRect(x, y, box, box)
-            ctx.fillText(graph.name, x + box + magic, y + legend.font.size - 2)
-
-            x += box + nameWidth + 20
-        }
-
-        ctx.closePath()
-        ctx.restore()
-
-        return this
-    }
-
     draw(){
         this.clear()
         this.drawTitle()
-        this.drawLegend()
         this.drawAxis()
         this.calcRatio()
-        this.drawCross()
     }
 
     showTooltip(data, graph){

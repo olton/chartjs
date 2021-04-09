@@ -1,4 +1,4 @@
-export const diamond = (ctx, [x, y], {color = '#000', fill = '#fff', radius = 1, size = 1}) => {
+export const drawDiamond = (ctx, [x, y], {color = '#000', fill = '#fff', radius = 1, size = 1}) => {
     ctx.beginPath()
     ctx.save()
     ctx.setLineDash([])
