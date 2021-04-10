@@ -1,4 +1,5 @@
 import {labelFont} from "./font";
+import {defaultBorder} from "./border";
 
 export const defaultLegend = {
     rtl: false,
@@ -15,4 +16,7 @@ export const defaultLegend = {
         bottom: 0
     },
     font: labelFont,
+    border: defaultBorder,
+    dash: [],
+    color: '#fff'
 }

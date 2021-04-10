@@ -1,6 +1,2 @@
-import {lineChart} from "./charts"
-
-export {
-    lineChart
-}
+export * from "./charts"
 

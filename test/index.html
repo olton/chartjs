@@ -2,8 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Pimenov's Chart System</title>
+    <title>Metro 4 Chart System</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            padding: 20px;
+        }
         h1, h2 {
             text-align: center;
             font-family: "Segoe UI", sans-serif;
@@ -23,11 +31,14 @@
 
         .chart {
             width: 50%;
+            /*max-width: 50%;*/
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <div class="chart" id="pie-chart-1"></div>
+        <div class="chart" id="pie-chart-2"></div>
         <div class="chart" id="bar-chart-1"></div>
         <div class="chart" id="bar-chart-2"></div>
         <div class="chart" id="line-chart-1"></div>
@@ -35,7 +46,7 @@
     </div>
 
 
-    <script src="index.js"></script>
+    <script src="pie-chart/index.js"></script>
     <script src="line-chart/index.js"></script>
     <script src="bar-chart/index.js"></script>
 </body>

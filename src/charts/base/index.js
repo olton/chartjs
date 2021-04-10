@@ -2,9 +2,11 @@ import {defaultOptions} from "../../defaults/chart"
 import {isObject, merge} from "../../helpers/merge";
 import {drawText} from "../../draw/text";
 import {drawSquare} from "../../draw/square";
+import {getTextboxWidth} from "../../helpers/get-textbox-width";
+import {drawTextBox} from "../../draw/text-box";
 
 export class Chart {
-    constructor(el, data, options = {}) {
+    constructor(el, data, options = {}, type = 'unknown') {
         this.options = merge({}, defaultOptions, options)
         this.data = data
         this.el = document.querySelector(el)
@@ -17,6 +19,7 @@ export class Chart {
         this.minY = 0
         this.maxY = 0
         this.legendItems = []
+        this.chartType = type
 
         const that = this
 
@@ -32,17 +35,40 @@ export class Chart {
             throw new Error("You must define a selector for chart wrapper element!")
         }
 
+        if (this.options.border) {
+            this.el.style.border = `${this.options.border.width}px ${this.options.border.lineType} ${this.options.border.color}`
+        }
+
         this.calcInternalValues()
         this.createCanvas()
         this.addEvents()
     }
 
+    createCanvas(){
+        this.canvas = document.createElement("canvas")
+        this.el.innerHTML = ""
+        this.el.appendChild(this.canvas)
+        this.ctx = this.canvas.getContext('2d')
+        this.setCanvasSize()
+    }
+
+    setCanvasSize(){
+        const o = this.options
+
+        this.canvas.style.height = this.height + 'px'
+        this.canvas.style.width = this.width + 'px'
+        this.canvas.width = o.dpi * this.width
+        this.canvas.height = o.dpi * this.height
+    }
+
     calcInternalValues(){
         let width, height
         const o = this.options
+        const rect = this.el.getBoundingClientRect();
+        const {width: elWidth, height: elHeight} = rect
 
-        width = o.width.toString().includes('%') ? this.el.clientWidth : o.width
-        height = o.height.toString().includes('%') ? this.el.clientHeight : o.height
+        width = o.width.toString().includes('%') ? elWidth / 100 * parseInt(o.width) : +o.width
+        height = o.height.toString().includes('%') ? elHeight / 100 * parseInt(o.height) : +o.height
 
         this.width = width
         this.height = height
@@ -50,47 +76,11 @@ export class Chart {
         this.dpiWidth = o.dpi * width
         this.viewHeight = this.dpiHeight - (o.padding.top + o.padding.bottom)
         this.viewWidth = this.dpiWidth - (o.padding.left + o.padding.right)
-
-        if (o.legend) {
-            this.viewHeight -= o.legend.margin.top + o.legend.margin.bottom
-        }
-
-        return this
     }
 
     calcRatio(){
         this.ratioX = this.viewWidth / (this.maxX - this.minX)
         this.ratioY = this.viewHeight / (this.maxY - this.minY)
-
-        return this
-    }
-
-    setCanvasStyle(){
-        const o = this.options
-
-        this.canvas.style.height = this.height + 'px'
-        this.canvas.style.width = this.width + 'px'
-        if (o.border) {
-            this.canvas.style.border = `${o.border.width}px ${o.border.lineType} ${o.border.color}`
-        }
-        this.canvas.width = o.dpi * this.width
-        this.canvas.height = o.dpi * this.height
-    }
-
-    createCanvas(){
-        const o = this.options
-
-        this.canvas = document.createElement("canvas")
-        this.el.innerHTML = ""
-        this.el.appendChild(this.canvas)
-        this.ctx = this.canvas.getContext('2d')
-
-        this.setCanvasStyle()
-
-        this.ctx.font = `${o.font.style} ${o.font.weight} ${o.font.size}px ${o.font.family}`
-        this.ctx.fillStyle = o.color
-
-        return this
     }
 
     drawArrowX(){
@@ -159,12 +149,14 @@ export class Chart {
                 ctx.lineTo(x, y)
             }
 
-            if (o.axis.showMinMax) {
-                if (i === 0  || i === o.axis.linesY)
-                    ctx.fillText(printY.toString(), o.padding.left - 5, y - 5)
-            } else {
-                if (i !== 0  && o.axis.showYLabel)
-                    ctx.fillText(printY.toString(), o.padding.left - 5, y - 5)
+            if (o.axis.showYLabel) {
+                if (o.axis.showMinMax) {
+                    if (i === 0  || i === o.axis.linesY)
+                        ctx.fillText(printY.toString(), o.padding.left - 5, y - 5)
+                } else {
+                    if (i !== 0)
+                        ctx.fillText(printY.toString(), o.padding.left - 5, y - 5)
+                }
             }
         }
 
@@ -325,9 +317,10 @@ export class Chart {
 
     drawLegendVertical(){
         const o = this.options, legend = o.legend
-        let lh, x, y, magic = 5, box = o.legend.font.size / 2
+        let lh, x, y, magic = 5, legendSysPadding = 15 * o.dpi, box = o.legend.font.size / 2
         const ctx = this.ctx
         const items = this.legendItems
+        let textBoxWidth, textBoxHeight
 
         if (!legend || !isObject(legend)) return
         if (!items || !Array.isArray(items) || !items.length) return
@@ -335,6 +328,16 @@ export class Chart {
         lh = legend.font.size * legend.font.lineHeight
         y = o.padding.top + legend.font.size + legend.padding.top + legend.margin.top
         x = o.padding.left + legend.padding.left + legend.margin.left
+
+        textBoxWidth = getTextboxWidth(ctx, items, legend.font) + box * 2 + magic + legend.padding.left + legend.padding.right
+        textBoxHeight = items.length * lh + legend.padding.top + legend.padding.bottom
+
+        drawTextBox(ctx, [x - box - legend.padding.left, y - box - legend.padding.top, textBoxWidth, textBoxHeight], {
+            color: legend.color,
+            dash: legend.dash,
+            size: legend.border.width,
+            borderColor: legend.border.color
+        })
 
         for (let i = 0; i < items.length; i++) {
             let [name, color] = items[i]
@@ -351,9 +354,9 @@ export class Chart {
 
     draw(){
         this.clear()
+        this.calcRatio()
         this.drawTitle()
         this.drawAxis()
-        this.calcRatio()
     }
 
     showTooltip(data, graph){
@@ -418,7 +421,7 @@ export class Chart {
 
     resize(){
         this.calcInternalValues()
-        this.setCanvasStyle()
+        this.setCanvasSize()
         this.draw()
     }
 

@@ -7,7 +7,7 @@ import {drawRect} from "../../draw/rect";
 
 export class BarChart extends Chart {
     constructor(el, data, options) {
-        super(el, data, merge({}, defaultBarChartOptions, options))
+        super(el, data, merge({}, defaultBarChartOptions, options), 'bar')
 
         this.groups = 0
         this.barWidth = 0
@@ -21,7 +21,7 @@ export class BarChart extends Chart {
         }
 
         this.calcMinMax()
-        this.draw()
+        this.resize()
     }
 
     calcMinMax(){
@@ -88,7 +88,7 @@ export class BarChart extends Chart {
                 if ((mx > px && mx < px + this.barWidth - 1) && (my > py - delta && my < py )) {
                     drawRect(ctx, [px, py - delta, this.barWidth-1, delta], {color, fill: 'rgba(255,255,255,.3)'})
                     if ( o.tooltip ) {
-                        this.showTooltip([(o.legend.titles ? o.legend.titles[i] : ''), data[i]], graph)
+                        this.showTooltip([(o.legend.titles ? o.legend.titles[i] : name), data[i]], graph)
                         tooltip = true
                     }
                 }
@@ -117,21 +117,18 @@ export class BarChart extends Chart {
         return this
     }
 
-    drawFloatPoint(){
+    drawLegend() {
+        return this.options.legend.vertical === true
+            ? super.drawLegendVertical()
+            : super.drawLegend()
     }
 
     draw(){
-        const o = this.options
-
         this.calcBarWidth()
         super.draw()
         this.drawData()
-        this.drawFloatPoint()
         this.drawCross()
-        if (o.legend.vertical === true)
-            this.drawLegendVertical()
-        else
-            this.drawLegend()
+        this.drawLegend()
     }
 }
 

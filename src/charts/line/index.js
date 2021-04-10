@@ -6,12 +6,11 @@ import {drawSquare} from "../../draw/square"
 import {drawTriangle} from "../../draw/triangle"
 import {drawDiamond} from "../../draw/diamond"
 import {defaultLineChartOptions} from "../../defaults/line-chart"
-import {isObject, merge} from "../../helpers/merge"
-import {drawText} from "../../draw/text";
+import {merge} from "../../helpers/merge"
 
 export class LineChart extends Chart {
     constructor(el, data = [], options = {}) {
-        super(el, data, merge({}, defaultLineChartOptions, options))
+        super(el, data, merge({}, defaultLineChartOptions, options), 'line')
 
         this.coords = {}
 
@@ -24,7 +23,7 @@ export class LineChart extends Chart {
         }
 
         this.calcMinMax()
-        this.draw()
+        this.resize()
     }
 
     calcMinMax(){
@@ -152,17 +151,18 @@ export class LineChart extends Chart {
         }
     }
 
-    draw(){
-        const o = this.options
+    drawLegend() {
+        return this.options.legend.vertical === true
+            ? super.drawLegendVertical()
+            : super.drawLegend()
+    }
 
+    draw(){
         super.draw()
         this.drawData()
         this.drawFloatPoint()
         this.drawCross()
-        if (o.legend.vertical === true)
-            this.drawLegendVertical()
-        else
-            this.drawLegend()
+        this.drawLegend()
     }
 }
 

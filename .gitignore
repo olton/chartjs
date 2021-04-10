@@ -1,6 +1,5 @@
 .idea
 output
-lib
 dist
 packages/**/lib
 packages/**/dist

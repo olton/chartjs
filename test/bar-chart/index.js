@@ -45,11 +45,6 @@ const bars2 = [
 
 barChart("#bar-chart-1", bars1, {
     height: 600,
-    border: false,
-    accuracy: 4,
-    padding: {
-        right: 10
-    },
     title: {
         text: 'The BarChart',
         align: 'center',
@@ -64,11 +59,6 @@ barChart("#bar-chart-1", bars1, {
 
 barChart("#bar-chart-2", bars2, {
     height: 600,
-    border: false,
-    accuracy: 4,
-    padding: {
-        right: 10
-    },
     title: {
         text: 'The BarChart :: groups',
         align: 'center',
@@ -82,7 +72,13 @@ barChart("#bar-chart-2", bars2, {
         vertical: true,
         titles: ['paper', 'laptop', 'pens', 'envelopes', 'binder', 'notepad', 'backpack'],
         margin: {
-            left: 20,
+            left: 40,
+        },
+        padding: {
+            top: 10,
+            left: 10,
+            right: 10,
+            bottom: 10
         }
     }
 })

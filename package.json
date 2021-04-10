@@ -14,7 +14,9 @@
         "serve": "parcel test/index.html --open --out-dir output -p 1234",
         "serve_line": "parcel test/line-chart/index.html --open --out-dir output -p 1235",
         "serve_bar": "parcel test/bar-chart/index.html --open --out-dir output -p 1236",
-        "build": "parcel build test/index.html --out-dir dist"
+        "build_demo": "rimraf -rf dist && parcel build test/index.html --out-dir dist",
+        "build_browser": "rollup -c .rollup/rollup.js && rollup -c .rollup/rollup.minify.js",
+        "build": "rimraf -rf dist && npm run build_browser"
     },
     "devDependencies": {
         "@babel/cli": "^7.13.10",

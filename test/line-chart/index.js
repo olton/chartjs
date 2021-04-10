@@ -4,13 +4,13 @@ import {lines, lines2} from "./lines"
 lineChart("#line-chart-1", lines, {
     height: 600,
     accuracy: 4,
-    border: false,
+    // border: false,
     boundaries: {
         minY: 3800,
         maxY: 7300
     },
     padding: {
-        right: 10
+        right: 20
     },
     title: {
         text: 'The LineChart',
@@ -20,7 +20,7 @@ lineChart("#line-chart-1", lines, {
         }
     },
     axis: {
-        linesX: 10,
+        linesX: 6,
         linesY: 10,
 
         onDrawLabelY: label => Math.round(label),
@@ -52,14 +52,13 @@ lineChart("#line-chart-1", lines, {
 
 lineChart("#line-chart-2", lines2, {
     height: 600,
-    border: false,
     accuracy: 4,
     boundaries: {
         minY: 3800,
         maxY: 7300
     },
     padding: {
-        right: 10
+        right: 20
     },
     title: {
         text: 'The LineChart :: disabled lines',
@@ -69,7 +68,7 @@ lineChart("#line-chart-2", lines2, {
         }
     },
     axis: {
-        linesX: 10,
+        linesX: 6,
         linesY: 10,
 
         onDrawLabelY: label => Math.round(label),
@@ -100,7 +99,17 @@ lineChart("#line-chart-2", lines2, {
         vertical: true,
         margin: {
             left: 20
-        }
+        },
+        padding: {
+            top: 10,
+            left: 10,
+            right: 10,
+            bottom: 10
+        },
+        border: {
+            color: '#000'
+        },
+        dash: [5, 3]
     }
     //onHover: (x, y) => console.log(x, y)
 })
