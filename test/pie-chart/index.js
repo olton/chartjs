@@ -4,27 +4,27 @@ const sectors = [
     {
         name: "Red",
         color: 'red',
-        data: [80]
+        data: 80
     },
     {
         name: "Blue",
         color: 'blue',
-        data: [20]
+        data: 20
     },
     {
         name: "Green",
         color: 'green',
-        data: [120]
+        data: 120
     },
     {
         name: "Yellow",
         color: 'yellow',
-        data: [40]
+        data: 40
     },
     {
         name: "Pink",
         color: 'pink',
-        data: [100]
+        data: 100
     },
 ]
 
@@ -41,6 +41,7 @@ pieChart("#pie-chart-1", sectors, {
 
 pieChart("#pie-chart-2", sectors, {
     height: 600,
+    total: 600,
     title: {
         text: 'The PieChart',
         align: 'center',

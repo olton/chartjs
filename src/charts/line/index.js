@@ -53,7 +53,7 @@ export class LineChart extends Chart {
         return this
     }
 
-    drawData(){
+    lines(){
         const o = this.options
         const ctx = this.ctx
         let coords
@@ -113,7 +113,7 @@ export class LineChart extends Chart {
         }
     }
 
-    drawFloatPoint(){
+    floatPoint(){
         const o = this.options
         const ctx = this.ctx
         const rect = this.canvas.getBoundingClientRect()
@@ -161,8 +161,8 @@ export class LineChart extends Chart {
 
     draw(){
         super.draw()
-        this.drawData()
-        this.drawFloatPoint()
+        this.lines()
+        this.floatPoint()
         this.cross()
         this.legend()
     }

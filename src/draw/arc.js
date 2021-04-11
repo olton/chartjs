@@ -1,6 +1,6 @@
 import {deg2rad} from "../helpers/deg-to-rad";
 
-export const drawArc = (ctx, [x, y, startAngle, endAngle], {color = '#000', fill = '#fff', radius = 4, size = 1}) => {
+export const drawArc = (ctx, [x, y, radius = 4, startAngle, endAngle], {color = '#000', fill = '#fff', size = 1}) => {
     ctx.beginPath()
     ctx.save()
     ctx.setLineDash([])

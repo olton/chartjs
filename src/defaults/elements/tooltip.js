@@ -16,9 +16,9 @@ export const defaultTooltip = {
     shadow: {
         shiftX: 2,
         shiftY: 2,
-        blur: 2,
+        blur: 4,
         stretch: 0,
-        color: '#bbb'
+        color: 'rgba(0,0,0,.5)'
     },
     onShow: null,
 }
