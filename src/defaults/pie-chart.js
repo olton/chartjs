@@ -9,6 +9,7 @@ export const defaultPieChartOptions = {
         font: labelFont,
         color: '#fff'
     },
+    showValue: false,
     holeSize: 0,
     legend: {
         vertical: true,

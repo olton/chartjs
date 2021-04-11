@@ -36,6 +36,11 @@ pieChart("#pie-chart-1", sectors, {
         border: {
             color: '#fff'
         }
+    },
+    labels: {
+        font: {
+            size: 20
+        }
     }
 })
 
@@ -62,5 +67,6 @@ pieChart("#pie-chart-2", sectors, {
         font: {
             size: 24
         }
-    }
+    },
+    showValue: true
 })

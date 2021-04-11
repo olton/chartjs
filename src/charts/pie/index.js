@@ -53,7 +53,7 @@ export class PieChart extends Chart {
             textY = y + (radius / 2 + offset) * Math.sin(startAngle + endAngle / 2)
 
             let textW = getTextBoxWidth(ctx, [val+"%"], {font: o.labels.font})
-            drawText(ctx, val+"%", [textX - textW/2, textY+o.labels.font.size/2], {color: o.labels.color, font: o.labels.font})
+            drawText(ctx, o.showValue ? sector.data : val+"%", [textX - textW/2, textY+o.labels.font.size/2], {color: o.labels.color, font: o.labels.font})
 
             startAngle += endAngle
         }
