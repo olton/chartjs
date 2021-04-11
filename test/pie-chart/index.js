@@ -31,6 +31,11 @@ pieChart("#pie-chart-1", sectors, {
         font: {
             lineHeight: 1
         }
+    },
+    legend: {
+        border: {
+            color: '#fff'
+        }
     }
 })
 
@@ -50,6 +55,12 @@ pieChart("#pie-chart-2", sectors, {
             left: 10,
             right: 10,
             bottom: 10
+        }
+    },
+    labels: {
+        color: '#000',
+        font: {
+            size: 24
         }
     }
 })

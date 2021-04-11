@@ -6,7 +6,8 @@ export const defaultPieChartOptions = {
         color: '#eaeaea'
     },
     labels: {
-        font: labelFont
+        font: labelFont,
+        color: '#fff'
     },
     holeSize: 0,
     legend: {

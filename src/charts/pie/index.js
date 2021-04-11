@@ -4,6 +4,7 @@ import {merge} from "../../helpers/merge"
 import {drawArc} from "../../draw/arc";
 import {drawText} from "../../draw/text";
 import {drawCircle} from "../../draw/circle";
+import {getTextBoxWidth} from "../../helpers/get-textbox-width";
 
 export class PieChart extends Chart {
     constructor(el, data, options) {
@@ -19,8 +20,6 @@ export class PieChart extends Chart {
             }
         }
 
-        console.log(this.legendItems)
-
         this.resize()
     }
 
@@ -30,20 +29,33 @@ export class PieChart extends Chart {
         const radius = (this.viewHeight > this.viewWidth)
             ? this.viewWidth / 2 - (o.padding.left + o.padding.right)
             : this.viewHeight / 2 - (o.padding.top + o.padding.bottom)
+
+        let startAngle = 0, endAngle = 360, offset = 0, val = ''
         let textX, textY
 
-        let startAngle = 0
         for (const sector of this.data) {
-            let endAngle = 2 * Math.PI * sector.data / this.total
-
+            endAngle = 2 * Math.PI * sector.data / this.total
             drawArc(ctx, [x, y, radius, startAngle, startAngle + endAngle], {fill: sector.color, color: sector.color})
-            // drawText(ctx, sector.data, [textX, textY], {color: sector.color, font: o.labels.font})
-
             startAngle += endAngle
         }
 
         if (o.holeSize) {
             drawCircle(ctx, [x, y, o.holeSize], {color: '#fff'})
+        }
+
+        startAngle = 0
+        for (const sector of this.data) {
+            endAngle = 2 * Math.PI * sector.data / this.total
+            offset = o.holeSize / 2
+            val = Math.round(sector.data * 100 / this.total)
+
+            textX = x + (radius / 2 + offset) * Math.cos(startAngle + endAngle / 2),
+            textY = y + (radius / 2 + offset) * Math.sin(startAngle + endAngle / 2)
+
+            let textW = getTextBoxWidth(ctx, [val+"%"], {font: o.labels.font})
+            drawText(ctx, val+"%", [textX - textW/2, textY+o.labels.font.size/2], {color: o.labels.color, font: o.labels.font})
+
+            startAngle += endAngle
         }
     }
 
