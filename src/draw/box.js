@@ -1,4 +1,4 @@
-export const drawTextBox = (ctx, [x, y, w, h], {color = '#fff', borderColor = '#000', dash = [], size = 1}) => {
+export const drawBox = (ctx, [x, y, w, h], {color = '#fff', borderColor = '#000', dash = [], size = 1}) => {
     ctx.save()
     ctx.beginPath()
     ctx.strokeStyle = borderColor

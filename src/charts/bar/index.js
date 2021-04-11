@@ -56,9 +56,9 @@ export class BarChart extends Chart {
         this.barWidth = Math.round((this.viewWidth - (this.data.length * +o.groupDistance) - (bars * +o.barDistance)) / bars) - magic
     }
 
-    drawAxisX() {}
+    axisX() {}
 
-    drawData(){
+    bars(){
         const o = this.options
         const ctx = this.ctx
         let px = o.padding.left + o.groupDistance
@@ -117,18 +117,17 @@ export class BarChart extends Chart {
         return this
     }
 
-    drawLegend() {
+    legend() {
         return this.options.legend.vertical === true
-            ? super.drawLegendVertical()
-            : super.drawLegend()
+            ? super.legendVertical()
+            : super.legend()
     }
 
     draw(){
         this.calcBarWidth()
         super.draw()
-        this.drawData()
-        this.drawCross()
-        this.drawLegend()
+        this.bars()
+        this.legend()
     }
 }
 

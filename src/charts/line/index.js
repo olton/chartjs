@@ -8,6 +8,8 @@ import {drawDiamond} from "../../draw/diamond"
 import {defaultLineChartOptions} from "../../defaults/line-chart"
 import {merge} from "../../helpers/merge"
 
+import {MixinCross} from "../../mixins/cross"
+
 export class LineChart extends Chart {
     constructor(el, data = [], options = {}) {
         super(el, data, merge({}, defaultLineChartOptions, options), 'line')
@@ -151,19 +153,21 @@ export class LineChart extends Chart {
         }
     }
 
-    drawLegend() {
+    legend() {
         return this.options.legend.vertical === true
-            ? super.drawLegendVertical()
-            : super.drawLegend()
+            ? super.legendVertical()
+            : super.legend()
     }
 
     draw(){
         super.draw()
         this.drawData()
         this.drawFloatPoint()
-        this.drawCross()
-        this.drawLegend()
+        this.cross()
+        this.legend()
     }
 }
+
+Object.assign(LineChart.prototype, MixinCross)
 
 export const lineChart = (el, data, options) => new LineChart(el, data, options)

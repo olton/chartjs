@@ -9,9 +9,6 @@ lineChart("#line-chart-1", lines, {
         minY: 3800,
         maxY: 7300
     },
-    padding: {
-        right: 20
-    },
     title: {
         text: 'The LineChart',
         align: 'center',
@@ -20,8 +17,10 @@ lineChart("#line-chart-1", lines, {
         }
     },
     axis: {
-        linesX: 6,
-        linesY: 10,
+        linesX: 15,
+        labelsX: 5,
+        linesY: 20,
+        labelsY: 10,
 
         onDrawLabelY: label => Math.round(label),
         onDrawLabelX: label => {
@@ -57,9 +56,6 @@ lineChart("#line-chart-2", lines2, {
         minY: 3800,
         maxY: 7300
     },
-    padding: {
-        right: 20
-    },
     title: {
         text: 'The LineChart :: disabled lines',
         align: 'center',
@@ -68,12 +64,12 @@ lineChart("#line-chart-2", lines2, {
         }
     },
     axis: {
-        linesX: 6,
+        linesX: 10,
+        labelsX: 5,
         linesY: 10,
-
+        labelsY: 5,
         onDrawLabelY: label => Math.round(label),
         onDrawLabelX: label => {
-            //return label
             const d = new Date(label)
             return [d.getDate(), d.getMonth() + 1, d.getFullYear()].join("/")
         },
@@ -96,6 +92,7 @@ lineChart("#line-chart-2", lines2, {
         }
     },
     legend: {
+        color: '#fff4db',
         vertical: true,
         margin: {
             left: 20
@@ -107,9 +104,9 @@ lineChart("#line-chart-2", lines2, {
             bottom: 10
         },
         border: {
-            color: '#000'
+            color: '#ffdc73'
         },
-        dash: [5, 3]
+        dash: []
     }
     //onHover: (x, y) => console.log(x, y)
 })

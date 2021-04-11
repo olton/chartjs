@@ -60,7 +60,7 @@ export const lines2 = [
             fill: '#fff',
             size: 3
         },
-        showLines: false
+        // showLines: false
     },
 ]
 

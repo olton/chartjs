@@ -1,4 +1,4 @@
-export const getTextboxWidth = (ctx, items, {font = null}) => {
+export const getTextBoxWidth = (ctx, items, {font = null}) => {
     let size = 0, w
 
     ctx.save()
