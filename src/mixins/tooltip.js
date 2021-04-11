@@ -29,7 +29,7 @@ export const MixinTooltip = {
 
         document.querySelector('body').appendChild(tooltip)
 
-        tooltip.style.top = `${y - tooltip.clientHeight - 5}px`
+        tooltip.style.top = `${y - tooltip.clientHeight - 15}px`
         tooltip.style.left = `${x - tooltip.clientWidth / 2 - 5}px`
 
         this.tooltip = tooltip

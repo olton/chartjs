@@ -14,7 +14,7 @@ export const drawText = (ctx, text, [x, y], {align = 'left', color = '#000', str
     ctx.strokeStyle = stroke
     ctx.font = `${style} ${weight} ${size}px/${lineHeight} ${family}`
 
-    const lines = text.split('\n')
+    const lines = text.toString().split('\n')
 
     lines.map( (str, i) => {
         ctx.fillText(str, x, y + (y * i * lineHeight))

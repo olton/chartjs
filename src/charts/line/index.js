@@ -99,8 +99,7 @@ export class LineChart extends Chart {
 
             if (graph.dots) {
                 coords.map(([x, y]) => {
-                    // console.log(x, y)
-                    drawPointFn(ctx, [x, y], opt)
+                    drawPointFn(ctx, [x, y, dots.size || 4], opt)
                 })
             }
 
@@ -137,7 +136,7 @@ export class LineChart extends Chart {
                 const ly = py - accuracy, ry = py + accuracy
 
                 if ((mx > lx && mx < rx) && (my > ly && my < ry)) {
-                    drawPointFn(ctx, [px, py], {color: opt.color, radius: opt.radius * 2, fill: opt.fill})
+                    drawPointFn(ctx, [px, py, opt.radius * 2], {color: opt.color, fill: opt.fill})
                     if ( o.tooltip ) {
                         this.showTooltip([_x, _y], item.graph)
                         tooltip = true

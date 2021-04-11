@@ -2,29 +2,24 @@ import {pieChart} from "../../src/charts/pie"
 
 const sectors = [
     {
-        name: "Red",
-        color: 'red',
-        data: 80
+        name: "Classic",
+        color: '#fde23e',
+        data: 10
     },
     {
-        name: "Blue",
-        color: 'blue',
-        data: 20
+        name: "Rock",
+        color: '#f16e23',
+        data: 14
     },
     {
-        name: "Green",
-        color: 'green',
-        data: 120
+        name: "Pop",
+        color: '#57d9ff',
+        data: 2
     },
     {
-        name: "Yellow",
-        color: 'yellow',
-        data: 40
-    },
-    {
-        name: "Pink",
-        color: 'pink',
-        data: 100
+        name: "Jazz",
+        color: '#937e88',
+        data: 12
     },
 ]
 
@@ -41,12 +36,20 @@ pieChart("#pie-chart-1", sectors, {
 
 pieChart("#pie-chart-2", sectors, {
     height: 600,
-    total: 600,
     title: {
         text: 'The PieChart',
         align: 'center',
         font: {
             lineHeight: 1
+        }
+    },
+    holeSize: 80,
+    legend: {
+        padding: {
+            top: 10,
+            left: 10,
+            right: 10,
+            bottom: 10
         }
     }
 })

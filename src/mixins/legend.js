@@ -65,7 +65,7 @@ export const MixinLegend = {
         for (let i = 0; i < items.length; i++) {
             let [name, color] = items[i]
 
-            drawSquare(ctx, [x, y], {color, fill: color, radius: box})
+            drawSquare(ctx, [x, y, box], {color, fill: color})
             drawText(ctx, name, [x + box +magic, y + box / 2 + 2], {color: o.font.color, stroke: o.font.color, font: legend.font})
 
             y += lh

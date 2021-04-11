@@ -20,6 +20,8 @@ export class BarChart extends Chart {
             }
         }
 
+        console.log(this.legendItems)
+
         this.calcMinMax()
         this.resize()
     }

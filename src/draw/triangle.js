@@ -1,4 +1,4 @@
-export const drawTriangle = (ctx, [x, y], {color = '#000', fill = '#fff', radius = 4, size = 1}) => {
+export const drawTriangle = (ctx, [x, y, r], {color = '#000', fill = '#fff', size = 1}) => {
     ctx.beginPath()
     ctx.save()
     ctx.setLineDash([])
@@ -6,12 +6,10 @@ export const drawTriangle = (ctx, [x, y], {color = '#000', fill = '#fff', radius
     ctx.strokeStyle = color
     ctx.fillStyle = fill
 
-    const d = radius
-
-    ctx.moveTo(x, y - d);
-    ctx.lineTo(x + d, y + d);
-    ctx.lineTo(x - d, y + d);
-    ctx.lineTo(x, y - d);
+    ctx.moveTo(x, y - r);
+    ctx.lineTo(x + r, y + r);
+    ctx.lineTo(x - r, y + r);
+    ctx.lineTo(x, y - r);
 
     ctx.fill()
     ctx.stroke()
