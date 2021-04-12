@@ -18,9 +18,6 @@ export const defaultOptions = {
     color: '#000',
     font: defaultFont,
     border: defaultBorder,
-    cross: defaultCross,
-    showLines: true,
-    axis: defaultAxis,
     title: defaultTitle,
     legend: defaultLegend,
     tooltip: defaultTooltip,
@@ -30,9 +27,10 @@ export const defaultOptions = {
         fixed: 0
     },
 
-    onClick: null,
+    onDrawLabelY: null,
+    onDrawLabelX: null,
+    onTooltipShow: null,
     onHover: null,
-    onEnter: null,
     onLeave: null
 }
 

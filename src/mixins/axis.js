@@ -2,11 +2,13 @@ import {drawArrowX} from "../draw/arrow-x";
 import {drawVector} from "../draw/vector";
 import {drawText} from "../draw/text";
 import {drawArrowY} from "../draw/arrow-y";
+import {expandPadding} from "../helpers/expand-padding";
 
 export const MixinAxis = {
     arrowX(){
         const o = this.options, ctx = this.ctx
-        const x1 = o.padding.left, y1 = this.viewHeight + o.padding.top
+        const padding = expandPadding(o.padding)
+        const x1 = padding.left, y1 = this.viewHeight + padding.top
         const x2 = x1 + this.viewWidth, y2 = y1
 
         if (!o.axis.arrowX) return
@@ -20,6 +22,7 @@ export const MixinAxis = {
 
     axisX(){
         const ctx = this.ctx, o = this.options, axis = o.axis, lines = axis.lines
+        const padding = expandPadding(o.padding)
         const step = this.viewWidth / axis.linesX
         const textStep = (this.maxX - this.minX) / axis.linesX
         const font = (axis && axis.font) ?? o.font
@@ -28,13 +31,13 @@ export const MixinAxis = {
         if (!axis.showXAxis) return
 
         for (let i = 0; i < o.axis.linesX + 1; i++) {
-            let x = step * i + o.padding.left
+            let x = step * i + padding.left
             let labelXValue = this.minX + textStep * i
 
             if (axis.linesX) {
                 drawVector(
                     ctx,
-                    [x, o.padding.top, x, this.viewHeight + o.padding.top],
+                    [x, padding.top, x, this.viewHeight + padding.top],
                     {
                         color: lines.color,
                         size: lines.size,
@@ -46,8 +49,8 @@ export const MixinAxis = {
             if (!axis.showXLabels) continue
             if (skipLabels && i && i % skipLabels !== 0) continue
 
-            if (typeof o.axis.onDrawLabelX === "function") {
-                labelXValue = o.axis.onDrawLabelX.apply(null, [labelXValue])
+            if (typeof o.onDrawLabelX === "function") {
+                labelXValue = o.onDrawLabelX.apply(null, [labelXValue])
             }
 
             if (x + ctx.measureText(labelXValue.toString()).width > this.viewWidth) continue
@@ -55,7 +58,7 @@ export const MixinAxis = {
             drawText(
                 ctx,
                 labelXValue.toString(),
-                [x, this.viewHeight + o.padding.top + font.size + 5],
+                [x, this.viewHeight + padding.top + font.size + 5],
                 {
                     align: 'start',
                     font
@@ -67,8 +70,9 @@ export const MixinAxis = {
 
     arrowY(){
         const o = this.options, ctx = this.ctx
-        const x1 = o.padding.left, y1 = this.viewHeight + o.padding.top
-        const x2 = x1, y2 = o.padding.top
+        const padding = expandPadding(o.padding)
+        const x1 = padding.left, y1 = this.viewHeight + padding.top
+        const x2 = x1, y2 = padding.top
 
         if (!o.axis.arrowY) return
 
@@ -81,6 +85,7 @@ export const MixinAxis = {
 
     axisY(){
         const ctx = this.ctx, o = this.options, axis = o.axis, lines = axis.lines
+        const padding = expandPadding(o.padding)
         const {fixed = 0} = o.value.fixed
         const step = this.viewHeight / o.axis.linesY
         const textStep = (this.maxY - this.minY) / o.axis.linesY
@@ -90,12 +95,12 @@ export const MixinAxis = {
         if (!axis.showYAxis) return
 
         for (let i = 0; i < o.axis.linesY + 1; i++) {
-            const y = this.viewHeight + o.padding.top - step * i
-            const x = o.padding.left
+            const y = this.viewHeight + padding.top - step * i
+            const x = padding.left
             let labelYValue = this.minY + textStep * i
 
             if (axis.linesY) {
-                drawVector(ctx, [x, y, this.viewWidth + o.padding.left, y], {
+                drawVector(ctx, [x, y, this.viewWidth + padding.left, y], {
                     color: lines.color,
                     size: lines.size,
                     dash: lines.dash
@@ -105,14 +110,14 @@ export const MixinAxis = {
             if (!axis.showYLabels) continue
             if (skipLabels && i && i % skipLabels !== 0) continue
 
-            if (typeof o.axis.onDrawLabelY === "function") {
-                labelYValue = o.axis.onDrawLabelY.apply(null, [labelYValue])
+            if (typeof o.onDrawLabelY === "function") {
+                labelYValue = o.onDrawLabelY.apply(null, [labelYValue])
             }
 
             drawText(
                 ctx,
                 labelYValue.toString(),
-                [o.padding.left - 5, y],
+                [padding.left - 5, y],
                 {
                     align: 'right',
                     font

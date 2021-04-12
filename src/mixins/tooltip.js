@@ -1,3 +1,5 @@
+import {expandPadding} from "../helpers/expand-padding";
+
 export const MixinTooltip = {
     showTooltip(data, graph){
         const o = this.options
@@ -11,11 +13,11 @@ export const MixinTooltip = {
 
         let {x, y} = this.proxy.mouse
         const tooltip = document.createElement("div")
-        const onShow = o.tooltip.onShow
+        const onShow = o.onTooltipShow
         const font = o.tooltip.font
         const shadow = o.tooltip.shadow
         const border = o.tooltip.border
-        const padding = o.tooltip.padding
+        const padding = expandPadding(o.tooltip.padding)
 
         tooltip.style.position = 'fixed'
         tooltip.style.border = `${border.width}px ${border.lineType} ${border.color}`

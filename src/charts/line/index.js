@@ -7,8 +7,10 @@ import {drawTriangle} from "../../draw/triangle"
 import {drawDiamond} from "../../draw/diamond"
 import {defaultLineChartOptions} from "../../defaults/line-chart"
 import {merge} from "../../helpers/merge"
+import {expandPadding} from "../../helpers/expand-padding";
 
 import {MixinCross} from "../../mixins/cross"
+import {MixinAxis} from "../../mixins/axis"
 
 export class LineChart extends Chart {
     constructor(el, data = [], options = {}) {
@@ -54,7 +56,7 @@ export class LineChart extends Chart {
     }
 
     lines(){
-        const o = this.options
+        const o = this.options, padding = expandPadding(o.padding)
         const ctx = this.ctx
         let coords
 
@@ -63,13 +65,13 @@ export class LineChart extends Chart {
             coords = []
 
             for (const [x, y] of graph.data) {
-                let _x = Math.floor((x - this.minX) * this.ratioX + o.padding.left)
-                let _y = Math.floor(this.viewHeight + o.padding.top - (y - this.minY) * this.ratioY)
+                let _x = Math.floor((x - this.minX) * this.ratioX + padding.left)
+                let _y = Math.floor(this.viewHeight + padding.top - (y - this.minY) * this.ratioY)
 
                 coords.push([_x, _y, x, y])
             }
 
-            if (o.showLines && graph.showLines !== false) {
+            if (graph.showLines !== false) {
                 drawLine(ctx, coords, {color: graph.color, size: graph.size})
             }
 
@@ -78,8 +80,7 @@ export class LineChart extends Chart {
             }
             let opt = {
                 color: dots.color ?? graph.color,
-                fill: dots.fill ?? graph.color,
-                radius: dots.size || 4,
+                fill: dots.fill ?? graph.color
             }
 
             let drawPointFn
@@ -164,9 +165,11 @@ export class LineChart extends Chart {
         this.floatPoint()
         this.cross()
         this.legend()
+        this.axisXY()
     }
 }
 
 Object.assign(LineChart.prototype, MixinCross)
+Object.assign(LineChart.prototype, MixinAxis)
 
 export const lineChart = (el, data, options) => new LineChart(el, data, options)

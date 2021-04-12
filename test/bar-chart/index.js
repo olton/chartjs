@@ -80,5 +80,8 @@ barChart("#bar-chart-2", bars2, {
             right: 10,
             bottom: 10
         }
+    },
+    tooltip: {
+        padding: 5
     }
 })

@@ -5,6 +5,7 @@ import {drawText} from "../../draw/text";
 import {MixinLegend} from "../../mixins/legend"
 import {MixinAxis} from "../../mixins/axis"
 import {MixinTooltip} from "../../mixins/tooltip"
+import {expandPadding} from "../../helpers/expand-padding";
 
 export class Chart {
     constructor(el, data, options = {}, type = 'unknown') {
@@ -64,7 +65,7 @@ export class Chart {
 
     calcInternalValues(){
         let width, height
-        const o = this.options
+        const o = this.options, padding = expandPadding(o.padding)
         const rect = this.el.getBoundingClientRect();
         const {width: elWidth, height: elHeight} = rect
 
@@ -75,8 +76,8 @@ export class Chart {
         this.height = height
         this.dpiHeight = o.dpi * height
         this.dpiWidth = o.dpi * width
-        this.viewHeight = this.dpiHeight - (o.padding.top + o.padding.bottom)
-        this.viewWidth = this.dpiWidth - (o.padding.left + o.padding.right)
+        this.viewHeight = this.dpiHeight - (padding.top + padding.bottom)
+        this.viewWidth = this.dpiWidth - (padding.left + padding.right)
     }
 
     calcRatio(){
@@ -118,7 +119,7 @@ export class Chart {
         this.clear()
         this.calcRatio()
         this.title()
-        this.axisXY()
+        // this.axisXY()
     }
 
     clear(){
@@ -129,7 +130,8 @@ export class Chart {
         const onHover = this.options.onHover
         const {clientX: x, clientY: y} = e
 
-        if (typeof onHover === "function") onHover(x, y)
+        if (typeof onHover === "function")
+            onHover.apply(null, [x, y])
 
         this.proxy.mouse = {
             x: x,
@@ -140,7 +142,8 @@ export class Chart {
     mouseLeave(){
         const fn = this.options.onLeave
 
-        if (typeof fn === "function") fn()
+        if (typeof fn === "function")
+            fn.apply(null, [])
 
         this.proxy.mouse = null
     }
@@ -171,5 +174,5 @@ export class Chart {
 }
 
 Object.assign(Chart.prototype, MixinLegend)
-Object.assign(Chart.prototype, MixinAxis)
+// Object.assign(Chart.prototype, MixinAxis)
 Object.assign(Chart.prototype, MixinTooltip)

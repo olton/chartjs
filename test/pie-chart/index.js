@@ -35,7 +35,10 @@ pieChart("#pie-chart-1", sectors, {
     legend: {
         border: {
             color: '#fff'
-        }
+        },
+        vertical: false,
+        margin: 0,
+        padding: 0
     },
     labels: {
         font: {

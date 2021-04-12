@@ -5,6 +5,7 @@ import {drawArc} from "../../draw/arc";
 import {drawText} from "../../draw/text";
 import {drawCircle} from "../../draw/circle";
 import {getTextBoxWidth} from "../../helpers/get-textbox-width";
+import {expandPadding} from "../../helpers/expand-padding";
 
 export class PieChart extends Chart {
     constructor(el, data, options) {
@@ -24,13 +25,13 @@ export class PieChart extends Chart {
     }
 
     sectors(){
-        const ctx = this.ctx, o = this.options
+        const ctx = this.ctx, o = this.options, padding = expandPadding(o.padding)
         const [x, y] = this.center
         const radius = (this.viewHeight > this.viewWidth)
-            ? this.viewWidth / 2 - (o.padding.left + o.padding.right)
-            : this.viewHeight / 2 - (o.padding.top + o.padding.bottom)
+            ? this.viewWidth / 2 - (padding.left + padding.right)
+            : this.viewHeight / 2 - (padding.top + padding.bottom)
 
-        let startAngle = 0, endAngle = 360, offset = 0, val = ''
+        let startAngle = 0, endAngle = 360, offset = 0, val = '', textVal = ''
         let textX, textY
 
         for (const sector of this.data) {
@@ -48,12 +49,17 @@ export class PieChart extends Chart {
             endAngle = 2 * Math.PI * sector.data / this.total
             offset = o.holeSize / 2
             val = Math.round(sector.data * 100 / this.total)
+            textVal = o.showValue ? sector.data : val+"%"
 
-            textX = x + (radius / 2 + offset) * Math.cos(startAngle + endAngle / 2),
+            if (typeof o.onDrawValue === 'function') {
+                textVal = o.onDrawValue.apply(null, [sector.data, val, textVal])
+            }
+
+            textX = x + (radius / 2 + offset) * Math.cos(startAngle + endAngle / 2)
             textY = y + (radius / 2 + offset) * Math.sin(startAngle + endAngle / 2)
 
             let textW = getTextBoxWidth(ctx, [val+"%"], {font: o.labels.font})
-            drawText(ctx, o.showValue ? sector.data : val+"%", [textX - textW/2, textY+o.labels.font.size/2], {color: o.labels.color, font: o.labels.font})
+            drawText(ctx, textVal, [textX - textW/2, textY+o.labels.font.size/2], {color: o.labels.color, font: o.labels.font})
 
             startAngle += endAngle
         }

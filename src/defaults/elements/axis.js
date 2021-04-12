@@ -34,6 +34,4 @@ export const defaultAxis = {
     },
     arrowX: arrow,
     arrowY: arrow,
-    onDrawLabelY: null,
-    onDrawLabelX: null
 }

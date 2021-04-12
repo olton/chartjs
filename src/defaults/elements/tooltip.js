@@ -20,5 +20,4 @@ export const defaultTooltip = {
         stretch: 0,
         color: 'rgba(0,0,0,.5)'
     },
-    onShow: null,
 }

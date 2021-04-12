@@ -4,6 +4,9 @@ import {defaultBarChartOptions} from "../../defaults/bar-chart"
 import {minMaxLinear} from "../../helpers/min-max";
 import {drawText} from "../../draw/text";
 import {drawRect} from "../../draw/rect";
+import {expandPadding} from "../../helpers/expand-padding";
+
+import {MixinAxis} from "../../mixins/axis"
 
 export class BarChart extends Chart {
     constructor(el, data, options) {
@@ -60,9 +63,10 @@ export class BarChart extends Chart {
 
     bars(){
         const o = this.options
+        const padding = expandPadding(o.padding)
         const ctx = this.ctx
-        let px = o.padding.left + o.groupDistance
-        let py = this.viewHeight + o.padding.top
+        let px = padding.left + o.groupDistance
+        let py = this.viewHeight + padding.top
         const rect = this.canvas.getBoundingClientRect()
         let mx, my
         let tooltip = false
@@ -126,9 +130,14 @@ export class BarChart extends Chart {
     draw(){
         this.calcBarWidth()
         super.draw()
+        this.axisY()
+        this.arrowY()
+        this.arrowX()
         this.bars()
         this.legend()
     }
 }
+
+Object.assign(BarChart.prototype, MixinAxis)
 
 export const barChart = (el, data, options) => new BarChart(el, data, options)

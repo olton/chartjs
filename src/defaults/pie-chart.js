@@ -1,7 +1,6 @@
 import {labelFont} from "./elements/font";
 
 export const defaultPieChartOptions = {
-    axis: false,
     other: {
         color: '#eaeaea'
     },
@@ -13,5 +12,7 @@ export const defaultPieChartOptions = {
     holeSize: 0,
     legend: {
         vertical: true,
-    }
+    },
+
+    onDrawValue: null
 }

@@ -3,10 +3,16 @@ import {getTextBoxWidth} from "../helpers/get-textbox-width";
 import {drawSquare} from "../draw/square";
 import {drawText} from "../draw/text";
 import {drawBox} from "../draw/box";
+import {expandPadding} from "../helpers/expand-padding";
+import {expandMargin} from "../helpers/expand-margin";
 
 export const MixinLegend = {
     legend(){
-        const o = this.options, legend = o.legend
+        const o = this.options,
+            padding = expandPadding(o.padding),
+            legend = o.legend,
+            legendPadding = expandPadding(legend.padding),
+            legendMargin = expandMargin(legend.margin)
         let lh, x, y, magic = 5, box = o.legend.font.size / 2
         const ctx = this.ctx
         const items = this.legendItems
@@ -15,8 +21,8 @@ export const MixinLegend = {
         if (!items || !Array.isArray(items) || !items.length) return
 
         lh = legend.font.size * legend.font.lineHeight
-        y = o.padding.top + this.viewHeight + legend.font.size + legend.padding.top + legend.margin.top
-        x = o.padding.left + legend.padding.left + legend.margin.left
+        y = padding.top + this.viewHeight + legend.font.size + legendPadding.top + legendMargin.top
+        x = padding.left + legendPadding.left + legendMargin.left
 
         for (let i = 0; i < items.length; i++) {
             let [name, color] = items[i]
@@ -24,11 +30,11 @@ export const MixinLegend = {
             const nameWidth = getTextBoxWidth(ctx,[[name]], {font: legend.font})
 
             if (x + nameWidth > this.viewWidth) {
-                x = o.padding.left + legend.padding.left + legend.margin.left
+                x = padding.left + legendPadding.left + legendMargin.left
                 y += lh
             }
 
-            drawSquare(ctx, [x, y], {color, fill: color, radius: box})
+            drawSquare(ctx, [x, y, box], {color, fill: color})
             drawText(ctx, name, [x + box +magic, y + box / 2], {color: o.font.color, stroke: o.font.color, font: o.font})
 
             x += box + nameWidth + 20
@@ -41,16 +47,18 @@ export const MixinLegend = {
         const ctx = this.ctx
         const items = this.legendItems
         let textBoxWidth, textBoxHeight
+        const legendPadding = expandPadding(legend.padding), legendMargin = expandMargin(legend.margin)
+        const padding = expandPadding(o.padding)
 
         if (!legend || !isObject(legend)) return
         if (!items || !Array.isArray(items) || !items.length) return
 
         lh = font.size * font.lineHeight
-        x = o.padding.left + legend.margin.left
-        y = o.padding.top + legend.margin.top
+        x = padding.left + legendMargin.left
+        y = padding.top + legendMargin.top
 
-        textBoxWidth = getTextBoxWidth(ctx, items, {font}) + legend.padding.left + legend.padding.right + box * 3 + magic
-        textBoxHeight = items.length * lh + legend.padding.top + legend.padding.bottom + magic
+        textBoxWidth = getTextBoxWidth(ctx, items, {font}) + legendPadding.left + legendPadding.right + box * 3 + magic
+        textBoxHeight = items.length * lh + legendPadding.top + legendPadding.bottom + magic
 
         drawBox(ctx, [x, y, textBoxWidth, textBoxHeight], {
             color: legend.color,
@@ -59,8 +67,8 @@ export const MixinLegend = {
             borderColor: legend.border.color
         })
 
-        x += box + magic + legend.padding.left
-        y += box + magic + legend.padding.top
+        x += box + magic + legendPadding.left
+        y += box + magic + legendPadding.top
 
         for (let i = 0; i < items.length; i++) {
             let [name, color] = items[i]
