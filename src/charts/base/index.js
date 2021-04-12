@@ -3,7 +3,6 @@ import {merge} from "../../helpers/merge";
 import {drawText} from "../../draw/text";
 
 import {MixinLegend} from "../../mixins/legend"
-import {MixinAxis} from "../../mixins/axis"
 import {MixinTooltip} from "../../mixins/tooltip"
 import {expandPadding} from "../../helpers/expand-padding";
 
@@ -16,10 +15,6 @@ export class Chart {
         this.ctx = null
         this.raf = null
         this.tooltip = null
-        this.minX = 0
-        this.maxX = 0
-        this.minY = 0
-        this.maxY = 0
         this.legendItems = []
         this.chartType = type
 
@@ -49,6 +44,7 @@ export class Chart {
     createCanvas(){
         this.canvas = document.createElement("canvas")
         this.el.innerHTML = ""
+        this.el.style.overflow = 'hidden'
         this.el.appendChild(this.canvas)
         this.ctx = this.canvas.getContext('2d')
         this.setCanvasSize()
@@ -78,11 +74,6 @@ export class Chart {
         this.dpiWidth = o.dpi * width
         this.viewHeight = this.dpiHeight - (padding.top + padding.bottom)
         this.viewWidth = this.dpiWidth - (padding.left + padding.right)
-    }
-
-    calcRatio(){
-        this.ratioX = this.viewWidth / (this.maxX - this.minX)
-        this.ratioY = this.viewHeight / (this.maxY - this.minY)
     }
 
     title(){
@@ -117,13 +108,16 @@ export class Chart {
 
     draw(){
         this.clear()
-        this.calcRatio()
         this.title()
-        // this.axisXY()
     }
 
     clear(){
         this.ctx.clearRect(0, 0, this.dpiWidth, this.dpiHeight)
+    }
+
+    setData(graphIndex, data){
+        this.data[graphIndex].data = data
+        this.draw()
     }
 
     mouseMove(e){
@@ -174,5 +168,4 @@ export class Chart {
 }
 
 Object.assign(Chart.prototype, MixinLegend)
-// Object.assign(Chart.prototype, MixinAxis)
 Object.assign(Chart.prototype, MixinTooltip)

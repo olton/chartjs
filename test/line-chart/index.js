@@ -1,13 +1,61 @@
 import {lineChart} from "../../src"
-import {lines, lines2} from "./lines"
+
+const lpad = v => v.toString().length < 2 ? '0' + v : v
+const rand = (min, max) => Math.floor(min + Math.random() * (max + 1 - min))
+const genData = (count, min, max) => {
+    let y = 0, x = 0, a = []
+
+    for(let i = 0; i < count; i++) {
+        y = rand(rand(0, min), rand(0, max))
+        x+=10
+        a.push([x, y])
+    }
+
+    return a
+}
+
+const lines = [
+    {
+        name: "Line number 1",
+        color: 'red',
+        size: 1,
+        data: genData(50, 0, 100),
+        dots: {
+            type: 'dot',
+            fill: '#fff',
+            size: 3
+        }
+    },
+    {
+        name: "Line number 2",
+        color: 'green',
+        size: 1,
+        data: genData(50, 0, 70),
+        dots: {
+            type: 'square',
+            fill: '#fff',
+            size: 3
+        }
+    },
+    {
+        name: "Line number 3",
+        color: 'blue',
+        size: 1,
+        data: genData(50, 0, 50),
+        dots: {
+            type: 'triangle',
+            fill: '#fff',
+            size: 3
+        }
+    },
+]
 
 lineChart("#line-chart-1", lines, {
     height: 600,
     accuracy: 4,
-    // border: false,
     boundaries: {
-        minY: 3800,
-        maxY: 7300
+        minY: -10,
+        maxY: 110
     },
     title: {
         text: 'The LineChart',
@@ -17,45 +65,38 @@ lineChart("#line-chart-1", lines, {
         }
     },
     axis: {
-        linesX: 15,
-        labelsX: 5,
-        linesY: 20,
-        labelsY: 10,
-
-        onDrawLabelY: label => Math.round(label),
-        onDrawLabelX: label => {
-            //return label
-            const d = new Date(label)
-            return [d.getDate(), d.getMonth() + 1, d.getFullYear()].join("/")
+        x: {
+            line: {
+                count: 15
+            },
+            label: {
+                count: 5,
+                fixed: 0
+            }
         },
+        y: {
+            line: {
+                count: 20
+            },
+            label: {
+                count: 10,
+                fixed: 0
+            }
+        }
     },
-    tooltip: {
-        onShow: ([x, y], graph) => {
-            const d = new Date(x)
-            const date = [d.getDate(), d.getMonth() + 1, d.getFullYear()].join("/")
-            return `
-                <h3 style="margin: 0 0 5px 0">${graph.name}</h3>
-                <table>
-                    <tr>
-                        <td>Date:</td><td><b>${date}</b></td>     
-                    </tr>                   
-                    <tr>                   
-                        <td>Count:</td><td><b>${y}</b></td>                        
-                    </tr>                
-                </table>
-            `
+    padding: {
+        bottom: 80,
+    },
+    legend: {
+        margin: {
+            top: 40
         }
     }
-    //onHover: (x, y) => console.log(x, y)
 })
 
-lineChart("#line-chart-2", lines2, {
+lineChart("#line-chart-2", lines, {
     height: 600,
     accuracy: 4,
-    boundaries: {
-        minY: 3800,
-        maxY: 7300
-    },
     title: {
         text: 'The LineChart :: disabled lines',
         align: 'center',
@@ -64,31 +105,23 @@ lineChart("#line-chart-2", lines2, {
         }
     },
     axis: {
-        linesX: 10,
-        labelsX: 5,
-        linesY: 10,
-        labelsY: 5,
-        onDrawLabelY: label => Math.round(label),
-        onDrawLabelX: label => {
-            const d = new Date(label)
-            return [d.getDate(), d.getMonth() + 1, d.getFullYear()].join("/")
+        x: {
+            line: {
+                count: 10
+            },
+            label: {
+                count: 5,
+                fixed: 0
+            }
         },
-    },
-    tooltip: {
-        onShow: ([x, y], graph) => {
-            const d = new Date(x)
-            const date = [d.getDate(), d.getMonth() + 1, d.getFullYear()].join("/")
-            return `
-                <h3 style="margin: 0 0 5px 0">${graph.name}</h3>
-                <table>
-                    <tr>
-                        <td>Date:</td><td><b>${date}</b></td>     
-                    </tr>                   
-                    <tr>                   
-                        <td>Count:</td><td><b>${y}</b></td>                        
-                    </tr>                
-                </table>
-            `
+        y: {
+            line: {
+                count: 10
+            },
+            label: {
+                count: 5,
+                fixed: 0
+            }
         }
     },
     legend: {
@@ -107,6 +140,5 @@ lineChart("#line-chart-2", lines2, {
             color: '#ffdc73'
         },
         dash: []
-    }
-    //onHover: (x, y) => console.log(x, y)
+    },
 })

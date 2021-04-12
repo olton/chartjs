@@ -14,6 +14,8 @@ export class BarChart extends Chart {
 
         this.groups = 0
         this.barWidth = 0
+        this.maxY = 0
+        this.minY = 0
 
         this.legendItems = []
         const legend = this.options.legend
@@ -46,6 +48,10 @@ export class BarChart extends Chart {
         this.maxY = (o.boundaries && !isNaN(o.boundaries.maxY) ? o.boundaries.maxY : maxY).toFixed(fixed)
 
         return this
+    }
+
+    calcRatio(){
+        this.ratioY = this.viewHeight / (this.maxY - this.minY)
     }
 
     calcBarWidth(){
@@ -121,15 +127,10 @@ export class BarChart extends Chart {
         return this
     }
 
-    legend() {
-        return this.options.legend.vertical === true
-            ? super.legendVertical()
-            : super.legend()
-    }
-
     draw(){
-        this.calcBarWidth()
         super.draw()
+        this.calcBarWidth()
+        this.calcRatio()
         this.axisY()
         this.arrowY()
         this.arrowX()

@@ -1,8 +1,24 @@
 export const minMax = (data = [], by = 'x') => {
     let min, max, v
+    let index
+
+    if (typeof by === "number") {
+        index = by
+    } else {
+        switch (by.toString().toLowerCase()) {
+            case 'y':
+                index = 1
+                break
+            case 'z':
+                index = 2
+                break
+            default:
+                index = 0
+        }
+    }
 
     for (const _ of data) {
-        v = by.toLowerCase() === 'x' ? _[0] : _[1]
+        v = _[index]
 
         if (isNaN(min) || min > v) min = v
         if (isNaN(max) || max < v) max = v

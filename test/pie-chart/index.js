@@ -1,4 +1,4 @@
-import {pieChart} from "../../src/charts/pie"
+import {pieChart} from "../../src"
 
 const sectors = [
     {
@@ -68,8 +68,11 @@ pieChart("#pie-chart-2", sectors, {
     labels: {
         color: '#000',
         font: {
-            size: 24
+            size: 16
         }
     },
-    showValue: true
+    showValue: true,
+    onDrawValue: (sectorValue, percentValue) => {
+        return `${sectorValue} or ${percentValue}%`
+    }
 })

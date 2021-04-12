@@ -7,7 +7,15 @@ import {expandPadding} from "../helpers/expand-padding";
 import {expandMargin} from "../helpers/expand-margin";
 
 export const MixinLegend = {
-    legend(){
+    legend() {
+        const o = this.options
+
+        return o.legend.vertical === true
+            ? this.legendVertical()
+            : this.legendHorizontal()
+    },
+
+    legendHorizontal(){
         const o = this.options,
             padding = expandPadding(o.padding),
             legend = o.legend,
@@ -16,6 +24,7 @@ export const MixinLegend = {
         let lh, x, y, magic = 5, box = o.legend.font.size / 2
         const ctx = this.ctx
         const items = this.legendItems
+        let offset = 0
 
         if (!legend || !isObject(legend)) return
         if (!items || !Array.isArray(items) || !items.length) return
@@ -23,6 +32,13 @@ export const MixinLegend = {
         lh = legend.font.size * legend.font.lineHeight
         y = padding.top + this.viewHeight + legend.font.size + legendPadding.top + legendMargin.top
         x = padding.left + legendPadding.left + legendMargin.left
+
+        for (let i = 0; i < items.length; i++) {
+            let [name] = items[i]
+            offset += getTextBoxWidth(ctx,[[name]], {font: legend.font}) + box * 2 + magic
+        }
+
+        offset = (this.viewWidth - offset) / 2
 
         for (let i = 0; i < items.length; i++) {
             let [name, color] = items[i]
@@ -34,8 +50,8 @@ export const MixinLegend = {
                 y += lh
             }
 
-            drawSquare(ctx, [x, y, box], {color, fill: color})
-            drawText(ctx, name, [x + box +magic, y + box / 2], {color: o.font.color, stroke: o.font.color, font: o.font})
+            drawSquare(ctx, [offset + x, y, box], {color, fill: color})
+            drawText(ctx, name, [offset+ x + box +magic, y + box / 2], {color: o.font.color, stroke: o.font.color, font: o.font})
 
             x += box + nameWidth + 20
         }

@@ -1,10 +1,8 @@
 import {defaultBorder} from "./elements/border";
 import {defaultFont} from "./elements/font";
-import {defaultAxis} from "./elements/axis";
 import {defaultTitle} from "./elements/title";
 import {defaultLegend} from "./elements/legend";
 import {defaultTooltip} from "./elements/tooltip";
-import {defaultCross} from "./elements/cross";
 import {defaultPadding} from "./elements/padding";
 import {defaultMargin} from "./elements/margin";
 

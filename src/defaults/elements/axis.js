@@ -8,30 +8,31 @@ const arrow = {
     factorY: 5
 }
 
+const line = {
+    color: '#e3e3e3',
+    size: 1,
+    dash: [],
+    count: 5,
+    show: true
+}
+
+const label = {
+    color: '#000',
+    font: labelFont,
+    count: 5, // odd, even, num
+    show: true,
+    min: true,
+    max: true,
+    fixed: false
+}
+
+const axis = {
+    arrow,
+    line,
+    label,
+}
+
 export const defaultAxis = {
-    showXAxis: true,
-    showXLabels: true,
-
-    showYAxis: true,
-    showYLabels: true,
-
-    showMinMax: false,
-
-    linesX: 5,
-    linesY: 5,
-    labelsX: 5,
-    labelsY: 5,
-    labels: {
-        x: true,
-        y: true,
-        color: '#000',
-        font: labelFont,
-    },
-    lines: {
-        color: '#e3e3e3',
-        size: 1,
-        dash: []
-    },
-    arrowX: arrow,
-    arrowY: arrow,
+    x: axis,
+    y: axis
 }

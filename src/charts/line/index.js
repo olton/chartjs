@@ -17,6 +17,10 @@ export class LineChart extends Chart {
         super(el, data, merge({}, defaultLineChartOptions, options), 'line')
 
         this.coords = {}
+        this.minX = 0
+        this.maxX = 0
+        this.minY = 0
+        this.maxY = 0
 
         this.legendItems = []
         const legend = this.options.legend
@@ -55,6 +59,11 @@ export class LineChart extends Chart {
         return this
     }
 
+    calcRatio(){
+        this.ratioX = this.viewWidth / (this.maxX - this.minX)
+        this.ratioY = this.viewHeight / (this.maxY - this.minY)
+    }
+
     lines(){
         const o = this.options, padding = expandPadding(o.padding)
         const ctx = this.ctx
@@ -80,7 +89,8 @@ export class LineChart extends Chart {
             }
             let opt = {
                 color: dots.color ?? graph.color,
-                fill: dots.fill ?? graph.color
+                fill: dots.fill ?? graph.color,
+                radius: dots.size || 4
             }
 
             let drawPointFn
@@ -100,7 +110,7 @@ export class LineChart extends Chart {
 
             if (graph.dots) {
                 coords.map(([x, y]) => {
-                    drawPointFn(ctx, [x, y, dots.size || 4], opt)
+                    drawPointFn(ctx, [x, y, opt.radius], opt)
                 })
             }
 
@@ -153,19 +163,14 @@ export class LineChart extends Chart {
         }
     }
 
-    legend() {
-        return this.options.legend.vertical === true
-            ? super.legendVertical()
-            : super.legend()
-    }
-
     draw(){
         super.draw()
+        this.calcRatio()
+        this.axisXY()
         this.lines()
         this.floatPoint()
         this.cross()
         this.legend()
-        this.axisXY()
     }
 }
 
