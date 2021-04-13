@@ -183,13 +183,15 @@ export class BarChart extends Chart {
 
                 drawRect(ctx, [px, py, px + delta - padding.right, this.barWidth], {color, fill})
 
-                // if ((mx > px && mx < px + this.barWidth - 1) && (my > py - delta && my < py )) {
-                //     drawRect(ctx, [px, py - delta, this.barWidth-1, delta], {color, fill: 'rgba(255,255,255,.3)'})
-                //     if ( o.tooltip ) {
-                //         this.showTooltip([(o.legend.titles ? o.legend.titles[i] : name), data[i]], graph)
-                //         tooltip = true
-                //     }
-                // }
+                if ((mx > px && mx < px + delta) && (my > py && my < py + this.barWidth )) {
+
+                    drawRect(ctx, [px, py, px + delta - padding.right, this.barWidth], {color, fill: 'rgba(255,255,255,.3)'})
+
+                    if ( o.tooltip ) {
+                        this.showTooltip([(o.legend.titles ? o.legend.titles[i] : name), data[i]], graph)
+                        tooltip = true
+                    }
+                }
 
                 groupWidth += this.barWidth + o.barDistance
 
@@ -203,9 +205,14 @@ export class BarChart extends Chart {
                 name = o.onDrawLabel.apply(null, name)
             }
 
-            // drawText(ctx, name, [px - groupWidth / 2, py + 20], {
-            //     align: 'center', color: labelColor, stroke: labelColor, font: o.font
-            // })
+            drawText(ctx, name, [0, 0], {
+                align: 'center',
+                color: labelColor,
+                stroke: labelColor,
+                font: o.font,
+                angle: Math.PI / 2,
+                translate: [px - 20, py - groupWidth / 2]
+            })
 
             py += o.groupDistance
         }

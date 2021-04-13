@@ -50,6 +50,44 @@ const lines = [
     },
 ]
 
+const lines2 = [
+    {
+        name: "Line number 1",
+        color: 'red',
+        size: 1,
+        data: genData(50, 0, 100),
+        showLines: false,
+        dots: {
+            type: 'dot',
+            fill: '#fff',
+            size: 3
+        }
+    },
+    {
+        name: "Line number 2",
+        color: 'green',
+        size: 1,
+        data: genData(50, 0, 70),
+        showLines: false,
+        dots: {
+            type: 'square',
+            fill: '#fff',
+            size: 3
+        }
+    },
+    {
+        name: "Line number 3",
+        color: 'blue',
+        size: 1,
+        data: genData(50, 0, 50),
+        dots: {
+            type: 'triangle',
+            fill: '#fff',
+            size: 3
+        }
+    },
+]
+
 lineChart("#line-chart-1", lines, {
     height: 600,
     accuracy: 4,
@@ -94,7 +132,7 @@ lineChart("#line-chart-1", lines, {
     }
 })
 
-lineChart("#line-chart-2", lines, {
+lineChart("#line-chart-2", lines2, {
     height: 600,
     accuracy: 4,
     title: {

@@ -28,8 +28,6 @@ export const MixinAxis = {
 
         if (!o.axis.x) return
 
-        console.log(this.maxX, this.minX)
-
         const axis = o.axis.x
         const font = (axis && axis.label && axis.label.font) ?? o.font
         const step = this.viewWidth / axis.line.count
@@ -132,7 +130,7 @@ export const MixinAxis = {
             }
 
             drawVector(ctx, [x-5, y, x, y], {})
-            drawText(ctx, labelYValue.toString(),[padding.left - 10, y + font.size / 2 - 2], {
+            drawText(ctx, labelYValue.toString(),[padding.left - 10, y + 1], {
                 align: 'right',
                 font
             })

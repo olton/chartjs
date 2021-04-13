@@ -71,8 +71,8 @@ barChart("#bar-chart-2", bars2, {
     barDistance: 5,
     groupDistance: 50,
     legend: {
-        vertical: false,
-        position: 'bottom-right',
+        vertical: true,
+        position: 'top-right',
         titles: ['paper', 'laptop', 'pens', 'envelopes', 'binder', 'notepad', 'backpack'],
         margin: {
             top: 10
