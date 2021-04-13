@@ -8,15 +8,21 @@ import {expandPadding} from "../../helpers/expand-padding";
 
 export class Chart {
     constructor(el, data, options = {}, type = 'unknown') {
+        this.el = document.querySelector(el)
+        if (!this.el) {
+            throw new Error("You must define a selector for chart wrapper element!")
+        }
+
         this.options = merge({}, defaultOptions, options)
         this.data = data
-        this.el = document.querySelector(el)
         this.canvas = null
         this.ctx = null
         this.raf = null
         this.tooltip = null
         this.legendItems = []
         this.chartType = type
+        this.rect = this.el.getBoundingClientRect()
+        this.canvasRect = null
 
         const that = this
 
@@ -27,10 +33,6 @@ export class Chart {
                 return result
             }
         })
-
-        if (!this.el) {
-            throw new Error("You must define a selector for chart wrapper element!")
-        }
 
         if (this.options.border) {
             this.el.style.border = `${this.options.border.width}px ${this.options.border.lineType} ${this.options.border.color}`
@@ -48,6 +50,7 @@ export class Chart {
         this.el.appendChild(this.canvas)
         this.ctx = this.canvas.getContext('2d')
         this.setCanvasSize()
+        this.canvasRect = this.canvas.getBoundingClientRect()
     }
 
     setCanvasSize(){
@@ -145,6 +148,9 @@ export class Chart {
     resize(){
         this.calcInternalValues()
         this.setCanvasSize()
+        this.rect = this.el.getBoundingClientRect()
+        this.canvasRect = this.canvas.getBoundingClientRect()
+
         this.draw()
     }
 

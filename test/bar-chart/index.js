@@ -69,19 +69,21 @@ barChart("#bar-chart-2", bars2, {
     barDistance: 0,
     groupDistance: 50,
     legend: {
-        vertical: true,
+        vertical: false,
         titles: ['paper', 'laptop', 'pens', 'envelopes', 'binder', 'notepad', 'backpack'],
         margin: {
-            left: 40,
+            left: 0,
+            top: 10
         },
         padding: {
             top: 10,
-            left: 10,
-            right: 10,
+            left: 0,
+            right: 0,
             bottom: 10
         }
     },
     tooltip: {
         padding: 5
-    }
+    },
+    dataAxisX: true
 })
