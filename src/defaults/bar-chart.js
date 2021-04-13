@@ -1,12 +1,10 @@
 import {defaultAxis} from "./elements/axis";
 
 export const defaultBarChartOptions = {
-    groupDistance: 20,
-    barDistance: 10,
+    groupDistance: 0,
+    barDistance: 0,
     axis: {
         ...defaultAxis,
-        showMinY: true,
-        showMinX: true,
     },
     dataAxisX: false,
 

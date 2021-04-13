@@ -28,6 +28,8 @@ export const MixinAxis = {
 
         if (!o.axis.x) return
 
+        console.log(this.maxX, this.minX)
+
         const axis = o.axis.x
         const font = (axis && axis.label && axis.label.font) ?? o.font
         const step = this.viewWidth / axis.line.count

@@ -21,13 +21,15 @@ export const MixinLegend = {
             legend = o.legend,
             legendPadding = expandPadding(legend.padding),
             legendMargin = expandMargin(legend.margin)
-        let lh, x, y, magic = 5, box = o.legend.font.size / 2
+        let lh, x, y, magic = 5, box
         const ctx = this.ctx
         const items = this.legendItems
         let offset = 0
 
         if (!legend || !isObject(legend)) return
         if (!items || !Array.isArray(items) || !items.length) return
+
+        box = legend.font.size / 2
 
         lh = legend.font.size * legend.font.lineHeight
         y = padding.top + this.viewHeight + legend.font.size + legendPadding.top + legendMargin.top
@@ -70,11 +72,23 @@ export const MixinLegend = {
         if (!items || !Array.isArray(items) || !items.length) return
 
         lh = font.size * font.lineHeight
-        x = padding.left + legendMargin.left
-        y = padding.top + legendMargin.top
 
         textBoxWidth = getTextBoxWidth(ctx, items, {font}) + legendPadding.left + legendPadding.right + box * 3 + magic
         textBoxHeight = items.length * lh + legendPadding.top + legendPadding.bottom + magic
+
+        if (legend.position === 'top-left') {
+            x = padding.left + legendMargin.left
+            y = padding.top + legendMargin.top
+        } else if (legend.position === 'top-right') {
+            x = this.dpiWidth - textBoxWidth - legendMargin.right - padding.right
+            y = padding.top + legendMargin.top
+        } else if (legend.position === 'bottom-left') {
+            x = padding.left + legendMargin.left
+            y = this.dpiHeight - textBoxHeight - padding.bottom + legendMargin.bottom
+        } else {
+            x = this.dpiWidth - textBoxWidth - legendMargin.right - padding.right
+            y = this.dpiHeight - textBoxHeight - padding.bottom + legendMargin.bottom
+        }
 
         drawBox(ctx, [x, y, textBoxWidth, textBoxHeight], {
             color: legend.color,

@@ -55,6 +55,8 @@ barChart("#bar-chart-1", bars1, {
     boundaries: {
         maxY: 10
     },
+    barDistance: 5,
+    groupDistance: 50,
 })
 
 barChart("#bar-chart-2", bars2, {
@@ -66,20 +68,26 @@ barChart("#bar-chart-2", bars2, {
             lineHeight: 1
         }
     },
-    barDistance: 0,
+    barDistance: 5,
     groupDistance: 50,
     legend: {
         vertical: false,
+        position: 'bottom-right',
         titles: ['paper', 'laptop', 'pens', 'envelopes', 'binder', 'notepad', 'backpack'],
         margin: {
-            left: 0,
             top: 10
         },
-        padding: {
-            top: 10,
-            left: 0,
-            right: 0,
-            bottom: 10
+        padding: 10,
+        color: '#fffee0'
+    },
+    axis:{
+        x: {
+            line: {
+                count: 10
+            },
+            label: {
+                count: 10
+            }
         }
     },
     tooltip: {
