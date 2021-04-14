@@ -46,11 +46,9 @@ export class BarChart extends Chart {
             this.groups++
         }
 
-        const [, maxY] = minMaxLinear(a)
+        const [, max] = minMaxLinear(a)
 
-        this.maxX = this.maxY = o.boundaries && !isNaN(o.boundaries.maxY) ? o.boundaries.maxY : maxY
-
-        return this
+        this.maxX = this.maxY = o.boundaries && !isNaN(o.boundaries.max) ? o.boundaries.max : max
     }
 
     calcRatio(){
@@ -71,22 +69,6 @@ export class BarChart extends Chart {
             - ((bars - this.data.length) * o.barDistance) // space between bars
 
         this.barWidth = availableSpace / bars
-    }
-
-
-    calcGraphicSize(){
-        const o = this.options
-        let size = 0
-
-        for(let g of this.date) {
-            for (let i = 0; i < g.data.length; i++) {
-                size += this.barWidth + o.barDistance
-            }
-            size += o.groupDistance
-        }
-        size -= o.groupDistance
-
-        this.graphicSize = size
     }
 
     barsY(){

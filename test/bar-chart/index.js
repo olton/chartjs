@@ -1,4 +1,4 @@
-import {barChart} from "../../src/charts/bar";
+import {barChart} from "../../src";
 
 const bars1 = [
     {
@@ -53,7 +53,7 @@ barChart("#bar-chart-1", bars1, {
         }
     },
     boundaries: {
-        maxY: 10
+        max: 10
     },
     barDistance: 5,
     groupDistance: 50,

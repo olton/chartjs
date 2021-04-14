@@ -5,6 +5,7 @@ import {defaultLegend} from "./elements/legend";
 import {defaultTooltip} from "./elements/tooltip";
 import {defaultPadding} from "./elements/padding";
 import {defaultMargin} from "./elements/margin";
+import {StandardColorPalette} from "./elements/colors";
 
 export const defaultOptions = {
     dpi: 1,
@@ -24,6 +25,7 @@ export const defaultOptions = {
     value: {
         fixed: 0
     },
+    colors: Object.values(StandardColorPalette),
 
     onDrawLabelY: null,
     onDrawLabelX: null,

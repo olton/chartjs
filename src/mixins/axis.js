@@ -58,7 +58,6 @@ export const MixinAxis = {
                 labelXValue = o.onDrawLabelX.apply(null, [labelXValue])
             }
 
-
             // if (x + ctx.measureText(labelXValue.toString()).width > this.viewWidth) continue
 
             drawVector(ctx,[x, this.viewHeight + padding.top, x, this.viewHeight + padding.top + 5], {})
