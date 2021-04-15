@@ -3,48 +3,40 @@ import {barChart} from "../../src";
 const bars1 = [
     {
         name: "Red",
-        color: 'red',
         data: [8]
     },
     {
         name: "Blue",
-        color: 'blue',
         data: [7]
     },
     {
         name: "Green",
-        color: 'green',
         data: [5]
     },
     {
         name: "Yellow",
-        color: 'yellow',
         data: [9]
     },
     {
         name: "Pink",
-        color: 'pink',
         data: [6]
     },
 ]
-
-const colors = '#0d5, #07f, #fb0, #f08, #0cf, #064, #f50'
 
 const bars2 = [
     {
         name: "Austin",
         data: [300, 350, 600, 840, 620, 950, 220],
-        color: colors,
     },
     {
         name: "Denver",
         data: [700, 730, 1400, 1450, 1420, 2100, 720],
-        color: colors,
     },
 ]
 
 barChart("#bar-chart-1", bars1, {
     height: 600,
+    colors: ['red', 'green', 'blue', 'yellow', 'pink'],
     title: {
         text: 'The BarChart',
         align: 'center',
@@ -61,6 +53,7 @@ barChart("#bar-chart-1", bars1, {
 
 barChart("#bar-chart-2", bars2, {
     height: 600,
+    colors: ['#0d5', '#07f', '#fb0', '#f08', '#0cf', '#064', '#f50'],
     title: {
         text: 'The BarChart :: groups',
         align: 'center',

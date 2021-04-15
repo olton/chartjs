@@ -1,4 +1,5 @@
 import {defaultAxis} from "./elements/axis";
+import {labelFont} from "./elements/font";
 
 export const defaultBarChartOptions = {
     groupDistance: 0,
@@ -7,6 +8,10 @@ export const defaultBarChartOptions = {
         ...defaultAxis,
     },
     dataAxisX: false,
+    labels: {
+        font: labelFont,
+        color: '#000'
+    },
 
     onDrawLabel: null,
 }

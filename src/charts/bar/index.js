@@ -24,7 +24,7 @@ export class BarChart extends Chart {
         const legend = this.options.legend
         if (legend && legend.titles && legend.titles.length) {
             for(let i = 0; i < legend.titles.length; i++) {
-                this.legendItems.push([legend.titles[i], this.data[0].color.split(",").map( c => c.trim() )[i]])
+                this.legendItems.push([legend.titles[i], this.options.colors[i]])
             }
         }
 
@@ -86,18 +86,19 @@ export class BarChart extends Chart {
             my = this.proxy.mouse.y - rect.top
         }
 
-        for (const graph of this.data) {
-            let colors = graph.color.split(",").map( c => c.trim() )
+        for (let g = 0; g < this.data.length; g++) {
+            // let colors = graph.color.split(",").map( c => c.trim() )
+            const graph = this.data[g]
+            const data = graph.data
+            const labelColor = o.labels.color
             let name = graph.name
-            let data = graph.data
-            let labelColor = colors.length > 1 ? o.color : colors[0]
 
             let groupWidth = 0
 
             for (let i = 0; i < data.length; i++) {
                 let delta = data[i] * this.ratio
-                let color = colors[i]
-                let fill = colors[i]
+                let color = data.length === 1 ? o.colors[g] : o.colors[i]
+                let fill = color
 
                 drawRect(ctx, [px, py - delta, this.barWidth-1, delta], {color, fill})
                 if ((mx > px && mx < px + this.barWidth - 1) && (my > py - delta && my < py )) {
@@ -150,18 +151,19 @@ export class BarChart extends Chart {
         px = padding.left
         py = padding.top + o.groupDistance
 
-        for (const graph of this.data) {
-            let colors = graph.color.split(",").map( c => c.trim() )
+        for (let g = 0; g < this.data.length; g++) {
+            // let colors = graph.color.split(",").map( c => c.trim() )
+            const graph = this.data[g]
+            const data = graph.data
+            const labelColor = o.labels.color
             let name = graph.name
-            let data = graph.data
-            let labelColor = colors.length > 1 ? o.color : colors[0]
 
             let groupWidth = 0
 
             for (let i = 0; i < data.length; i++) {
                 let delta = data[i] * this.ratio
-                let color = colors[i]
-                let fill = colors[i]
+                let color = data.length === 1 ? o.colors[g] : o.colors[i]
+                let fill = color
 
                 drawRect(ctx, [px, py, px + delta - padding.right, this.barWidth], {color, fill})
 
