@@ -28,18 +28,18 @@ const bars1 = [
     },
 ]
 
-const color = '#0d5, #07f, #fb0, #f08, #0cf, #064, #f50'
+const colors = '#0d5, #07f, #fb0, #f08, #0cf, #064, #f50'
 
 const bars2 = [
     {
         name: "Austin",
-        color: color,
         data: [300, 350, 600, 840, 620, 950, 220],
+        color: colors,
     },
     {
         name: "Denver",
-        color: color,
         data: [700, 730, 1400, 1450, 1420, 2100, 720],
+        color: colors,
     },
 ]
 

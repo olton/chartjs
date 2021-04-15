@@ -17,7 +17,6 @@ const genData = (count, min, max) => {
 const lines = [
     {
         name: "Line number 1",
-        color: 'red',
         size: 1,
         data: genData(50, 0, 100),
         dots: {
@@ -28,7 +27,6 @@ const lines = [
     },
     {
         name: "Line number 2",
-        color: 'green',
         size: 1,
         data: genData(50, 0, 70),
         dots: {
@@ -39,7 +37,6 @@ const lines = [
     },
     {
         name: "Line number 3",
-        color: 'blue',
         size: 1,
         data: genData(50, 0, 50),
         dots: {
@@ -53,7 +50,6 @@ const lines = [
 const lines2 = [
     {
         name: "Line number 1",
-        color: 'red',
         size: 1,
         data: genData(50, 0, 100),
         showLines: false,
@@ -65,7 +61,6 @@ const lines2 = [
     },
     {
         name: "Line number 2",
-        color: 'green',
         size: 1,
         data: genData(50, 0, 70),
         showLines: false,
@@ -77,7 +72,6 @@ const lines2 = [
     },
     {
         name: "Line number 3",
-        color: 'blue',
         size: 1,
         data: genData(50, 0, 50),
         dots: {
@@ -91,6 +85,7 @@ const lines2 = [
 lineChart("#line-chart-1", lines, {
     height: 600,
     accuracy: 4,
+    colors: ['red', 'green', 'blue'],
     boundaries: {
         minY: -10,
         maxY: 110
@@ -135,6 +130,7 @@ lineChart("#line-chart-1", lines, {
 lineChart("#line-chart-2", lines2, {
     height: 600,
     accuracy: 4,
+    colors: ['red', 'green', 'blue'],
     title: {
         text: 'The LineChart :: disabled lines',
         align: 'center',

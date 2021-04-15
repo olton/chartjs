@@ -3,32 +3,26 @@ import {bubbleChart} from "../../src"
 const lines = [
     {
         name: "iPhone",
-        color: 'rgba(255, 0, 0, .5)',
         data: [5, 5500, 3],
     },
     {
         name: "Nokia",
-        color: 'rgba(0, 255,0, .5)',
         data: [14, 12200, 12],
     },
     {
         name: "Sony",
-        color: 'rgba(0,0,255,.5)',
         data: [20, 60000, 33],
     },
     {
         name: "OnuPlus",
-        color: 'rgba(255,255,0,.5)',
         data: [18, 24400, 10],
     },
     {
         name: "Xiaomi",
-        color: 'rgba(50,130,130,.5)',
         data: [22, 32000, 42],
     },
     {
         name: "Samsung",
-        color: 'rgba(150,130,130,.5)',
         data: [23, 32000, 62],
     },
 ]
@@ -36,6 +30,7 @@ const lines = [
 bubbleChart("#bubble-chart-1", lines, {
     height: 600,
     accuracy: 4,
+    colors: ['rgba(255, 0, 0, .5)', 'rgba(0, 255,0, .5)', 'rgba(0,0,255,.5)', 'rgba(255,255,0,.5)', 'rgba(50,130,130,.5)', 'rgba(150,130,130,.5)'],
     boundaries: {
         minX: 0,
         minY: 0,

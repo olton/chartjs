@@ -25,8 +25,8 @@ export class LineChart extends Chart {
         this.legendItems = []
         const legend = this.options.legend
         if (legend) {
-            for (const graph of this.data) {
-                this.legendItems.push([graph.name, graph.color])
+            for (let i = 0; i < this.data.length; i++) {
+                this.legendItems.push([this.data[i].name, this.options.colors[i]])
             }
         }
 
@@ -69,7 +69,9 @@ export class LineChart extends Chart {
         const ctx = this.ctx
         let coords
 
-        for (const graph of this.data) {
+        for (let i = 0; i < this.data.length; i++) {
+            const graph = this.data[i]
+            const color = o.colors[i]
 
             coords = []
 
@@ -81,15 +83,15 @@ export class LineChart extends Chart {
             }
 
             if (graph.showLines !== false) {
-                drawLine(ctx, coords, {color: graph.color, size: graph.size})
+                drawLine(ctx, coords, {color: color, size: graph.size})
             }
 
             let dots = graph.dots ? graph.dots : {
                 type: 'dot', // dot, square, triangle
             }
             let opt = {
-                color: dots.color ?? graph.color,
-                fill: dots.fill ?? graph.color,
+                color: dots.color ?? color,
+                fill: dots.fill ?? color,
                 radius: dots.size || 4
             }
 

@@ -17,7 +17,7 @@ export class PieChart extends Chart {
 
         if (this.options.legend && this.data.length) {
             for(let i = 0; i < this.data.length; i++) {
-                this.legendItems.push([this.data[i].name, this.data[i].color])
+                this.legendItems.push([this.data[i].name, this.options.colors[i]])
             }
         }
 
@@ -34,9 +34,11 @@ export class PieChart extends Chart {
         let startAngle = 0, endAngle = 360, offset = 0, val = '', textVal = ''
         let textX, textY
 
-        for (const sector of this.data) {
+        for (let i = 0; i < this.data.length; i++) {
+            let sector = this.data[i]
+            let color = o.colors[i]
             endAngle = 2 * Math.PI * sector.data / this.total
-            drawArc(ctx, [x, y, radius, startAngle, startAngle + endAngle], {fill: sector.color, color: sector.color})
+            drawArc(ctx, [x, y, radius, startAngle, startAngle + endAngle], {fill: color, color: color})
             startAngle += endAngle
         }
 
@@ -45,14 +47,16 @@ export class PieChart extends Chart {
         }
 
         startAngle = 0
-        for (const sector of this.data) {
+        for (let i = 0; i < this.data.length; i++) {
+            let sector = this.data[i], percent
+
             endAngle = 2 * Math.PI * sector.data / this.total
             offset = o.holeSize / 2
-            val = Math.round(sector.data * 100 / this.total)
-            textVal = o.showValue ? sector.data : val+"%"
+            percent = Math.round(sector.data * 100 / this.total)
+            textVal = o.showValue ? sector.data : percent+"%"
 
             if (typeof o.onDrawValue === 'function') {
-                textVal = o.onDrawValue.apply(null, [sector.data, val, textVal])
+                textVal = o.onDrawValue.apply(null, [sector.name, sector.data, percent])
             }
 
             textX = x + (radius / 2 + offset) * Math.cos(startAngle + endAngle / 2)
@@ -63,12 +67,6 @@ export class PieChart extends Chart {
 
             startAngle += endAngle
         }
-    }
-
-    legend() {
-        return this.options.legend.vertical === true
-            ? super.legendVertical()
-            : super.legend()
     }
 
     draw(){

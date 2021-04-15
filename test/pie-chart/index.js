@@ -1,30 +1,27 @@
 import {pieChart} from "../../src"
 
-const sectors = [
+const data = [
     {
         name: "Classic",
-        color: '#fde23e',
         data: 10
     },
     {
         name: "Rock",
-        color: '#f16e23',
         data: 14
     },
     {
         name: "Pop",
-        color: '#57d9ff',
         data: 2
     },
     {
         name: "Jazz",
-        color: '#937e88',
         data: 12
     },
 ]
 
-pieChart("#pie-chart-1", sectors, {
+pieChart("#pie-chart-1", data, {
     height: 600,
+    colors: ['#fde23e', '#f16e23', '#57d9ff', '#937e88'],
     title: {
         text: 'The PieChart',
         align: 'center',
@@ -47,7 +44,7 @@ pieChart("#pie-chart-1", sectors, {
     }
 })
 
-pieChart("#pie-chart-2", sectors, {
+pieChart("#pie-chart-2", data, {
     height: 600,
     title: {
         text: 'The PieChart',
@@ -72,7 +69,7 @@ pieChart("#pie-chart-2", sectors, {
         }
     },
     showValue: true,
-    onDrawValue: (sectorValue, percentValue) => {
-        return `${sectorValue} or ${percentValue}%`
+    onDrawValue: (name, value, percent) => {
+        return `${name} ${percent}%`
     }
 })

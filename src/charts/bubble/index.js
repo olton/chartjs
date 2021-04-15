@@ -23,8 +23,8 @@ export class BubbleChart extends Chart {
         this.legendItems = []
         const legend = this.options.legend
         if (legend) {
-            for (const graph of this.data) {
-                this.legendItems.push([graph.name, graph.color])
+            for (let i = 0; i < this.data.length; i++) {
+                this.legendItems.push([this.data[i].name, this.options.colors[i]])
             }
         }
 
@@ -66,13 +66,15 @@ export class BubbleChart extends Chart {
         const o = this.options, padding = expandPadding(o.padding)
         const ctx = this.ctx
 
-        for (const graph of this.data) {
+        for (let i = 0; i < this.data.length; i++) {
+            const graph = this.data[i]
+            const color = o.colors[i]
             const [x, y, z] = graph.data
             let _x = Math.floor((x - this.minX) * this.ratioX + padding.left)
             let _y = Math.floor(this.viewHeight + padding.top - (y - this.minY) * this.ratioY)
             let _z = Math.floor(z * this.ratioZ)
 
-            drawCircle(ctx,[_x, _y, _z], {fill: graph.color, color: graph.color})
+            drawCircle(ctx,[_x, _y, _z], {fill: color, color: color})
         }
     }
 
