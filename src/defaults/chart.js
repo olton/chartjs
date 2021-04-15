@@ -22,9 +22,6 @@ export const defaultOptions = {
     tooltip: defaultTooltip,
     boundaries: false,
     accuracy: 10,
-    value: {
-        fixed: 0
-    },
     colors: Object.values(StandardColorPalette),
 
     onDrawLabelY: null,

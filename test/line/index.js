@@ -1,22 +1,9 @@
 import {lineChart} from "../../src"
-
-const lpad = v => v.toString().length < 2 ? '0' + v : v
-const rand = (min, max) => Math.floor(min + Math.random() * (max + 1 - min))
-const genData = (count, min, max) => {
-    let y = 0, x = 0, a = []
-
-    for(let i = 0; i < count; i++) {
-        y = rand(rand(0, min), rand(0, max))
-        x+=10
-        a.push([x, y])
-    }
-
-    return a
-}
+import {genData} from "../helpers"
 
 const lines = [
     {
-        name: "Line number 1",
+        name: "Line 1",
         size: 1,
         data: genData(50, 0, 100),
         dots: {
@@ -26,7 +13,7 @@ const lines = [
         }
     },
     {
-        name: "Line number 2",
+        name: "Line 2",
         size: 1,
         data: genData(50, 0, 70),
         dots: {
@@ -36,7 +23,7 @@ const lines = [
         }
     },
     {
-        name: "Line number 3",
+        name: "Line 3",
         size: 1,
         data: genData(50, 0, 50),
         dots: {
@@ -49,7 +36,7 @@ const lines = [
 
 const lines2 = [
     {
-        name: "Line number 1",
+        name: "Line 1",
         size: 1,
         data: genData(50, 0, 100),
         showLines: false,
@@ -60,7 +47,7 @@ const lines2 = [
         }
     },
     {
-        name: "Line number 2",
+        name: "Line 2",
         size: 1,
         data: genData(50, 0, 70),
         showLines: false,
@@ -71,7 +58,7 @@ const lines2 = [
         }
     },
     {
-        name: "Line number 3",
+        name: "Line 3",
         size: 1,
         data: genData(50, 0, 50),
         dots: {
