@@ -13,13 +13,23 @@ const lineChartAddPoint = lineChart("#line-chart-add-point", [
             size: 1
         }
     },
+    {
+        name: "Line 2",
+        size: 1,
+        data: genData(100, 10, 25),
+        dots: {
+            type: 'dot',
+            fill: '#fff',
+            size: 1
+        }
+    },
 ], {
     height: 200,
     boundaries: {
         minY: 0,
         maxY: 80
     },
-    colors: ['red'],
+    colors: ['red', 'blue'],
     title: {
         text: "The LineChart :: Live data"
     }
@@ -52,5 +62,6 @@ let x = 1000
 setInterval( () => {
     x += 10
     lineChartAddPoint.addPoint(0, [x, rand(30, 60)])
+    lineChartAddPoint.addPoint(1, [x, rand(10, 25)])
     areaChartAddPoint.addPoint(0, [x, rand(30, 60)])
 }, 1000)
