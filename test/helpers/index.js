@@ -7,7 +7,6 @@ export const genData = (count, min, max) => {
 
     for(let i = 0; i < count; i++) {
         y = rand(min, max)
-        // y = rand(rand(0, min), rand(0, max))
         x+=10
         a.push([x, y])
     }

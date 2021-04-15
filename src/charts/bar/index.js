@@ -1,6 +1,6 @@
 import {Chart} from "../base"
 import {merge} from "../../helpers/merge";
-import {defaultBarChartOptions} from "../../defaults/bar-chart"
+import {defaultBarChartOptions} from "../../defaults/bar"
 import {minMaxLinear} from "../../helpers/min-max";
 import {drawText} from "../../draw/text";
 import {drawRect} from "../../draw/rect";

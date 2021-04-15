@@ -1,5 +1,5 @@
 import {Chart} from "../base"
-import {defaultBubbleChartOptions} from "../../defaults/bubble-chart"
+import {defaultBubbleChartOptions} from "../../defaults/bubble"
 import {MixinCross} from "../../mixins/cross"
 import {MixinAxis} from "../../mixins/axis"
 import {minMax} from "../../helpers/min-max";

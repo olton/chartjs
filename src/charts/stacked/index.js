@@ -1,5 +1,5 @@
 import {merge} from "../../helpers/merge"
-import {defaultStackedBarChartOptions} from "../../defaults/stacked-bar-chart"
+import {defaultStackedBarChartOptions} from "../../defaults/stacked-bar"
 import {MixinAxis} from "../../mixins/axis"
 import {minMaxLinear} from "../../helpers/min-max"
 import {Chart} from "../base"

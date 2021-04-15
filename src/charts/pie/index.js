@@ -1,5 +1,5 @@
 import {Chart} from "../base"
-import {defaultPieChartOptions} from "../../defaults/pie-chart"
+import {defaultPieChartOptions} from "../../defaults/pie"
 import {merge} from "../../helpers/merge"
 import {drawArc} from "../../draw/arc";
 import {drawText} from "../../draw/text";

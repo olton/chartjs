@@ -5,7 +5,7 @@ import {drawLine} from "../../draw/line"
 import {drawSquare} from "../../draw/square"
 import {drawTriangle} from "../../draw/triangle"
 import {drawDiamond} from "../../draw/diamond"
-import {defaultLineChartOptions} from "../../defaults/line-chart"
+import {defaultLineChartOptions} from "../../defaults/line"
 import {merge} from "../../helpers/merge"
 import {expandPadding} from "../../helpers/expand-padding";
 
