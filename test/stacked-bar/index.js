@@ -40,6 +40,16 @@ stackedBarChart("#stacked-chart-1", data1, {
             }
         }
     },
+    legend: {
+        titles: ['Male', 'Female', 'Shemale', 'Gender Neutral'],
+        vertical: true,
+        position: 'top-right',
+        color: '#fffee0',
+        margin: {
+            right: 20
+        },
+        padding: 10
+    },
     groupDistance: 10
 })
 
@@ -59,6 +69,17 @@ stackedBarChart("#stacked-chart-2", data1, {
                 fixed: 0
             }
         }
+    },
+    legend: {
+        titles: ['He', 'She', 'It', 'GN'],
+        vertical: true,
+        position: 'bottom-right',
+        color: '#fffee0',
+        margin: {
+            right: 20,
+            bottom: -20
+        },
+        padding: 10
     },
     dataAxisX: true,
     groupDistance: 10

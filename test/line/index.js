@@ -1,5 +1,5 @@
 import {lineChart} from "../../src"
-import {genData} from "../helpers"
+import {genData, rand} from "../helpers"
 
 const lines = [
     {
@@ -163,3 +163,4 @@ lineChart("#line-chart-2", lines2, {
         dash: []
     },
 })
+

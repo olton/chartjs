@@ -11,6 +11,7 @@ import {expandPadding} from "../../helpers/expand-padding"
 import {MixinCross} from "../../mixins/cross"
 import {MixinAxis} from "../../mixins/axis"
 import {drawArea} from "../../draw/area";
+import {MixinAddPoint} from "../../mixins/add-point";
 
 export class AreaChart extends Chart {
     constructor(el, data = [], options = {}) {
@@ -182,5 +183,6 @@ export class AreaChart extends Chart {
 
 Object.assign(AreaChart.prototype, MixinCross)
 Object.assign(AreaChart.prototype, MixinAxis)
+Object.assign(AreaChart.prototype, MixinAddPoint)
 
 export const areaChart = (el, data, options) => new AreaChart(el, data, options)

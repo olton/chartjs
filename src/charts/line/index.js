@@ -11,6 +11,7 @@ import {expandPadding} from "../../helpers/expand-padding";
 
 import {MixinCross} from "../../mixins/cross"
 import {MixinAxis} from "../../mixins/axis"
+import {MixinAddPoint} from "../../mixins/add-point";
 
 export class LineChart extends Chart {
     constructor(el, data = [], options = {}) {
@@ -178,5 +179,6 @@ export class LineChart extends Chart {
 
 Object.assign(LineChart.prototype, MixinCross)
 Object.assign(LineChart.prototype, MixinAxis)
+Object.assign(LineChart.prototype, MixinAddPoint)
 
 export const lineChart = (el, data, options) => new LineChart(el, data, options)

@@ -118,8 +118,13 @@ export class Chart {
         this.ctx.clearRect(0, 0, this.dpiWidth, this.dpiHeight)
     }
 
-    setData(graphIndex, data){
-        this.data[graphIndex].data = data
+    setData(data, index){
+        if (typeof index !== "undefined") {
+            this.data[index].data = data
+        } else {
+            this.data = data
+        }
+
         this.draw()
     }
 

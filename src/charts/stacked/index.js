@@ -18,6 +18,13 @@ export class StackedBarChart extends Chart {
         this.minX = 0
         this.viewAxis = this.options.dataAxisX ? this.viewHeight : this.viewWidth
 
+        this.legendItems = []
+        const legend = this.options.legend
+        if (legend && legend.titles && legend.titles.length) {
+            for(let i = 0; i < legend.titles.length; i++) {
+                this.legendItems.push([legend.titles[i], this.options.colors[i]])
+            }
+        }
 
         this.calcMinMax()
         this.resize()
