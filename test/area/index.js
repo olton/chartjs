@@ -6,31 +6,19 @@ const areas = [
         name: "Area 1",
         size: 1,
         data: genData(50, 60, 100),
-        dots: {
-            type: 'dot',
-            fill: '#fff',
-            size: 3
-        }
+        dots: false
     },
     {
         name: "Area 2",
         size: 1,
         data: genData(50, 30, 55),
-        dots: {
-            type: 'square',
-            fill: '#fff',
-            size: 3
-        }
+        dots: false
     },
     {
         name: "Area 3",
         size: 1,
         data: genData(50, 0, 25),
-        dots: {
-            type: 'triangle',
-            fill: '#fff',
-            size: 3
-        }
+        dots: false
     },
 ]
 

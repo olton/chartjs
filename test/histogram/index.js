@@ -1,6 +1,6 @@
 import {genTriplet, rand} from "../helpers"
 import {histogramChart} from "../../src/charts/histogram";
-import {MetroColorPalette} from "../../src/defaults/elements/colors";
+import {MetroColorPalette, StandardColorPalette} from "../../src/defaults/elements/colors";
 
 const bars = [
     {
@@ -32,7 +32,7 @@ const axis = {
 histogramChart("#histogram-1", bars, {
     height: 150,
     accuracy: 4,
-    colors: [Object.values(MetroColorPalette)[5]],
+    colors: [StandardColorPalette.aquamarine],
     boundaries: {
         minY: 0,
         maxY: 100
@@ -55,7 +55,7 @@ histogramChart("#histogram-1", bars, {
 const histogram = histogramChart("#histogram-2", bars2, {
     height: 150,
     accuracy: 4,
-    colors: ['red', 'green', 'blue'],
+    colors: [StandardColorPalette.cornflowerBlue],
     boundaries: {
         minY: 0,
         maxY: 100

@@ -7,21 +7,14 @@ const lineChartAddPoint = lineChart("#line-add-point", [
         name: "Line 1",
         size: 1,
         data: genData(100, 30, 60),
-        dots: {
-            type: 'dot',
-            fill: '#fff',
-            size: 1
-        }
+        dots: false
     },
     {
         name: "Line 2",
         size: 1,
         data: genData(100, 10, 25),
-        dots: {
-            type: 'dot',
-            fill: '#fff',
-            size: 1
-        }
+        dots: false,
+        drawType: 'curve'
     },
 ], {
     height: 200,
@@ -40,11 +33,7 @@ const areaChartAddPoint = areaChart("#area-add-point", [
         name: "Line 1",
         size: 1,
         data: genData(100, 30, 60),
-        dots: {
-            type: 'dot',
-            fill: '#fff',
-            size: 1
-        }
+        dots: false
     },
 ], {
     height: 200,

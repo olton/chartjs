@@ -38,7 +38,7 @@ const lines2 = [
     {
         name: "Line 1",
         size: 1,
-        data: genData(50, 0, 100),
+        data: genData(20, 0, 100),
         showLine: false,
         dots: {
             type: 'dot',
@@ -49,7 +49,7 @@ const lines2 = [
     {
         name: "Line 2",
         size: 1,
-        data: genData(50, 0, 70),
+        data: genData(20, 0, 70),
         showLine: false,
         dots: {
             type: 'square',
@@ -60,12 +60,8 @@ const lines2 = [
     {
         name: "Line 3",
         size: 1,
-        data: genData(50, 0, 50),
-        dots: {
-            type: 'triangle',
-            fill: '#fff',
-            size: 3
-        }
+        data: genData(20, 0, 50),
+        dots: false
     },
 ]
 
@@ -111,7 +107,7 @@ lineChart("#line-1", lines, {
         margin: {
             top: 40
         }
-    }
+    },
 })
 
 lineChart("#line-2", lines2, {
@@ -162,5 +158,6 @@ lineChart("#line-2", lines2, {
         },
         dash: []
     },
+    drawType: 'curve',
 })
 

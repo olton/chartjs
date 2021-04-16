@@ -12,6 +12,7 @@ import {expandPadding} from "../../helpers/expand-padding";
 import {MixinCross} from "../../mixins/cross"
 import {MixinAxis} from "../../mixins/axis"
 import {MixinAddPoint} from "../../mixins/add-point";
+import {drawCurve} from "../../draw/curve";
 
 export class LineChart extends Chart {
     constructor(el, data = [], options = {}) {
@@ -78,6 +79,7 @@ export class LineChart extends Chart {
         for (let i = 0; i < this.data.length; i++) {
             const graph = this.data[i]
             const color = o.colors[i]
+            const drawType = graph.drawType || o.drawType || 'line'
 
             coords = []
 
@@ -89,7 +91,11 @@ export class LineChart extends Chart {
             }
 
             if (graph.showLine !== false) {
-                drawLine(ctx, coords, {color: color, size: graph.size})
+                if (drawType === 'curve') {
+                    drawCurve(ctx, coords, {color: color, size: graph.size})
+                } else {
+                    drawLine(ctx, coords, {color: color, size: graph.size})
+                }
             }
 
             let dots = graph.dots ? graph.dots : {
@@ -116,7 +122,7 @@ export class LineChart extends Chart {
                 default: drawPointFn = drawCircle
             }
 
-            if (graph.dots) {
+            if (graph.dots && o.drawDots !== false) {
                 coords.map(([x, y]) => {
                     drawPointFn(ctx, [x, y, opt.radius], opt)
                 })
