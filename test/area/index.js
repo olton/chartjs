@@ -34,7 +34,7 @@ const areas = [
     },
 ]
 
-areaChart("#area-chart-1", areas, {
+areaChart("#area-1", areas, {
     height: 600,
     colors: ['rgba(255, 0, 0, .5)', 'rgba(0, 255,0, .5)', 'rgba(0,0,255,.5)', 'rgba(255,255,0,.5)', 'rgba(50,130,130,.5)', 'rgba(150,130,130,.5)'],
     title: {

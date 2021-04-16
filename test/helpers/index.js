@@ -13,3 +13,15 @@ export const genData = (count, min, max) => {
 
     return a
 }
+
+export const genTriplet = (count, min, max) => {
+    let y = 0, x = 0, a = [], d = 10
+
+    for(let i = 0; i < count; i++) {
+        y = rand(min, max)
+        x += d
+        a.push([x - d, x, y])
+    }
+
+    return a
+}

@@ -39,7 +39,7 @@ const lines2 = [
         name: "Line 1",
         size: 1,
         data: genData(50, 0, 100),
-        showLines: false,
+        showLine: false,
         dots: {
             type: 'dot',
             fill: '#fff',
@@ -50,7 +50,7 @@ const lines2 = [
         name: "Line 2",
         size: 1,
         data: genData(50, 0, 70),
-        showLines: false,
+        showLine: false,
         dots: {
             type: 'square',
             fill: '#fff',
@@ -69,7 +69,7 @@ const lines2 = [
     },
 ]
 
-lineChart("#line-chart-1", lines, {
+lineChart("#line-1", lines, {
     height: 600,
     accuracy: 4,
     colors: ['red', 'green', 'blue'],
@@ -114,7 +114,7 @@ lineChart("#line-chart-1", lines, {
     }
 })
 
-lineChart("#line-chart-2", lines2, {
+lineChart("#line-2", lines2, {
     height: 600,
     accuracy: 4,
     colors: ['red', 'green', 'blue'],

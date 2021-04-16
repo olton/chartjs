@@ -34,6 +34,8 @@ export class PieChart extends Chart {
         let startAngle = 0, endAngle = 360, offset = 0, val = '', textVal = ''
         let textX, textY
 
+        if (!this.data || ! this.data.length) return
+
         for (let i = 0; i < this.data.length; i++) {
             let sector = this.data[i]
             let color = o.colors[i]

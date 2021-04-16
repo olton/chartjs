@@ -19,7 +19,7 @@ const data = [
     },
 ]
 
-pieChart("#pie-chart-1", data, {
+pieChart("#pie-1", data, {
     height: 600,
     colors: ['#fde23e', '#f16e23', '#57d9ff', '#937e88'],
     title: {
@@ -44,7 +44,7 @@ pieChart("#pie-chart-1", data, {
     }
 })
 
-pieChart("#pie-chart-2", data, {
+pieChart("#pie-2", data, {
     height: 600,
     title: {
         text: 'The PieChart',

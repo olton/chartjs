@@ -7,14 +7,16 @@ import {MixinTooltip} from "../../mixins/tooltip"
 import {expandPadding} from "../../helpers/expand-padding";
 
 export class Chart {
-    constructor(el, data, options = {}, type = 'unknown') {
+    constructor(el, data = [], options = {}, type = 'unknown') {
         this.el = document.querySelector(el)
         if (!this.el) {
             throw new Error("You must define a selector for chart wrapper element!")
         }
 
         this.options = merge({}, defaultOptions, options)
+
         this.data = data
+
         this.canvas = null
         this.ctx = null
         this.raf = null

@@ -27,7 +27,7 @@ const lines = [
     },
 ]
 
-bubbleChart("#bubble-chart-1", lines, {
+bubbleChart("#bubble-1", lines, {
     height: 600,
     accuracy: 4,
     colors: ['rgba(255, 0, 0, .5)', 'rgba(0, 255,0, .5)', 'rgba(0,0,255,.5)', 'rgba(255,255,0,.5)', 'rgba(50,130,130,.5)', 'rgba(150,130,130,.5)'],

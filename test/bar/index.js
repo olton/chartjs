@@ -34,7 +34,7 @@ const bars2 = [
     },
 ]
 
-barChart("#bar-chart-1", bars1, {
+barChart("#bar-1", bars1, {
     height: 600,
     colors: ['red', 'green', 'blue', 'yellow', 'pink'],
     title: {
@@ -51,7 +51,7 @@ barChart("#bar-chart-1", bars1, {
     groupDistance: 50,
 })
 
-barChart("#bar-chart-2", bars2, {
+barChart("#bar-2", bars2, {
     height: 600,
     colors: ['#0d5', '#07f', '#fb0', '#f08', '#0cf', '#064', '#f50'],
     title: {

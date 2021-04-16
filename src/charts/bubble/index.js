@@ -9,7 +9,7 @@ import {merge} from "../../helpers/merge";
 
 export class BubbleChart extends Chart {
     constructor(el, data, options) {
-        super(el, data, merge({}, defaultBubbleChartOptions, options));
+        super(el, data, merge({}, defaultBubbleChartOptions, options), 'bubble');
 
         this.coords = {}
 
@@ -54,17 +54,26 @@ export class BubbleChart extends Chart {
         this.maxY = o.boundaries && !isNaN(o.boundaries.maxY) ? o.boundaries.maxY : maxY
         this.minZ = o.boundaries && !isNaN(o.boundaries.minZ) ? o.boundaries.minZ : minZ
         this.maxZ = o.boundaries && !isNaN(o.boundaries.maxZ) ? o.boundaries.maxZ : maxZ
+
+        if (isNaN(this.minX)) this.minX = 0
+        if (isNaN(this.maxX)) this.maxX = 100
+        if (isNaN(this.minY)) this.minX = 0
+        if (isNaN(this.maxY)) this.maxX = 100
+        if (isNaN(this.minZ)) this.minX = 0
+        if (isNaN(this.maxZ)) this.maxX = 100
     }
 
     calcRatio(){
-        this.ratioX = this.viewWidth / (this.maxX - this.minX)
-        this.ratioY = this.viewHeight / (this.maxY - this.minY)
-        this.ratioZ = this.maxZ / (this.maxZ - this.minZ)
+        this.ratioX = this.viewWidth / (this.maxX === this.minX ? this.maxX : this.maxX - this.minX)
+        this.ratioY = this.viewHeight / (this.maxY === this.minY ? this.maxY : this.maxY - this.minY)
+        this.ratioZ = this.maxZ / (this.maxZ === this.minZ ? this.maxZ : this.maxZ - this.minZ)
     }
 
     lines(){
         const o = this.options, padding = expandPadding(o.padding)
         const ctx = this.ctx
+
+        if (!this.data || ! this.data.length) return
 
         for (let i = 0; i < this.data.length; i++) {
             const graph = this.data[i]
@@ -79,7 +88,7 @@ export class BubbleChart extends Chart {
     }
 
     floatPoint(){
-
+        if (!this.data || ! this.data.length) return
     }
 
     draw(){

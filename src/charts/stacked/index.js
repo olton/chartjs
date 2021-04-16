@@ -42,10 +42,13 @@ export class StackedBarChart extends Chart {
         const [, max] = minMaxLinear(a)
 
         this.maxX = this.maxY = o.boundaries && !isNaN(o.boundaries.max) ? o.boundaries.maxY : max
+
+        if (isNaN(this.maxX)) this.maxX = 100
+        if (isNaN(this.maxY)) this.maxX = 100
     }
 
     calcRatio(){
-        this.ratio = (this.options.dataAxisX ? this.viewWidth : this.viewHeight) / (this.maxY - this.minY)
+        this.ratio = (this.options.dataAxisX ? this.viewWidth : this.viewHeight) / (this.maxY === this.minY ? this.maxY : this.maxY - this.minY)
     }
 
     calcBarWidth(){
@@ -67,6 +70,8 @@ export class StackedBarChart extends Chart {
         const rect = this.canvas.getBoundingClientRect()
         let mx, my
         let tooltip = false
+
+        if (!this.data || !this.data.length) return
 
         if (this.proxy.mouse) {
             mx = this.proxy.mouse.x - rect.left
@@ -134,6 +139,8 @@ export class StackedBarChart extends Chart {
         const rect = this.canvas.getBoundingClientRect()
         let mx, my
         let tooltip = false
+
+        if (!this.data || !this.data.length) return
 
         if (this.proxy.mouse) {
             mx = this.proxy.mouse.x - rect.left

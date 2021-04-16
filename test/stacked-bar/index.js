@@ -23,7 +23,7 @@ const data1 = [
     },
 ]
 
-stackedBarChart("#stacked-chart-1", data1, {
+stackedBarChart("#stacked-1", data1, {
     height: 600,
     padding: {
         top: 60
@@ -53,7 +53,7 @@ stackedBarChart("#stacked-chart-1", data1, {
     groupDistance: 10
 })
 
-stackedBarChart("#stacked-chart-2", data1, {
+stackedBarChart("#stacked-2", data1, {
     height: 600,
     padding: {
         top: 60

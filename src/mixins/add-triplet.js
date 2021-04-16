@@ -1,5 +1,5 @@
-export const MixinAddPoint = {
-    addPoint(index, [x, y], shift = true){
+export const MixinAddTriplet = {
+    addTriplet(index, [a, b, c], shift = true){
         const o = this.options
         let data
 
@@ -16,7 +16,7 @@ export const MixinAddPoint = {
         }
 
         this.data[index].data = data
-        this.data[index].data.push([x, y])
+        this.data[index].data.push([a, b, c])
 
         this.calcMinMax()
         this.resize()

@@ -2,7 +2,7 @@ import {lineChart} from "../../src";
 import {genData, rand} from "../helpers";
 import {areaChart} from "../../src/charts/area";
 
-const lineChartAddPoint = lineChart("#line-chart-add-point", [
+const lineChartAddPoint = lineChart("#line-add-point", [
     {
         name: "Line 1",
         size: 1,
@@ -35,7 +35,7 @@ const lineChartAddPoint = lineChart("#line-chart-add-point", [
     }
 })
 
-const areaChartAddPoint = areaChart("#area-chart-add-point", [
+const areaChartAddPoint = areaChart("#area-add-point", [
     {
         name: "Line 1",
         size: 1,

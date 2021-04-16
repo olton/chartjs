@@ -57,18 +57,23 @@ export class LineChart extends Chart {
         this.minY = o.boundaries && !isNaN(o.boundaries.minY) ? o.boundaries.minY : minY
         this.maxY = o.boundaries && !isNaN(o.boundaries.maxY) ? o.boundaries.maxY : maxY
 
-        return this
+        if (isNaN(this.minX)) this.minX = 0
+        if (isNaN(this.maxX)) this.maxX = 100
+        if (isNaN(this.minY)) this.minX = 0
+        if (isNaN(this.maxY)) this.maxX = 100
     }
 
     calcRatio(){
-        this.ratioX = this.viewWidth / (this.maxX - this.minX)
-        this.ratioY = this.viewHeight / (this.maxY - this.minY)
+        this.ratioX = this.viewWidth / (this.maxX === this.minX ? this.maxX : this.maxX - this.minX)
+        this.ratioY = this.viewHeight / (this.maxY === this.minY ? this.maxY : this.maxY - this.minY)
     }
 
     lines(){
         const o = this.options, padding = expandPadding(o.padding)
         const ctx = this.ctx
         let coords
+
+        if (!this.data || !this.data.length) return
 
         for (let i = 0; i < this.data.length; i++) {
             const graph = this.data[i]
@@ -83,7 +88,7 @@ export class LineChart extends Chart {
                 coords.push([_x, _y, x, y])
             }
 
-            if (graph.showLines !== false) {
+            if (graph.showLine !== false) {
                 drawLine(ctx, coords, {color: color, size: graph.size})
             }
 
@@ -132,6 +137,7 @@ export class LineChart extends Chart {
         const rect = this.canvas.getBoundingClientRect()
         let tooltip = false
 
+        if (!this.data || !this.data.length) return
         if (!this.proxy.mouse) return
 
         let {x, y} = this.proxy.mouse
