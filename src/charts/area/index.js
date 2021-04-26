@@ -94,9 +94,6 @@ export class AreaChart extends Chart {
 
             coords.push([coords[coords.length - 1][0], this.viewHeight + padding.top, 0, 0])
 
-            if (graph.showLines !== false) {
-                drawLine(ctx, coords, {color, fill, size: graph.size})
-            }
             drawArea(ctx, coords, {color, fill, size: graph.size})
 
             let dots = graph.dots ? graph.dots : {
@@ -134,6 +131,13 @@ export class AreaChart extends Chart {
                 coords,
                 drawPointFn,
                 opt
+            }
+
+            coords.shift()
+            coords.pop()
+
+            if (graph.showLines !== false) {
+                drawLine(ctx, coords, {color, fill, size: graph.size})
             }
         }
     }

@@ -4,19 +4,19 @@ import {genData} from "../helpers"
 const areas = [
     {
         name: "Area 1",
-        size: 1,
+        size: 3,
         data: genData(50, 60, 100),
         dots: false
     },
     {
         name: "Area 2",
-        size: 1,
+        size: 3,
         data: genData(50, 30, 55),
         dots: false
     },
     {
         name: "Area 3",
-        size: 1,
+        size: 3,
         data: genData(50, 0, 25),
         dots: false
     },
