@@ -1,4 +1,4 @@
-export const drawVector = (ctx, [x1, y1, x2, y2], {color = '#000', size = 1, dash = []}) => {
+export const drawVector = (ctx, [x1, y1, x2, y2], {color = '#000', size = 1, dash = []} = {}) => {
     ctx.beginPath()
     ctx.save()
     ctx.setLineDash(dash)

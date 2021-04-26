@@ -21,9 +21,9 @@ const label = {
     font: labelFont,
     count: 5, // odd, even, num
     show: true,
-    min: true,
-    max: true,
-    fixed: false
+    first: true,
+    last: true,
+    fixed: false,
 }
 
 const axis = {

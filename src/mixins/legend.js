@@ -1,10 +1,10 @@
-import {isObject} from "../helpers/merge";
-import {getTextBoxWidth} from "../helpers/get-textbox-width";
-import {drawSquare} from "../draw/square";
-import {drawText} from "../draw/text";
-import {drawBox} from "../draw/box";
-import {expandPadding} from "../helpers/expand-padding";
-import {expandMargin} from "../helpers/expand-margin";
+import {isObject} from "../helpers/is-object"
+import {getTextBoxWidth} from "../helpers/get-textbox-width"
+import {drawSquare} from "../draw/square"
+import {drawText} from "../draw/text"
+import {drawBox} from "../draw/box"
+import {expandPadding} from "../helpers/expand-padding"
+import {expandMargin} from "../helpers/expand-margin"
 
 export const MixinLegend = {
     legend() {
@@ -53,7 +53,7 @@ export const MixinLegend = {
             }
 
             drawSquare(ctx, [offset + x, y, box], {color, fill: color})
-            drawText(ctx, name, [offset+ x + box +magic, y + box / 2], {color: o.font.color, stroke: o.font.color, font: o.font})
+            drawText(ctx, name, [offset+ x + box +magic, y + box / 2], {color: legend.font.color, stroke: legend.font.color, font: o.font})
 
             x += box + nameWidth + 20
         }

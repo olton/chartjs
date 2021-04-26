@@ -1,4 +1,4 @@
-export const drawArc = (ctx, [x, y, radius = 4, startAngle, endAngle], {color = '#000', fill = '#fff', size = 1}) => {
+export const drawArc = (ctx, [x, y, radius = 4, startAngle, endAngle], {color = '#000', fill = '#fff', size = 1} = {}) => {
     ctx.beginPath()
     ctx.save()
     ctx.setLineDash([])

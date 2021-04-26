@@ -25,6 +25,7 @@ export class Chart {
         this.chartType = type
         this.rect = this.el.getBoundingClientRect()
         this.canvasRect = null
+        this.static = false
 
         const that = this
 

@@ -13,6 +13,14 @@ import {MixinCross} from "../../mixins/cross"
 import {MixinAxis} from "../../mixins/axis"
 import {MixinAddPoint} from "../../mixins/add-point";
 import {drawCurve} from "../../draw/curve";
+import {mergeProps} from "../../helpers/merge-props";
+
+const DEFAULT_LINE_TYPE = 'line'
+const DEFAULT_DOT_TYPE = 'circle'
+const DOT_TRIANGLE = 'triangle'
+const DOT_SQUARE = 'square'
+const DOT_DIAMOND = 'diamond'
+const VALUE_DEFAULT = 'default'
 
 export class LineChart extends Chart {
     constructor(el, data = [], options = {}) {
@@ -79,7 +87,7 @@ export class LineChart extends Chart {
         for (let i = 0; i < this.data.length; i++) {
             const graph = this.data[i]
             const color = o.colors[i]
-            const drawType = graph.drawType || o.drawType || 'line'
+            const type = graph.type || o.type || DEFAULT_LINE_TYPE
 
             coords = []
 
@@ -91,38 +99,39 @@ export class LineChart extends Chart {
             }
 
             if (graph.showLine !== false) {
-                if (drawType === 'curve') {
+                if (type !== DEFAULT_LINE_TYPE) {
                     drawCurve(ctx, coords, {color: color, size: graph.size})
                 } else {
                     drawLine(ctx, coords, {color: color, size: graph.size})
                 }
             }
 
-            let dots = graph.dots ? graph.dots : {
-                type: 'dot', // dot, square, triangle
-            }
+            let dots = mergeProps({
+                type: DEFAULT_DOT_TYPE,
+            }, o.dots, graph.dots)
+
             let opt = {
                 color: dots.color ?? color,
                 fill: dots.fill ?? color,
-                radius: dots.size || 4
+                radius: dots.size ?? 2
             }
 
             let drawPointFn
 
             switch (dots.type) {
-                case 'square':
+                case DOT_SQUARE:
                     drawPointFn = drawSquare
                     break
-                case 'triangle':
+                case DOT_TRIANGLE:
                     drawPointFn = drawTriangle
                     break
-                case 'diamond':
+                case DOT_DIAMOND:
                     drawPointFn = drawDiamond
                     break
                 default: drawPointFn = drawCircle
             }
 
-            if (graph.dots && o.drawDots !== false) {
+            if (graph.dots && o.showDots !== false) {
                 coords.map(([x, y]) => {
                     drawPointFn(ctx, [x, y, opt.radius], opt)
                 })
@@ -155,14 +164,19 @@ export class LineChart extends Chart {
             const item = this.coords[name]
             const drawPointFn = item.drawPointFn
             const opt = item.opt
+            // const graph = item.graph
 
             for (const [px, py, _x, _y] of item.coords) {
                 const accuracy = +(o.accuracy || opt.radius)
                 const lx = px - accuracy, rx = px + accuracy
                 const ly = py - accuracy, ry = py + accuracy
 
+                if ((mx > lx && mx < rx) && (o.hoverMode !== VALUE_DEFAULT)) {
+                    drawPointFn(ctx, [px, py, opt.radius], {color: opt.color, fill: opt.fill})
+                }
+
                 if ((mx > lx && mx < rx) && (my > ly && my < ry)) {
-                    drawPointFn(ctx, [px, py, opt.radius * 2], {color: opt.color, fill: opt.fill})
+                    if (o.hoverMode === VALUE_DEFAULT) drawPointFn(ctx, [px, py, opt.radius * 2], {color: opt.color, fill: opt.fill})
                     if ( o.tooltip ) {
                         this.showTooltip([_x, _y], item.graph)
                         tooltip = true

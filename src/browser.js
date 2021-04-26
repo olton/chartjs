@@ -1,8 +1,20 @@
-import {lineChart, barChart, pieChart} from "./charts"
+import {
+    areaChart,
+    barChart,
+    bubbleChart,
+    histogramChart,
+    lineChart,
+    pieChart,
+    stackedBarChart,
+} from "./charts"
 
 globalThis.chart = {
-    lineChart,
+    areaChart,
     barChart,
-    pieChart
+    bubbleChart,
+    histogramChart,
+    lineChart,
+    pieChart,
+    stackedBarChart,
 }
 

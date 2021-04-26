@@ -1,4 +1,4 @@
-export const drawArrowY = (ctx, [x1, y1, x2, y2, factorX, factorY], {color = '#000', dash = [], size = 1}) => {
+export const drawArrowY = (ctx, [x1, y1, x2, y2, factorX, factorY], {color = '#000', dash = [], size = 1} = {}) => {
     ctx.beginPath()
     ctx.strokeStyle = color
     ctx.lineWidth = size

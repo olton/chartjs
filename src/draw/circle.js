@@ -1,4 +1,4 @@
-export const drawCircle = (ctx, [x, y, r], {color = '#000', fill = '#fff', size = 1}) => {
+export const drawCircle = (ctx, [x, y, r], {color = '#000', fill = '#fff', size = 1} = {}) => {
     ctx.beginPath()
     ctx.save()
     ctx.setLineDash([])

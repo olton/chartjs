@@ -21,8 +21,9 @@ export const defaultOptions = {
     legend: defaultLegend,
     tooltip: defaultTooltip,
     boundaries: false,
-    accuracy: 10,
+    accuracy: 2,
     colors: Object.values(StandardColorPalette),
+    animate: false,
 
     onDrawLabelY: null,
     onDrawLabelX: null,

@@ -73,6 +73,9 @@ const histogram = histogramChart("#histogram-2", bars2, {
         bottom: 20
     },
     legend: false,
+    bars: {
+        stroke: '#000'
+    }
 })
 
 let x = 400

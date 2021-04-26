@@ -1,35 +1,38 @@
 import {lineChart} from "../../src"
-import {genData, rand} from "../helpers"
+import {genData} from "../helpers"
+import {MetroColorPalette} from "../../src/defaults/elements/colors"
 
 const lines = [
     {
         name: "Line 1",
         size: 1,
-        data: genData(50, 0, 100),
+        data: genData(50, 70, 95),
         dots: {
-            type: 'dot',
-            fill: '#fff',
-            size: 3
+            type: 'circle',
         }
     },
     {
         name: "Line 2",
         size: 1,
-        data: genData(50, 0, 70),
+        data: genData(50, 50, 65),
         dots: {
             type: 'square',
-            fill: '#fff',
-            size: 3
         }
     },
     {
         name: "Line 3",
         size: 1,
-        data: genData(50, 0, 50),
+        data: genData(50, 30, 45),
         dots: {
             type: 'triangle',
-            fill: '#fff',
-            size: 3
+        }
+    },
+    {
+        name: "Line 4",
+        size: 1,
+        data: genData(50, 0, 25),
+        dots: {
+            type: 'diamond',
         }
     },
 ]
@@ -68,10 +71,14 @@ const lines2 = [
 lineChart("#line-1", lines, {
     height: 600,
     accuracy: 4,
-    colors: ['red', 'green', 'blue'],
+    colors: [MetroColorPalette.lime, MetroColorPalette.blue, MetroColorPalette.violet, MetroColorPalette.orange],
     boundaries: {
         minY: -10,
         maxY: 110
+    },
+    dots: {
+        fill: '#fff',
+        size: 4
     },
     title: {
         text: 'The LineChart',

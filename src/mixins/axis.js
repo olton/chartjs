@@ -52,7 +52,8 @@ export const MixinAxis = {
 
             if (!axis.label.show) continue
             if (skipLabels && i && i % skipLabels !== 0) continue
-            if (!axis.label.min && labelXValue === this.minX) continue
+            if (!axis.label.first && i === 0) continue
+            if (!axis.label.last && i === axis.line.count) continue
 
             if (typeof o.onDrawLabelX === "function") {
                 labelXValue = o.onDrawLabelX.apply(null, [labelXValue])
@@ -60,12 +61,15 @@ export const MixinAxis = {
 
             // if (x + ctx.measureText(labelXValue.toString()).width > this.viewWidth) continue
 
-            drawVector(ctx,[x, this.viewHeight + padding.top, x, this.viewHeight + padding.top + 5], {})
+            drawVector(ctx,[x, this.viewHeight + padding.top, x, this.viewHeight + padding.top + 5], {
+                color: (axis.arrow && axis.arrow.color) ?? axis.line.color,
+            })
             drawText(
                 ctx,
                 labelXValue.toString(),
                 [x, this.viewHeight + padding.top + font.size + 5],
                 {
+                    color: (axis.label && axis.label.color) ?? o.color,
                     align: 'center',
                     font
                 }
@@ -122,14 +126,18 @@ export const MixinAxis = {
 
             if (!axis.label.show) continue
             if (skipLabels && i && i % skipLabels !== 0) continue
-            if (!axis.label.min && labelYValue === this.minY) continue
+            if (!axis.label.first && i === 0) continue
+            if (!axis.label.last && i === axis.line.count) continue
 
             if (typeof o.onDrawLabelY === "function") {
                 labelYValue = o.onDrawLabelY.apply(null, [labelYValue])
             }
 
-            drawVector(ctx, [x-5, y, x, y], {})
+            drawVector(ctx, [x-5, y, x, y], {
+                color: (axis.arrow && axis.arrow.color) ?? axis.line.color,
+            })
             drawText(ctx, labelYValue.toString(),[padding.left - 10, y + 1], {
+                color: (axis.label && axis.label.color) ?? o.color,
                 align: 'right',
                 font
             })

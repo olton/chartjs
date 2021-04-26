@@ -8,10 +8,12 @@ export const MixinAddPoint = {
         data = this.data[index].data
 
         if (shift) {
-            if (o.graphSize && data.length === o.graphSize) {
+            if (!o.graphSize) {
                 data = data.slice(1)
             } else {
-                data = data.slice(1)
+                if (data.length === o.graphSize) {
+                    data = data.slice(1)
+                }
             }
         }
 
@@ -19,6 +21,7 @@ export const MixinAddPoint = {
         this.data[index].data.push([x, y])
 
         this.calcMinMax()
+        this.calcRatio()
         this.resize()
     }
 }

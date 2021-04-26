@@ -68,13 +68,14 @@ export class HistogramChart extends Chart {
     bars(){
         const o = this.options, padding = expandPadding(o.padding)
         const ctx = this.ctx
-        let coords, bars
+        let bars
 
         if (!this.data || ! this.data.length) return
 
         for (let i = 0; i < this.data.length; i++) {
             const graph = this.data[i]
             const color = o.colors[i]
+            const stroke = graph.stroke || o.bars.stroke
 
             bars = []
 
@@ -84,7 +85,7 @@ export class HistogramChart extends Chart {
                 let _h = (y - this.minY) * this.ratioY
                 let _y = Math.floor(this.viewHeight + padding.top - _h)
 
-                drawRect(ctx, [_x1, _y, _x2 - _x1, _h], {fill: color, color: '#fff'})
+                drawRect(ctx, [_x1, _y, _x2 - _x1, _h], {fill: color, color: stroke})
             }
         }
     }

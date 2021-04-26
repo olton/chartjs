@@ -3,7 +3,7 @@ import {merge} from "../../helpers/merge";
 import {defaultBarChartOptions} from "../../defaults/bar"
 import {minMaxLinear} from "../../helpers/min-max";
 import {drawText} from "../../draw/text";
-import {drawRect} from "../../draw/rect";
+import {drawRect, drawRectAnimate} from "../../draw/rect";
 import {expandPadding} from "../../helpers/expand-padding";
 
 import {MixinAxis} from "../../mixins/axis"
@@ -74,15 +74,12 @@ export class BarChart extends Chart {
         this.barWidth = availableSpace / bars
     }
 
-    barsY(){
+    bars(axisX = false){
         const o = this.options
         const padding = expandPadding(o.padding)
         const ctx = this.ctx
-        let px = padding.left + o.groupDistance
-        let py = this.viewHeight + padding.top
         const rect = this.canvas.getBoundingClientRect()
-        let mx, my
-        let tooltip = false
+        let px, py, mx, my, tooltip = false
 
         if (!this.data || !this.data.length) return
 
@@ -91,8 +88,10 @@ export class BarChart extends Chart {
             my = this.proxy.mouse.y - rect.top
         }
 
+        px = axisX ? padding.left : padding.left + o.groupDistance
+        py = axisX ? padding.top + o.groupDistance : this.viewHeight + padding.top
+
         for (let g = 0; g < this.data.length; g++) {
-            // let colors = graph.color.split(",").map( c => c.trim() )
             const graph = this.data[g]
             const data = graph.data
             const labelColor = o.labels.color
@@ -103,11 +102,26 @@ export class BarChart extends Chart {
             for (let i = 0; i < data.length; i++) {
                 let delta = data[i] * this.ratio
                 let color = data.length === 1 ? o.colors[g] : o.colors[i]
-                let fill = color
+                const options = {
+                    color,
+                    fill: color
+                }
+                const coords = axisX
+                    ? [px, py, px + delta - padding.right, this.barWidth]
+                    : [px, py - delta, this.barWidth-1, delta]
 
-                drawRect(ctx, [px, py - delta, this.barWidth-1, delta], {color, fill})
-                if ((mx > px && mx < px + this.barWidth - 1) && (my > py - delta && my < py )) {
-                    drawRect(ctx, [px, py - delta, this.barWidth-1, delta], {color, fill: 'rgba(255,255,255,.3)'})
+                drawRect(ctx, coords, options)
+
+                const borderX = axisX
+                    ? [px, px + delta]
+                    : [px, px + this.barWidth - 1]
+
+                const borderY = axisX
+                    ? [py, py + this.barWidth - 1]
+                    : [py - delta, py]
+
+                if ((mx > borderX[0] && mx < borderX[1]) && (my > borderY[0] && my < borderY[1] )) {
+                    drawRect(ctx, coords, {...options, fill: 'rgba(255,255,255,.3)'})
                     if ( o.tooltip ) {
                         this.showTooltip([(o.legend.titles ? o.legend.titles[i] : name), data[i]], graph)
                         tooltip = true
@@ -116,78 +130,19 @@ export class BarChart extends Chart {
 
                 groupWidth += this.barWidth + o.barDistance
 
-                px += o.barDistance + this.barWidth
-            }
-
-            px -= o.barDistance
-            groupWidth -= o.barDistance
-
-            if (typeof o.onDrawLabel === 'function') {
-                name = o.onDrawLabel.apply(null, name)
-            }
-
-            drawText(ctx, name, [px - groupWidth / 2, py + 20], {
-                align: 'center', color: labelColor, stroke: labelColor, font: o.font
-            })
-
-            px += o.groupDistance
-        }
-
-        if (!tooltip && this.tooltip) {
-            this.tooltip.remove()
-            this.tooltip = null
-        }
-    }
-
-    barsX(){
-        const o = this.options
-        const padding = expandPadding(o.padding)
-        const ctx = this.ctx
-        let px, py
-        const rect = this.canvas.getBoundingClientRect()
-        let mx, my
-        let tooltip = false
-
-        if (this.proxy.mouse) {
-            mx = this.proxy.mouse.x - rect.left
-            my = this.proxy.mouse.y - rect.top
-        }
-
-        px = padding.left
-        py = padding.top + o.groupDistance
-
-        for (let g = 0; g < this.data.length; g++) {
-            // let colors = graph.color.split(",").map( c => c.trim() )
-            const graph = this.data[g]
-            const data = graph.data
-            const labelColor = o.labels.color
-            let name = graph.name
-
-            let groupWidth = 0
-
-            for (let i = 0; i < data.length; i++) {
-                let delta = data[i] * this.ratio
-                let color = data.length === 1 ? o.colors[g] : o.colors[i]
-                let fill = color
-
-                drawRect(ctx, [px, py, px + delta - padding.right, this.barWidth], {color, fill})
-
-                if ((mx > px && mx < px + delta) && (my > py && my < py + this.barWidth )) {
-
-                    drawRect(ctx, [px, py, px + delta - padding.right, this.barWidth], {color, fill: 'rgba(255,255,255,.3)'})
-
-                    if ( o.tooltip ) {
-                        this.showTooltip([(o.legend.titles ? o.legend.titles[i] : name), data[i]], graph)
-                        tooltip = true
-                    }
+                if (axisX) {
+                    py += o.barDistance + this.barWidth
+                } else {
+                    px += o.barDistance + this.barWidth
                 }
-
-                groupWidth += this.barWidth + o.barDistance
-
-                py += o.barDistance + this.barWidth
             }
 
-            py -= o.barDistance
+            if (axisX) {
+                py -= o.barDistance
+            } else {
+                px -= o.barDistance
+            }
+
             groupWidth -= o.barDistance
 
             if (typeof o.onDrawLabel === 'function') {
@@ -199,17 +154,23 @@ export class BarChart extends Chart {
                 color: labelColor,
                 stroke: labelColor,
                 font: o.font,
-                angle: Math.PI / 2,
-                translate: [px - 20, py - groupWidth / 2]
+                angle: axisX ? Math.PI / 2 : 0,
+                translate: axisX ? [px - 20, py - groupWidth / 2] : [px - groupWidth / 2, py + 20]
             })
 
-            py += o.groupDistance
+            if (axisX) {
+                py += o.groupDistance
+            } else {
+                px += o.groupDistance
+            }
         }
 
         if (!tooltip && this.tooltip) {
             this.tooltip.remove()
             this.tooltip = null
         }
+
+        this.static = true
     }
 
     draw(){
@@ -221,14 +182,14 @@ export class BarChart extends Chart {
 
         if (o.dataAxisX) {
             this.axisX()
-            this.barsX()
         } else {
             this.axisY()
-            this.barsY()
         }
+        this.bars(o.dataAxisX)
 
         this.arrowY()
         this.arrowX()
+
         this.legend()
     }
 }

@@ -1,4 +1,4 @@
-export const drawText = (ctx, text, [x, y], {align = 'left', color = '#000', stroke = '#000', font, angle = 0, translate = [0,0]}) => {
+export const drawText = (ctx, text, [x, y], {align = 'left', color = '#000', stroke = '#000', font, angle = 0, translate = [0,0]} = {}) => {
     const {
         style = 'normal',
         weight = 'normal',

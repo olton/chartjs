@@ -1,4 +1,5 @@
 import {barChart} from "../../src";
+import {defaultAnimate} from "../../src/defaults/elements/animate";
 
 const bars1 = [
     {
@@ -49,6 +50,7 @@ barChart("#bar-1", bars1, {
     },
     barDistance: 5,
     groupDistance: 50,
+    animate: {...defaultAnimate, duration: 500}
 })
 
 barChart("#bar-2", bars2, {

@@ -1,4 +1,4 @@
-export const drawCurve = (ctx, coords = [], {color = '#000', size = 1, dash = [], tension = 0.25}) => {
+export const drawCurve = (ctx, coords = [], {color = '#000', size = 1, dash = [], tension = 0.25} = {}) => {
     ctx.beginPath()
     ctx.save()
     ctx.setLineDash(dash)

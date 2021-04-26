@@ -4,6 +4,7 @@ export const defaultFont = {
     size: 12,
     weight: 'normal',
     lineHeight: 1.2,
+    color: '#000'
 }
 
 export const labelFont = Object.assign({}, defaultFont, {weight: 'bold'})

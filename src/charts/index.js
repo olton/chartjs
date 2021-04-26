@@ -1,13 +1,19 @@
 import {Chart} from "./base"
-import {lineChart, LineChart} from "./line"
+import {areaChart, AreaChart} from "./area"
 import {barChart, BarChart} from "./bar"
-import {pieChart, PieChart} from "./pie"
 import {bubbleChart, BubbleChart} from "./bubble"
+import {histogramChart, HistogramChart} from "./histogram"
+import {lineChart, LineChart} from "./line"
+import {pieChart, PieChart} from "./pie"
+import {stackedBarChart, StackedBarChart} from "./stacked"
 
 export {
     Chart,
-    LineChart, lineChart,
+    AreaChart, areaChart,
     BarChart, barChart,
+    BubbleChart, bubbleChart,
+    HistogramChart, histogramChart,
+    LineChart, lineChart,
     PieChart, pieChart,
-    BubbleChart, bubbleChart
+    StackedBarChart, stackedBarChart,
 }

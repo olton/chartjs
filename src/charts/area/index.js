@@ -1,17 +1,18 @@
+import {defaultAreaChartOptions} from "../../defaults/area"
 import {Chart} from "../base"
 import {minMax} from "../../helpers/min-max"
 import {drawCircle} from "../../draw/circle"
 import {drawSquare} from "../../draw/square"
 import {drawTriangle} from "../../draw/triangle"
 import {drawDiamond} from "../../draw/diamond"
-import {defaultAreaChartOptions} from "../../defaults/area"
 import {merge} from "../../helpers/merge"
 import {expandPadding} from "../../helpers/expand-padding"
+import {drawArea} from "../../draw/area";
 
 import {MixinCross} from "../../mixins/cross"
 import {MixinAxis} from "../../mixins/axis"
-import {drawArea} from "../../draw/area";
 import {MixinAddPoint} from "../../mixins/add-point";
+import {drawLine} from "../../draw/line";
 
 export class AreaChart extends Chart {
     constructor(el, data = [], options = {}) {
@@ -77,7 +78,8 @@ export class AreaChart extends Chart {
 
         for (let i = 0; i < this.data.length; i++) {
             const graph = this.data[i]
-            const color = o.colors[i]
+            const color = graph.color ?? o.colors[i]
+            const fill = graph.fill ?? color
 
             coords = []
 
@@ -93,8 +95,9 @@ export class AreaChart extends Chart {
             coords.push([coords[coords.length - 1][0], this.viewHeight + padding.top, 0, 0])
 
             if (graph.showLines !== false) {
-                drawArea(ctx, coords, {color: color, size: graph.size})
+                drawLine(ctx, coords, {color, fill, size: graph.size})
             }
+            drawArea(ctx, coords, {color, fill, size: graph.size})
 
             let dots = graph.dots ? graph.dots : {
                 type: 'dot', // dot, square, triangle
@@ -102,7 +105,7 @@ export class AreaChart extends Chart {
             let opt = {
                 color: dots.color ?? color,
                 fill: dots.fill ?? color,
-                radius: dots.size || 4
+                radius: dots.size ?? 4
             }
 
             let drawPointFn
@@ -120,7 +123,7 @@ export class AreaChart extends Chart {
                 default: drawPointFn = drawCircle
             }
 
-            if (graph.dots) {
+            if (graph.dots && o.showDots !== false) {
                 coords.map(([x, y]) => {
                     drawPointFn(ctx, [x, y, opt.radius], opt)
                 })
@@ -159,8 +162,12 @@ export class AreaChart extends Chart {
                 const lx = px - accuracy, rx = px + accuracy
                 const ly = py - accuracy, ry = py + accuracy
 
+                if ((mx > lx && mx < rx) && (o.hoverMode !== 'default')) {
+                    drawPointFn(ctx, [px, py, opt.radius], {color: opt.color, fill: opt.fill})
+                }
+
                 if ((mx > lx && mx < rx) && (my > ly && my < ry)) {
-                    drawPointFn(ctx, [px, py, opt.radius * 2], {color: opt.color, fill: opt.fill})
+                    if (o.hoverMode === 'default') drawPointFn(ctx, [px, py, opt.radius * 2], {color: opt.color, fill: opt.fill})
                     if ( o.tooltip ) {
                         this.showTooltip([_x, _y], item.graph)
                         tooltip = true

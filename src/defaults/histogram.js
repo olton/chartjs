@@ -5,5 +5,8 @@ export const defaultHistogramOptions = {
     barWidth: 10,
     axis: defaultAxis,
     cross: defaultCross,
-    graphSize: 40
+    graphSize: 40,
+    bars: {
+        stroke: '#fff'
+    }
 }

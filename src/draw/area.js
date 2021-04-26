@@ -1,10 +1,10 @@
-export const drawArea = (ctx, coords = [], {color = '#000', size = 1, dash = []}) => {
+export const drawArea = (ctx, coords = [], {color = '#000', fill = '#000', size = 1, dash = []} = {}) => {
     ctx.beginPath()
     ctx.save()
     ctx.setLineDash(dash)
     ctx.lineWidth = size
     ctx.strokeStyle = color
-    ctx.fillStyle = color
+    ctx.fillStyle = fill
 
     coords.map(([x, y]) => {
         ctx.lineTo(x, y)

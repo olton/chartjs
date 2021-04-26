@@ -12,8 +12,6 @@
     ],
     "scripts": {
         "serve": "parcel test/index.html --open --out-dir output -p 1234",
-        "serve_line": "parcel test/line-chart/index.html --open --out-dir output -p 1235",
-        "serve_bar": "parcel test/bar-chart/index.html --open --out-dir output -p 1236",
         "build_demo": "rimraf -rf dist && parcel build test/index.html --out-dir dist --public-url .",
         "build_browser": "rollup -c .rollup/rollup.js && rollup -c .rollup/rollup.minify.js",
         "build": "rimraf -rf lib && npm run build_browser"

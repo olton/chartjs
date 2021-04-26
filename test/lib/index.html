@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+  <div class="chart" id="area-add-point"></div>
+
+  <script src="../../lib/chart.js"></script>
+  <script>
+    const rand = (min, max) => Math.floor(min + Math.random() * (max + 1 - min))
+
+    const genData = (count, min, max) => {
+      let y = 0, x = 0, a = []
+
+      for(let i = 0; i < count; i++) {
+        y = rand(min, max)
+        x+=10
+        a.push([x, y])
+      }
+
+      return a
+    }
+    const areaChartAddPoint = chart.areaChart("#area-add-point", [
+      {
+        name: "Line 1",
+        size: 1,
+          fill: 'rgba(125, 195, 123, .2)',
+          data: [
+                [new Date().getTime(), 20],
+                [new Date().getTime()+1000, 10],
+        ],
+      },
+    ], {
+      height: 200,
+      boundaries: {
+        minY: 0,
+        maxY: 32
+      },
+      colors: ['green'],
+      title: {
+        text: "The AreaChart :: Live data"
+      }
+    })
+
+    let x = 1000
+    setInterval( () => {
+      x += 10
+      areaChartAddPoint.addPoint(0, [new Date().getTime(), 12])
+    }, 1000)
+  </script>
+</body>
+</html>

@@ -19,6 +19,7 @@ export const MixinAddTriplet = {
         this.data[index].data.push([a, b, c])
 
         this.calcMinMax()
+        this.calcRatio()
         this.resize()
     }
 }
