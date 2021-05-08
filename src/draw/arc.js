@@ -1,15 +1,13 @@
-export const drawArc = (ctx, [x, y, radius = 4, startAngle, endAngle], {color = '#000', fill = '#fff', size = 1} = {}) => {
+export const drawArc = (ctx, [x, y, radius, startAngle, endAngle], {stroke = '#000', fill = '#fff', size = 1, dash = []} = {}) => {
     ctx.beginPath()
     ctx.save()
-    ctx.setLineDash([])
+    ctx.setLineDash(dash)
     ctx.lineWidth = size
-    ctx.strokeStyle = color
+    ctx.strokeStyle = stroke
     ctx.fillStyle = fill
 
     ctx.arc(x, y, radius , startAngle, endAngle)
-    ctx.lineTo(x, y)
 
-    ctx.fill()
     ctx.stroke()
     ctx.restore()
     ctx.closePath()

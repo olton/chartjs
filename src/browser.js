@@ -6,6 +6,8 @@ import {
     lineChart,
     pieChart,
     stackedBarChart,
+    gauge,
+    donut
 } from "./charts"
 
 globalThis.chart = {
@@ -16,5 +18,7 @@ globalThis.chart = {
     lineChart,
     pieChart,
     stackedBarChart,
+    gauge,
+    donut
 }
 

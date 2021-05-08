@@ -1,7 +1,7 @@
 import {Chart} from "../base"
 import {defaultPieChartOptions} from "../../defaults/pie"
 import {merge} from "../../helpers/merge"
-import {drawArc} from "../../draw/arc";
+import {drawSector} from "../../draw/sector";
 import {drawText} from "../../draw/text";
 import {drawCircle} from "../../draw/circle";
 import {getTextBoxWidth} from "../../helpers/get-textbox-width";
@@ -10,7 +10,6 @@ import {expandPadding} from "../../helpers/expand-padding";
 export class PieChart extends Chart {
     constructor(el, data, options) {
         super(el, data, merge({}, defaultPieChartOptions, options), 'pie')
-        this.center = [this.dpiWidth / 2, this.dpiHeight / 2]
         this.total = this.data.reduce( (acc, curr) => acc + curr.data, 0)
 
         this.legendItems = []
@@ -27,9 +26,7 @@ export class PieChart extends Chart {
     sectors(){
         const ctx = this.ctx, o = this.options, padding = expandPadding(o.padding)
         const [x, y] = this.center
-        const radius = (this.viewHeight > this.viewWidth)
-            ? this.viewWidth / 2 - (padding.left + padding.right)
-            : this.viewHeight / 2 - (padding.top + padding.bottom)
+        const radius = this.radius
 
         let startAngle = 0, endAngle = 360, offset = 0, val = '', textVal = ''
         let textX, textY
@@ -40,7 +37,7 @@ export class PieChart extends Chart {
             let sector = this.data[i]
             let color = o.colors[i]
             endAngle = 2 * Math.PI * sector.data / this.total
-            drawArc(ctx, [x, y, radius, startAngle, startAngle + endAngle], {fill: color, color: color})
+            drawSector(ctx, [x, y, radius, startAngle, startAngle + endAngle], {fill: color, color: color})
             startAngle += endAngle
         }
 

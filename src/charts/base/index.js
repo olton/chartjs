@@ -80,6 +80,8 @@ export class Chart {
         this.dpiWidth = o.dpi * width
         this.viewHeight = this.dpiHeight - (padding.top + padding.bottom)
         this.viewWidth = this.dpiWidth - (padding.left + padding.right)
+        this.center = [this.dpiWidth / 2, this.dpiHeight / 2]
+        this.radius = Math.min(this.viewHeight, this.viewWidth) / 2
     }
 
     title(){
@@ -133,7 +135,7 @@ export class Chart {
 
     mouseMove(e){
         const onHover = this.options.onHover
-        const {clientX: x, clientY: y} = e
+        const {clientX: x, clientY: y} = e.changedTouches ? e.touches[0] : e
 
         if (typeof onHover === "function")
             onHover.apply(null, [x, y])
@@ -142,6 +144,8 @@ export class Chart {
             x: x,
             y: y
         }
+
+        if (e.cancelable) e.preventDefault()
     }
 
     mouseLeave(){
@@ -166,6 +170,7 @@ export class Chart {
         const canvas = this.canvas
 
         canvas.addEventListener("mousemove", this.mouseMove.bind(this))
+        canvas.addEventListener("touchmove", this.mouseMove.bind(this), {passive: false})
         canvas.addEventListener("mouseleave", this.mouseLeave.bind(this))
         window.addEventListener("resize", this.resize.bind(this))
     }

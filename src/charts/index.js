@@ -6,6 +6,8 @@ import {histogramChart, HistogramChart} from "./histogram"
 import {lineChart, LineChart} from "./line"
 import {pieChart, PieChart} from "./pie"
 import {stackedBarChart, StackedBarChart} from "./stacked"
+import {gauge, Gauge} from "./gauge"
+import {donut, Donut} from "./donut"
 
 export {
     Chart,
@@ -16,4 +18,6 @@ export {
     LineChart, lineChart,
     PieChart, pieChart,
     StackedBarChart, stackedBarChart,
+    Gauge, gauge,
+    Donut, donut
 }

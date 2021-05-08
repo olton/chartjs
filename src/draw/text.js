@@ -1,4 +1,4 @@
-export const drawText = (ctx, text, [x, y], {align = 'left', color = '#000', stroke = '#000', font, angle = 0, translate = [0,0]} = {}) => {
+export const drawText = (ctx, text, [x, y], {align = 'left', baseLine = 'middle', color = '#000', stroke = '#000', font, angle = 0, translate = [0,0]} = {}) => {
     const {
         style = 'normal',
         weight = 'normal',
@@ -23,7 +23,7 @@ export const drawText = (ctx, text, [x, y], {align = 'left', color = '#000', str
     ctx.font = `${style} ${weight} ${size}px/${lineHeight} ${family}`
     ctx.translate(tX, tY)
     ctx.rotate(angle)
-    ctx.textBaseline="middle"
+    ctx.textBaseline = baseLine
 
     const lines = text.toString().split('\n')
 

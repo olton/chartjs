@@ -1,4 +1,4 @@
-import {areaChart} from "../../src/charts/area"
+import {areaChart} from "../../src"
 import {genData} from "../helpers"
 
 const areas = [

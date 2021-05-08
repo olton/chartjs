@@ -37,10 +37,19 @@
         .full {
             width: 100%;
         }
+
+        @media all and (max-width: 767px) {
+            .chart {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <div class="chart" id="gauge-1"></div>
+        <div class="chart" id="gauge-2"></div>
+
         <div class="chart" id="histogram-1"></div>
         <div class="chart" id="histogram-2"></div>
 
@@ -73,5 +82,6 @@
     <script src="area/index.js"></script>
     <script src="add-point/index.js"></script>
     <script src="histogram/index.js"></script>
+    <script src="gauge/index.js"></script>
 </body>
 </html>

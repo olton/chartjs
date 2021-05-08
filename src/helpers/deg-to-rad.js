@@ -1,1 +1,1 @@
-export const deg2rad = deg => deg * Math.PI / 180
+export const deg2rad = deg => deg * (Math.PI / 180)
