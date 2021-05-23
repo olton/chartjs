@@ -151,9 +151,7 @@ lineChart("#line-2", lines2, {
     legend: {
         color: '#fff4db',
         vertical: true,
-        margin: {
-            left: 20
-        },
+        margin: 60,
         padding: {
             top: 10,
             left: 10,
@@ -163,7 +161,7 @@ lineChart("#line-2", lines2, {
         border: {
             color: '#ffdc73'
         },
-        dash: []
+        dash: [],
     },
     drawType: 'curve',
 })
