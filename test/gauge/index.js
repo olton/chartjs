@@ -1,8 +1,14 @@
 import {gauge} from "../../src/"
-import {deg2rad} from "../../src/helpers/deg-to-rad";
 
-gauge("#gauge-1", [50], {
+gauge("#gauge-1", [55], {
     height: 600,
+    fillStyle: [
+        [30, '#60a917'],
+        [60, '#6495ed'],
+        [80, '#f0a30a'],
+        [90, '#ff6347'],
+        [100, '#a20025']
+    ],
     value: {
         font: {
             size: 48,

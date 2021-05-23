@@ -1,25 +1,6 @@
 import {pieChart} from "../../src"
 
-const data = [
-    {
-        name: "Classic",
-        data: 10
-    },
-    {
-        name: "Rock",
-        data: 14
-    },
-    {
-        name: "Pop",
-        data: 2
-    },
-    {
-        name: "Jazz",
-        data: 12
-    },
-]
-
-pieChart("#pie-1", data, {
+pieChart("#pie-1", [10, 14, 2, 12], {
     height: 600,
     colors: ['#fde23e', '#f16e23', '#57d9ff', '#937e88'],
     title: {
@@ -30,21 +11,18 @@ pieChart("#pie-1", data, {
         }
     },
     legend: {
-        border: {
-            color: '#fff'
-        },
-        vertical: false,
-        margin: 0,
-        padding: 0
+        titles: ['Classic', 'Rock', 'Pop', 'Jazz'],
+        showValue: true
     },
     labels: {
         font: {
             size: 20
         }
-    }
+    },
+    padding: 60
 })
 
-pieChart("#pie-2", data, {
+pieChart("#pie-2", [10, 14, 2, 12], {
     height: 600,
     title: {
         text: 'The PieChart',
@@ -53,13 +31,18 @@ pieChart("#pie-2", data, {
             lineHeight: 1
         }
     },
-    holeSize: 80,
     legend: {
+        vertical: true,
+        titles: ['Classic', 'Rock', 'Pop', 'Jazz'],
+        margin: 0,
         padding: {
             top: 10,
             left: 10,
             right: 10,
             bottom: 10
+        },
+        border: {
+            color: "transparent"
         }
     },
     labels: {
@@ -68,6 +51,7 @@ pieChart("#pie-2", data, {
             size: 16
         }
     },
+    padding: 60,
     showValue: true,
     onDrawValue: (name, value, percent) => {
         return `${name} ${percent}%`

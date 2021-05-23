@@ -52,8 +52,12 @@ const areaChartAddPoint = areaChart("#area-add-point", [
 
 let x = 1000
 setInterval( () => {
+    let y = rand(30, 60)
     x += 10
     lineChartAddPoint.addPoint(0, [x, rand(30, 60)])
     lineChartAddPoint.addPoint(1, [x, rand(10, 25)])
-    areaChartAddPoint.addPoint(0, [x, rand(30, 60)])
+    areaChartAddPoint.setBoundaries({
+        maxY: 100
+    })
+    areaChartAddPoint.addPoint(0, [x, y])
 }, 1000)

@@ -3,20 +3,19 @@ import {defaultPieChartOptions} from "../../defaults/pie"
 import {merge} from "../../helpers/merge"
 import {drawSector} from "../../draw/sector";
 import {drawText} from "../../draw/text";
-import {drawCircle} from "../../draw/circle";
 import {getTextBoxWidth} from "../../helpers/get-textbox-width";
-import {expandPadding} from "../../helpers/expand-padding";
 
 export class PieChart extends Chart {
     constructor(el, data, options) {
         super(el, data, merge({}, defaultPieChartOptions, options), 'pie')
-        this.total = this.data.reduce( (acc, curr) => acc + curr.data, 0)
+        this.total = this.data.reduce( (acc, curr) => acc + curr, 0)
 
         this.legendItems = []
 
-        if (this.options.legend && this.data.length) {
-            for(let i = 0; i < this.data.length; i++) {
-                this.legendItems.push([this.data[i].name, this.options.colors[i]])
+        const legend = this.options.legend
+        if (legend && legend.titles && legend.titles.length) {
+            for(let i = 0; i < legend.titles.length; i++) {
+                this.legendItems.push([legend.titles[i], this.options.colors[i], this.data[i]])
             }
         }
 
@@ -24,8 +23,8 @@ export class PieChart extends Chart {
     }
 
     sectors(){
-        const ctx = this.ctx, o = this.options, padding = expandPadding(o.padding)
-        const [x, y] = this.center
+        const ctx = this.ctx, o = this.options
+        let [x, y] = this.center
         const radius = this.radius
 
         let startAngle = 0, endAngle = 360, offset = 0, val = '', textVal = ''
@@ -34,28 +33,25 @@ export class PieChart extends Chart {
         if (!this.data || ! this.data.length) return
 
         for (let i = 0; i < this.data.length; i++) {
-            let sector = this.data[i]
+            let val = this.data[i]
             let color = o.colors[i]
-            endAngle = 2 * Math.PI * sector.data / this.total
+            endAngle = 2 * Math.PI * val / this.total
             drawSector(ctx, [x, y, radius, startAngle, startAngle + endAngle], {fill: color, color: color})
             startAngle += endAngle
         }
 
-        if (o.holeSize) {
-            drawCircle(ctx, [x, y, o.holeSize], {color: '#fff'})
-        }
-
         startAngle = 0
         for (let i = 0; i < this.data.length; i++) {
-            let sector = this.data[i], percent
+            let val = this.data[i], percent
+            let name = (this.legendItems[i] && this.legendItems[i][0]) ?? ""
 
-            endAngle = 2 * Math.PI * sector.data / this.total
-            offset = o.holeSize / 2
-            percent = Math.round(sector.data * 100 / this.total)
-            textVal = o.showValue ? sector.data : percent+"%"
+            endAngle = 2 * Math.PI * val / this.total
+            offset = 0
+            percent = Math.round(val * 100 / this.total)
+            textVal = o.showValue ? val : percent+"%"
 
             if (typeof o.onDrawValue === 'function') {
-                textVal = o.onDrawValue.apply(null, [sector.name, sector.data, percent])
+                textVal = o.onDrawValue.apply(null, [name, val, percent])
             }
 
             textX = x + (radius / 2 + offset) * Math.cos(startAngle + endAngle / 2)

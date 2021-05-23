@@ -36,16 +36,16 @@ export const MixinLegend = {
         x = padding.left + legendPadding.left + legendMargin.left
 
         for (let i = 0; i < items.length; i++) {
-            let [name] = items[i]
-            offset += getTextBoxWidth(ctx,[[name]], {font: legend.font}) + box * 2 + magic
+            let [name, _, value] = items[i]
+            offset += getTextBoxWidth(ctx,[[legend.showValue ? `${name} - ${value}` : name]], {font: legend.font}) + box * 2 + magic
         }
 
         offset = (this.viewWidth - offset) / 2
 
         for (let i = 0; i < items.length; i++) {
-            let [name, color] = items[i]
+            let [name, color, value] = items[i]
 
-            const nameWidth = getTextBoxWidth(ctx,[[name]], {font: legend.font})
+            const nameWidth = getTextBoxWidth(ctx,[[legend.showValue ? `${name} - ${value}` : name]], {font: legend.font})
 
             if (x + nameWidth > this.viewWidth) {
                 x = padding.left + legendPadding.left + legendMargin.left
@@ -53,7 +53,7 @@ export const MixinLegend = {
             }
 
             drawSquare(ctx, [offset + x, y, box], {color, fill: color})
-            drawText(ctx, name, [offset+ x + box +magic, y + box / 2], {color: legend.font.color, stroke: legend.font.color, font: o.font})
+            drawText(ctx, legend.showValue ? `${name} - ${value}` : name, [offset + x + box + magic, y + box / 2], {color: legend.font.color, stroke: legend.font.color, font: o.font})
 
             x += box + nameWidth + 20
         }
@@ -77,21 +77,21 @@ export const MixinLegend = {
         textBoxHeight = items.length * lh + legendPadding.top + legendPadding.bottom + magic
 
         if (legend.position === 'top-left') {
-            x = padding.left + legendMargin.left
-            y = padding.top + legendMargin.top
+            x = legendPadding.left + legendMargin.left
+            y = legendPadding.top + legendMargin.top
         } else if (legend.position === 'top-right') {
             x = this.dpiWidth - textBoxWidth - legendMargin.right - padding.right
-            y = padding.top + legendMargin.top
+            y = legendPadding.top + legendMargin.top
         } else if (legend.position === 'bottom-left') {
-            x = padding.left + legendMargin.left
-            y = this.dpiHeight - textBoxHeight - padding.bottom + legendMargin.bottom
+            x = legendPadding.left + legendMargin.left
+            y = this.dpiHeight - textBoxHeight - legendPadding.bottom + legendMargin.bottom
         } else {
-            x = this.dpiWidth - textBoxWidth - legendMargin.right - padding.right
-            y = this.dpiHeight - textBoxHeight - padding.bottom + legendMargin.bottom
+            x = this.dpiWidth - textBoxWidth - legendMargin.right - legendPadding.right
+            y = this.dpiHeight - textBoxHeight - legendPadding.bottom + legendMargin.bottom
         }
 
         drawBox(ctx, [x, y, textBoxWidth, textBoxHeight], {
-            color: legend.color,
+            color: legend.background,
             dash: legend.dash,
             size: legend.border.width,
             borderColor: legend.border.color
@@ -101,10 +101,10 @@ export const MixinLegend = {
         y += box + magic + legendPadding.top
 
         for (let i = 0; i < items.length; i++) {
-            let [name, color] = items[i]
+            let [name, color, value] = items[i]
 
             drawSquare(ctx, [x, y, box], {color, fill: color})
-            drawText(ctx, name, [x + box + magic, y + 1], {color: o.font.color, stroke: o.font.color, font: legend.font})
+            drawText(ctx, legend.showValue ? `${name} - ${value}` : name, [x + box + magic, y + 1], {color: legend.font.color, stroke: legend.font.color, font: legend.font})
 
             y += lh
         }

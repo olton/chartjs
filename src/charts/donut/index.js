@@ -1,76 +1,78 @@
 import {Chart} from "../base";
 import {merge} from "../../helpers/merge";
-import {defaultGaugeOptions} from "../../defaults/gauge";
+import {defaultDonutOptions} from "../../defaults/donut";
 import {expandPadding} from "../../helpers/expand-padding";
 import {drawText} from "../../draw/text";
 import {drawArc} from "../../draw/arc";
 
 export class Donut extends Chart {
     constructor(el, data, options) {
-        super(el, data, merge({}, defaultGaugeOptions, options), 'gauge')
+        super(el, data, merge({}, defaultDonutOptions, options), 'donut')
+
+        this.total = this.data.reduce( (acc, curr) => acc + curr, 0)
+        this.min = this.options.boundaries.min
+        this.max = this.options.boundaries.max
+
+        this.legendItems = []
+
+        const legend = this.options.legend
+        if (legend && legend.titles && legend.titles.length) {
+            for(let i = 0; i < legend.titles.length; i++) {
+                this.legendItems.push([legend.titles[i], this.options.colors[i], this.data[i]])
+            }
+        }
 
         this.resize()
     }
 
     gauge(){
-        const ctx = this.ctx, o = this.options, padding = expandPadding(o.padding)
+        const ctx = this.ctx, o = this.options
         let [x, y] = this.center
 
-        x += padding.left
-        y += padding.top
+        const PI = Math.PI, min = 0, max = 360
+        const radius = this.radius - o.backWidth / 2
 
-        const PI = Math.PI, min = PI * o.startFactor, max = PI * (2 + o.endFactor)
-        const r = o.radius * this.radius / 100 - o.backWidth
-        let v = this.data[0], p = Math.abs(100 * (v - o.boundaries.min) / (o.boundaries.max - o.boundaries.min))
-        const val = min+(max-min)*p/100
-        let textVal = p.toFixed(0)
+        drawArc(ctx, [x, y, radius, 0, 2*PI], {size: o.backWidth, stroke: o.backStyle})
 
-        if (typeof o.onDrawValue === 'function') {
-            textVal = o.onDrawValue.apply(null, [v, p])
-        }
+        let startAngle = 0, endAngle = 0
+        for(let i = 0; i < this.data.length; i++) {
+            const color = o.colors[i]
+            let val = this.data[i]
 
-        drawArc(ctx, [x, y, r, min, max], {size: o.backWidth, stroke: o.backStyle})
-        drawArc(ctx, [x, y, r, min, val], {size: o.valueWidth, stroke: o.fillStyle})
+            endAngle = 2 * Math.PI * val / this.total
+            drawArc(ctx, [x, y, radius, startAngle, startAngle + endAngle], {size: o.valueWidth, stroke: color})
 
-        drawText(ctx, textVal,[0, 0], {
-            align: "center",
-            baseLine: "middle",
-            color: o.value.color,
-            stroke: o.value.color,
-            font: o.value.font || o.font,
-            translate: [x + o.value.shift.x, y + o.value.shift.y],
-            angle: o.value.angle
-        })
+            if (o.label) {
+                let name = (this.legendItems[i] && this.legendItems[i][0]) ?? ""
+                const percent = Math.round(val * 100 / this.total)
+                let textVal = o.showValue ? val : percent+"%"
+                let textX, textY
 
-        if (o.label.min) {
-            drawText(ctx, o.boundaries.min, [0, 0], {
-                align: "left",
-                baseLine: "middle",
-                color: o.label.min.color,
-                stroke: o.label.min.color,
-                font: o.label.min.font || o.font,
-                translate: [x + r * Math.cos(min) + o.backWidth + o.label.min.shift.x, y + r * Math.sin(min) + o.label.min.shift.y],
-                angle: 0
-            })
-        }
+                if (typeof o.onDrawValue === 'function') {
+                    textVal = o.onDrawValue.apply(null, [name, val, percent])
+                }
 
-        if (o.label.max) {
-            drawText(ctx, o.boundaries.max, [0, 0], {
-                align: "right",
-                baseLine: "middle",
-                color: o.label.max.color,
-                stroke: o.label.max.color,
-                font: o.label.max.font || o.font,
-                translate: [x + r * Math.cos(max) - o.backWidth + o.label.max.shift.x, y + r * Math.sin(max) + o.label.max.shift.y],
-                angle: 0
-            })
+                textX = x + (radius) * Math.cos(startAngle + endAngle / 2)
+                textY = y + (radius) * Math.sin(startAngle + endAngle / 2)
+
+                drawText(ctx, textVal, [textX, textY], {color: o.label.color, font: o.label.font})
+            }
+
+            startAngle += endAngle
         }
     }
 
     draw(){
         super.draw()
         this.gauge()
+        this.legend()
     }
+
+    resize(){
+        super.resize()
+        this.center = [this.dpiWidth / 2, this.dpiHeight / 2]
+    }
+
 }
 
 export const donut = (el, data, options) => new Donut(el, data, options)

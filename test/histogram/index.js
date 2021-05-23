@@ -1,6 +1,6 @@
 import {genTriplet, rand} from "../helpers"
-import {histogramChart} from "../../src/charts/histogram";
-import {MetroColorPalette, StandardColorPalette} from "../../src/defaults/elements/colors";
+import {histogramChart} from "../../src"
+import {StandardColorPalette} from "../../src/defaults/elements/colors"
 
 const bars = [
     {

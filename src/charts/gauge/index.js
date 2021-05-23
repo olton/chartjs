@@ -9,7 +9,25 @@ export class Gauge extends Chart {
     constructor(el, data, options) {
         super(el, data, merge({}, defaultGaugeOptions, options), 'gauge')
 
+        this.min = this.options.boundaries.min
+        this.max = this.options.boundaries.max
+
         this.resize()
+    }
+
+    _getFillColor(p, colors) {
+        let res = '#fff', min = 0
+
+        for (let i = 0; i < colors.length; i++) {
+            let c = colors[i][0]
+
+            if (p> min && p <= c) {
+                res = colors[i][1]
+                min = colors[i][0]
+            }
+        }
+
+        return res
     }
 
     gauge(){
@@ -21,16 +39,25 @@ export class Gauge extends Chart {
 
         const PI = Math.PI, min = PI * o.startFactor, max = PI * (2 + o.endFactor)
         const r = o.radius * this.radius / 100 - o.backWidth
-        let v = this.data[0], p = Math.abs(100 * (v - o.boundaries.min) / (o.boundaries.max - o.boundaries.min))
+        let v = this.data[0], p = Math.round(Math.abs(100 * (v - this.min) / (this.max - this.min)))
         const val = min+(max-min)*p/100
-        let textVal = p.toFixed(0)
+        let textVal = p
+        let colors = []
 
         if (typeof o.onDrawValue === 'function') {
             textVal = o.onDrawValue.apply(null, [v, p])
         }
 
         drawArc(ctx, [x, y, r, min, max], {size: o.backWidth, stroke: o.backStyle})
-        drawArc(ctx, [x, y, r, min, val], {size: o.valueWidth, stroke: o.fillStyle})
+
+        if (typeof o.fillStyle === "string") {
+            colors.push([100, o.fillStyle])
+        } else if (Array.isArray(o.fillStyle)) {
+            for (let c of o.fillStyle) {
+                colors.push(c)
+            }
+        }
+        drawArc(ctx, [x, y, r, min, val], {size: o.valueWidth, stroke: this._getFillColor(p, colors)})
 
         drawText(ctx, textVal,[0, 0], {
             align: "center",

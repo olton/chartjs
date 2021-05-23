@@ -9,10 +9,7 @@ export const defaultPieChartOptions = {
         color: '#fff'
     },
     showValue: false,
-    holeSize: 0,
-    legend: {
-        vertical: true,
-    },
+    padding: 0,
 
     onDrawValue: null
 }

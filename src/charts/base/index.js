@@ -123,14 +123,29 @@ export class Chart {
         this.ctx.clearRect(0, 0, this.dpiWidth, this.dpiHeight)
     }
 
-    setData(data, index){
+    setData(data, index, redraw = true){
         if (typeof index !== "undefined") {
             this.data[index].data = data
         } else {
             this.data = data
         }
 
-        this.draw()
+        if (redraw) this.resize()
+    }
+
+    setBoundaries(obj, redraw = true){
+        const grantedKeys = ["minX", "minY", "minZ", "maxX", "maxY", "maxZ", "min", "max"]
+
+        for (let k in obj) {
+            if (grantedKeys.includes(k)) {
+                this[k] = obj[k]
+                this.options.boundaries[k] = obj[k]
+            }
+        }
+
+        if (redraw) {
+            this.draw()
+        }
     }
 
     mouseMove(e){

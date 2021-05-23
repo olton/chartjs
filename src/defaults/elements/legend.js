@@ -18,7 +18,7 @@ export const defaultLegend = {
     font: labelFont,
     border: defaultBorder,
     dash: [],
-    color: '#fff',
+    background: '#fff',
     vertical: false,
     position: 'top-left', // top-left, top-right, bottom-left, bottom-right, top-center, bottom-center
 }

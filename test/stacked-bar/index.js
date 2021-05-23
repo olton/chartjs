@@ -1,4 +1,4 @@
-import {stackedBarChart} from "../../src/charts/stacked";
+import {stackedBarChart} from "../../src";
 
 const data1 = [
     {
