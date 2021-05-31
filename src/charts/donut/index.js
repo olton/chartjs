@@ -1,7 +1,6 @@
 import {Chart} from "../base";
 import {merge} from "../../helpers/merge";
 import {defaultDonutOptions} from "../../defaults/donut";
-import {expandPadding} from "../../helpers/expand-padding";
 import {drawText} from "../../draw/text";
 import {drawArc} from "../../draw/arc";
 
@@ -72,7 +71,6 @@ export class Donut extends Chart {
         super.resize()
         this.center = [this.dpiWidth / 2, this.dpiHeight / 2]
     }
-
 }
 
 export const donut = (el, data, options) => new Donut(el, data, options)

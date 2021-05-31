@@ -5,4 +5,5 @@ export const defaultAreaChartOptions = {
     axis: defaultAxis,
     cross: defaultCross,
     showDots: true,
+    accuracy: 2,
 }

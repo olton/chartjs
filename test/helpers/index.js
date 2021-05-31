@@ -7,8 +7,8 @@ export const genData = (count, min, max) => {
 
     for(let i = 0; i < count; i++) {
         y = rand(min, max)
-        x+=10
         a.push([x, y])
+        x+=10
     }
 
     return a
@@ -25,3 +25,5 @@ export const genTriplet = (count, min, max) => {
 
     return a
 }
+
+export const getOne = () => rand(-1, 1) > 0 ? 1 : -1

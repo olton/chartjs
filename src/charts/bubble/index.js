@@ -2,14 +2,14 @@ import {Chart} from "../base"
 import {defaultBubbleChartOptions} from "../../defaults/bubble"
 import {MixinCross} from "../../mixins/cross"
 import {MixinAxis} from "../../mixins/axis"
-import {minMax} from "../../helpers/min-max";
-import {expandPadding} from "../../helpers/expand-padding";
-import {drawCircle} from "../../draw/circle";
-import {merge} from "../../helpers/merge";
+import {minMax} from "../../helpers/min-max"
+import {expandPadding} from "../../helpers/expand-padding"
+import {drawCircle} from "../../draw/circle"
+import {merge} from "../../helpers/merge"
 
 export class BubbleChart extends Chart {
     constructor(el, data, options) {
-        super(el, data, merge({}, defaultBubbleChartOptions, options), 'bubble');
+        super(el, data, merge({}, defaultBubbleChartOptions, options), 'bubble')
 
         this.coords = {}
 
@@ -44,9 +44,9 @@ export class BubbleChart extends Chart {
             a.push(_data)
         }
 
-        const [minX, maxX] = minMax(a, 'x');
-        const [minY, maxY] = minMax(a, 'y');
-        const [minZ, maxZ] = minMax(a, 'z');
+        const [minX, maxX] = minMax(a, 'x')
+        const [minY, maxY] = minMax(a, 'y')
+        const [minZ, maxZ] = minMax(a, 'z')
 
         this.minX = o.boundaries && !isNaN(o.boundaries.minX) ? o.boundaries.minX : minX
         this.maxX = o.boundaries && !isNaN(o.boundaries.maxX) ? o.boundaries.maxX : maxX
@@ -89,6 +89,21 @@ export class BubbleChart extends Chart {
 
     floatPoint(){
         if (!this.data || ! this.data.length) return
+    }
+
+    add(index, [x, y, z], shift = false){
+        this.addPoint(index, [x, y, z], shift)
+
+        if (x < this.minX) this.minX = x
+        if (x > this.maxX) this.maxX = x
+
+        if (y < this.minY) this.minY = y
+        if (y > this.maxY) this.maxY = y
+
+        if (z < this.minZ) this.minZ = z
+        if (z > this.maxZ) this.maxZ = z
+
+        this.resize()
     }
 
     draw(){

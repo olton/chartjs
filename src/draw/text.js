@@ -22,7 +22,7 @@ export const drawText = (ctx, text, [x, y], {align = 'left', baseLine = 'middle'
     ctx.strokeStyle = stroke
     ctx.font = `${style} ${weight} ${size}px/${lineHeight} ${family}`
     ctx.translate(tX, tY)
-    ctx.rotate(angle)
+    ctx.rotate(angle * Math.PI / 180)
     ctx.textBaseline = baseLine
 
     const lines = text.toString().split('\n')

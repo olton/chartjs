@@ -76,8 +76,8 @@ stackedBarChart("#stacked-2", data1, {
         position: 'bottom-right',
         color: '#fffee0',
         margin: {
-            right: 20,
-            bottom: -20
+            right: 40,
+            bottom: 40
         },
         padding: 10
     },

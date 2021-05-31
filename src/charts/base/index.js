@@ -76,8 +76,9 @@ export class Chart {
 
         this.width = width
         this.height = height
-        this.dpiHeight = o.dpi * height
-        this.dpiWidth = o.dpi * width
+        this.dpi = o.dpi
+        this.dpiHeight = this.dpi * height
+        this.dpiWidth = this.dpi * width
         this.viewHeight = this.dpiHeight - (padding.top + padding.bottom)
         this.viewWidth = this.dpiWidth - (padding.left + padding.right)
         this.center = [this.dpiWidth / 2, this.dpiHeight / 2]

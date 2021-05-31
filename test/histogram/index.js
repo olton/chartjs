@@ -1,20 +1,6 @@
 import {genTriplet, rand} from "../helpers"
 import {histogramChart} from "../../src"
-import {StandardColorPalette} from "../../src/defaults/elements/colors"
-
-const bars = [
-    {
-        name: "Line 1",
-        data: genTriplet(50, 0, 100)
-    },
-]
-
-const bars2 = [
-    {
-        name: "Line 1",
-        data: genTriplet(40, 0, 100)
-    },
-]
+import {defaultColors} from "../../src/defaults/elements/colors"
 
 const axis = {
     x: {
@@ -29,10 +15,21 @@ const axis = {
     }
 }
 
-histogramChart("#histogram-1", bars, {
+const data1 = [
+    genTriplet(50, 0, 100)
+]
+
+const bars1 = [
+    {
+        name: "Line 1",
+    },
+]
+
+histogramChart("#histogram-1", data1, {
+    bars: bars1,
     height: 150,
     accuracy: 4,
-    colors: [StandardColorPalette.aquamarine],
+    colors: [defaultColors.cornflowerBlue],
     boundaries: {
         minY: 0,
         maxY: 100
@@ -52,10 +49,22 @@ histogramChart("#histogram-1", bars, {
     legend: false
 })
 
-const histogram = histogramChart("#histogram-2", bars2, {
+const data2 = [
+    genTriplet(40, 0, 100)
+]
+
+const bars2 = [
+    {
+        name: "Line 1",
+        color: defaultColors.bisque,
+        stroke: 'transparent'
+    },
+]
+
+const histogram = histogramChart("#histogram-2", data2, {
+    bars: bars2,
     height: 150,
     accuracy: 4,
-    colors: [StandardColorPalette.cornflowerBlue],
     boundaries: {
         minY: 0,
         maxY: 100
@@ -73,14 +82,11 @@ const histogram = histogramChart("#histogram-2", bars2, {
         bottom: 20
     },
     legend: false,
-    bars: {
-        stroke: '#000'
-    }
 })
 
 let x = 400
 setInterval( () => {
     let y = rand(0, 100)
     x += 10
-    histogram.addTriplet(0, [x - 10, x, y])
+    histogram.add(0, [x - 10, x, y], true)
 }, 1000)

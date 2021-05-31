@@ -7,4 +7,6 @@ export const defaultLineChartOptions = {
     cross: defaultCross,
     showDots: true,
     type: 'line', // line, curve
+    accuracy: 2,
+    lines: []
 }

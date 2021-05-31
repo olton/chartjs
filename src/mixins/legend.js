@@ -16,23 +16,22 @@ export const MixinLegend = {
     },
 
     legendHorizontal(){
-        const o = this.options,
-            padding = expandPadding(o.padding),
-            legend = o.legend,
-            legendPadding = expandPadding(legend.padding),
-            legendMargin = expandMargin(legend.margin)
-        let lh, x, y, magic = 5, box
+        const o = this.options, padding = expandPadding(o.padding), legend = o.legend
         const ctx = this.ctx
         const items = this.legendItems
-        let offset = 0
 
         if (!legend || !isObject(legend)) return
         if (!items || !Array.isArray(items) || !items.length) return
 
+        const legendPadding = expandPadding(legend.padding)
+        const legendMargin = expandMargin(legend.margin)
+        let lh, x, y, magic = 5, box
+        let offset = 0
+
         box = legend.font.size / 2
 
         lh = legend.font.size * legend.font.lineHeight
-        y = padding.top + this.viewHeight + legend.font.size + legendPadding.top + legendMargin.top
+        y = padding.top + this.viewHeight + (legend.font.size + legendPadding.top + legendMargin.top)
         x = padding.left + legendPadding.left + legendMargin.left
 
         for (let i = 0; i < items.length; i++) {
@@ -53,7 +52,16 @@ export const MixinLegend = {
             }
 
             drawSquare(ctx, [offset + x, y, box], {color, fill: color})
-            drawText(ctx, legend.showValue ? `${name} - ${value}` : name, [offset + x + box + magic, y + box / 2], {color: legend.font.color, stroke: legend.font.color, font: o.font})
+            drawText(
+                ctx,
+                legend.showValue ? `${name} - ${value}` : name,
+                [offset + x + box + magic, y + box / 2],
+                {
+                    color: legend.font.color,
+                    stroke: legend.font.color,
+                    font: o.font
+                }
+            )
 
             x += box + nameWidth + 20
         }
@@ -84,10 +92,10 @@ export const MixinLegend = {
             y = legendPadding.top + legendMargin.top
         } else if (legend.position === 'bottom-left') {
             x = legendPadding.left + legendMargin.left
-            y = this.dpiHeight - textBoxHeight - legendPadding.bottom + legendMargin.bottom
+            y = this.dpiHeight - textBoxHeight - legendPadding.bottom - legendMargin.bottom
         } else {
             x = this.dpiWidth - textBoxWidth - legendMargin.right - legendPadding.right
-            y = this.dpiHeight - textBoxHeight - legendPadding.bottom + legendMargin.bottom
+            y = this.dpiHeight - textBoxHeight - legendPadding.bottom - legendMargin.bottom
         }
 
         drawBox(ctx, [x, y, textBoxWidth, textBoxHeight], {

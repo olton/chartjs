@@ -26,9 +26,11 @@ export class AreaChart extends Chart {
 
         this.legendItems = []
         const legend = this.options.legend
+        const areas = this.options.areas
+        const colors = this.options.colors
         if (legend) {
             for (let i = 0; i < this.data.length; i++) {
-                this.legendItems.push([this.data[i].name, this.options.colors[i]])
+                this.legendItems.push([areas[i].name, colors[i]])
             }
         }
 
@@ -40,9 +42,7 @@ export class AreaChart extends Chart {
         const o = this.options
         let a = []
 
-        for (let k in this.data) {
-            let _data = this.data[k].data
-
+        for (let _data of this.data) {
             if (!Array.isArray(_data)) continue
 
             for( const [x, y] of _data) {
@@ -77,15 +77,16 @@ export class AreaChart extends Chart {
         if (!this.data || !this.data.length) return
 
         for (let i = 0; i < this.data.length; i++) {
-            const graph = this.data[i]
-            const color = graph.color ?? o.colors[i]
-            const fill = graph.fill ?? color
+            const area = o.areas[i]
+            const data = this.data[i]
+            const color = area.color ?? o.colors[i]
+            const fill = area.fill ?? color
 
             coords = []
 
             coords.push([padding.left, this.viewHeight + padding.top, 0, 0])
 
-            for (const [x, y] of graph.data) {
+            for (const [x, y] of data) {
                 let _x = Math.floor((x - this.minX) * this.ratioX + padding.left)
                 let _y = Math.floor(this.viewHeight + padding.top - (y - this.minY) * this.ratioY)
 
@@ -94,9 +95,9 @@ export class AreaChart extends Chart {
 
             coords.push([coords[coords.length - 1][0], this.viewHeight + padding.top, 0, 0])
 
-            drawArea(ctx, coords, {color, fill, size: graph.size})
+            drawArea(ctx, coords, {color, fill, size: area.size})
 
-            let dots = graph.dots ? graph.dots : {
+            let dots = area.dots ? area.dots : {
                 type: 'dot', // dot, square, triangle
             }
             let opt = {
@@ -120,14 +121,14 @@ export class AreaChart extends Chart {
                 default: drawPointFn = drawCircle
             }
 
-            if (graph.dots && o.showDots !== false) {
+            if (area.dots && o.showDots !== false) {
                 coords.map(([x, y]) => {
                     drawPointFn(ctx, [x, y, opt.radius], opt)
                 })
             }
 
-            this.coords[graph.name] = {
-                graph,
+            this.coords[area.name] = {
+                area,
                 coords,
                 drawPointFn,
                 opt
@@ -136,8 +137,8 @@ export class AreaChart extends Chart {
             coords.shift()
             coords.pop()
 
-            if (graph.showLines !== false) {
-                drawLine(ctx, coords, {color, fill, size: graph.size})
+            if (area.showLines !== false) {
+                drawLine(ctx, coords, {color, fill, size: area.size})
             }
         }
     }
@@ -185,6 +186,18 @@ export class AreaChart extends Chart {
                 this.tooltip = null
             }
         }
+    }
+
+    add(index, [x, y], shift){
+        this.addPoint(index, [x, y], shift)
+
+        this.minX = this.data[index][0][0]
+        this.maxX = x
+
+        if (y < this.minY) this.minY = y
+        if (y > this.maxY) this.maxY = y
+
+        this.resize()
     }
 
     draw(){

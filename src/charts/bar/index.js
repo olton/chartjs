@@ -154,7 +154,7 @@ export class BarChart extends Chart {
                 color: labelColor,
                 stroke: labelColor,
                 font: o.font,
-                angle: axisX ? Math.PI / 2 : 0,
+                angle: axisX ? 90 : 0,
                 translate: axisX ? [px - 20, py - groupWidth / 2] : [px - groupWidth / 2, py + 20]
             })
 

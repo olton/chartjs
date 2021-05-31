@@ -8,18 +8,22 @@ export const MixinAxis = {
     arrowX(){
         const o = this.options, ctx = this.ctx
         const padding = expandPadding(o.padding)
-        const x1 = padding.left, y1 = this.viewHeight + padding.top
-        const x2 = x1 + this.viewWidth, y2 = y1
 
         if (!o.axis.x.arrow) return
 
         const arrow = o.axis.x.arrow
+        const x1 = padding.left, y1 = this.viewHeight + padding.top
+        const x2 = padding.left + this.viewWidth + arrow.outside, y2 = y1
 
-        drawArrowX(ctx,[x1, y1, x2, y2, arrow.factorX, arrow.factorY], {
-            color: arrow.color,
-            size: arrow.size,
-            dash: arrow.dash
-        })
+        drawArrowX(
+            ctx,
+            [x1, y1, x2, y2, arrow.factorX, arrow.factorY],
+            {
+                color: arrow.color,
+                size: arrow.size,
+                dash: arrow.dash
+            }
+        )
     },
 
     axisX(){
@@ -28,71 +32,89 @@ export const MixinAxis = {
 
         if (!o.axis.x) return
 
-        const axis = o.axis.x
-        const font = (axis && axis.label && axis.label.font) ?? o.font
-        const step = this.viewWidth / axis.line.count
-        const textStep = (this.maxX - this.minX) / axis.line.count
-        const skipLabels = Math.round(axis.line.count / axis.label.count)
+        const axis = o.axis.x, label = axis.label, line = axis.line, arrow = axis.arrow
+        const font = (label && label.font) ?? o.font
+        const labelStep = label.count ? (this.maxX - this.minX) / label.count : 0
+        let labelValue, value, k, x, y, labelY, shortLineSize = line.shortLineSize ?? 0
 
-        for (let i = 0; i <= axis.line.count; i++) {
-            let x = step * i + padding.left
-            let labelXValue = this.minX + textStep * i
-
-            if (typeof axis.label.fixed === "number") {
-                labelXValue = labelXValue.toFixed(axis.label.fixed)
-            }
-
-            if (axis.line.show) {
-                drawVector(ctx,[x, padding.top, x, this.viewHeight + padding.top], {
-                    color: axis.line.color,
-                    size: axis.line.size,
-                    dash: axis.line.dash
-                })
-            }
-
-            if (!axis.label.show) continue
-            if (skipLabels && i && i % skipLabels !== 0) continue
-            if (!axis.label.first && i === 0) continue
-            if (!axis.label.last && i === axis.line.count) continue
-
+        x = padding.left
+        y = padding.top
+        labelY = padding.top + this.viewHeight + font.size + 5
+        value = this.minX
+        k = 0
+        for (let i = 0; i <= label.count; i++) {
+            labelValue = typeof label.fixed === "number" ? value.toFixed(label.fixed) : value
             if (typeof o.onDrawLabelX === "function") {
-                labelXValue = o.onDrawLabelX.apply(null, [labelXValue])
+                labelValue = o.onDrawLabelX.apply(null, [value])
             }
 
-            // if (x + ctx.measureText(labelXValue.toString()).width > this.viewWidth) continue
+            if (label.showLine) {
+                drawVector(
+                    ctx,
+                    [x, y, x, y + this.viewHeight],
+                    {
+                        color: line.color,
+                        size: line.size,
+                        dash: line.dash
+                    }
+                )
+            }
 
-            drawVector(ctx,[x, this.viewHeight + padding.top, x, this.viewHeight + padding.top + 5], {
-                color: (axis.arrow && axis.arrow.color) ?? axis.line.color,
-            })
-            drawText(
-                ctx,
-                labelXValue.toString(),
-                [x, this.viewHeight + padding.top + font.size + 5],
-                {
-                    color: (axis.label && axis.label.color) ?? o.color,
-                    align: 'center',
-                    font
+            if (label.skip && k !== label.skip) {
+                k++
+            } else {
+                k = 1
+
+                if (label.showLabel && !(!i && !label.showMin)) {
+                    // short line
+                    drawVector(
+                        ctx,
+                        [x, this.viewHeight + padding.top - shortLineSize, x, this.viewHeight + padding.top + shortLineSize],
+                        {
+                            color: (arrow && arrow.color) ? arrow.color : line.color,
+                        }
+                    )
+
+                    // label
+                    drawText(
+                        ctx,
+                        labelValue.toString(),
+                        [0, 0],
+                        {
+                            color: label.color ?? o.color,
+                            align: label.align,
+                            font,
+                            translate: [x + (label.shift.x ?? 0), labelY + (label.shift.y ?? 0)],
+                            angle: label.angle
+                        }
+                    )
                 }
-            )
+            }
 
+            value += labelStep
+            x = padding.left + (value - this.minX) * this.ratioX
         }
     },
 
     arrowY(){
         const o = this.options, ctx = this.ctx
         const padding = expandPadding(o.padding)
-        const x1 = padding.left, y1 = this.viewHeight + padding.top
-        const x2 = x1, y2 = padding.top
 
         if (!o.axis.y.arrow) return
 
         const arrow = o.axis.y.arrow
+        const x = padding.left, y1 = this.viewHeight + padding.top
+        const y2 = padding.top - arrow.outside
 
-        drawArrowY(ctx, [x1, y1, x2, y2, arrow.factorX, arrow.factorY], {
-            color: arrow.color,
-            size: arrow.size,
-            dash: arrow.dash
-        })
+        drawArrowY(
+            ctx,
+            [x, y1, x, y2, arrow.factorX, arrow.factorY],
+            {
+                color: arrow.color,
+                size: arrow.size,
+                dash: arrow.dash
+            }
+        )
     },
 
     axisY(){
@@ -101,53 +123,79 @@ export const MixinAxis = {
 
         if (!o.axis.y) return
 
-        const axis = o.axis.y
-        const font = (axis && axis.label && axis.label.font) ?? o.font
-        const step = this.viewHeight / axis.line.count
-        const textStep = (this.maxY - this.minY) / axis.line.count
-        const skipLabels = Math.floor(axis.line.count / axis.label.count)
+        const axis = o.axis.y, label = axis.label, line = axis.line, arrow = axis.arrow
+        const font = (label && label.font) ?? o.font
+        const labelStep = label.count ? (this.maxY - this.minY) / label.count : 0
+        let labelValue, value, k, x, y, labelX, shortLineX
+        const shortLineSize = line.shortLineSize ?? 0
 
-        for (let i = 0; i < axis.line.count + 1; i++) {
-            const y = this.viewHeight + padding.top - step * i
-            const x = padding.left
-            let labelYValue = this.minY + textStep * i
+        x = padding.left
+        labelX = padding.left
+        y = this.viewHeight + padding.top
+        value = this.minY
+        k = 0
 
-            if (typeof axis.label.fixed === "number") {
-                labelYValue = labelYValue.toFixed(axis.label.fixed)
+        if (label.opposite) {
+            labelX += this.viewWidth + 10 + shortLineSize
+            shortLineX = padding.left + this.viewWidth
+            label.align = 'left'
+        } else {
+            labelX -= 10
+            shortLineX = x - shortLineSize
+        }
+
+        for (let i = 0; i < label.count + 1; i++) {
+            labelValue = typeof label.fixed === "number" ? value.toFixed(label.fixed) : value
+            if (typeof o.onDrawLabelY === "function") {
+                labelValue = o.onDrawLabelY.apply(null, [value])
             }
 
-            if (axis.line.show) {
+            if (label.showLine) {
                 drawVector(ctx, [x, y, this.viewWidth + padding.left, y], {
-                    color: axis.line.color,
-                    size: axis.line.size,
-                    dash: axis.line.dash
+                    color: line.color,
+                    size: line.size,
+                    dash: line.dash
                 })
             }
 
-            if (!axis.label.show) continue
-            if (skipLabels && i && i % skipLabels !== 0) continue
-            if (!axis.label.first && i === 0) continue
-            if (!axis.label.last && i === axis.line.count) continue
+            if (i !== 0 && label.skip && k !== label.skip) {
+                k++
+            } else {
+                k = 1
 
-            if (typeof o.onDrawLabelY === "function") {
-                labelYValue = o.onDrawLabelY.apply(null, [labelYValue])
+                if (label.showLabel && !(!i && !label.showMin)) {
+
+                    // short line
+                    drawVector(
+                        ctx,
+                        [shortLineX, y, shortLineX + shortLineSize * 2, y],
+                        {
+                            color: (arrow && arrow.color) ? arrow.color : line.color,
+                        }
+                    )
+
+                    drawText(
+                        ctx,
+                        labelValue.toString(),
+                        [0, 0],
+                        {
+                            color: (label && label.color) ?? o.color,
+                            align: label.align,
+                            font,
+                            translate: [labelX + (label.shift.x ?? 0), y + 1 + (label.shift.y ?? 0)],
+                            angle: label.angle
+                        }
+                    )
+                }
             }
 
-            drawVector(ctx, [x-5, y, x, y], {
-                color: (axis.arrow && axis.arrow.color) ?? axis.line.color,
-            })
-            drawText(ctx, labelYValue.toString(),[padding.left - 10, y + 1], {
-                color: (axis.label && axis.label.color) ?? o.color,
-                align: 'right',
-                font
-            })
+            value += labelStep
+            y = padding.top + this.viewHeight - (value - this.minY) * this.ratioY
         }
     },
 
     axisXY(){
-        const o = this.options
-
-        if (!o.axis) return
+        if (!this.options.axis) return
 
         this.axisX()
         this.arrowX()

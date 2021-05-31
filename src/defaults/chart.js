@@ -5,13 +5,18 @@ import {defaultLegend} from "./elements/legend";
 import {defaultTooltip} from "./elements/tooltip";
 import {defaultPadding} from "./elements/padding";
 import {defaultMargin} from "./elements/margin";
-import {StandardColorPalette} from "./elements/colors";
+import {defaultColors} from "./elements/colors";
 
 export const defaultOptions = {
     dpi: 1,
     height: 200,
     width: "100%",
-    padding: defaultPadding,
+    padding: {
+        top: 40,
+        left: 40,
+        right: 40,
+        bottom: 40
+    },
     margin: defaultMargin,
     background: '#fff',
     color: '#000',
@@ -21,8 +26,7 @@ export const defaultOptions = {
     legend: defaultLegend,
     tooltip: defaultTooltip,
     boundaries: false,
-    accuracy: 2,
-    colors: Object.values(StandardColorPalette),
+    colors: Object.values(defaultColors),
     animate: false,
 
     onDrawLabelY: null,

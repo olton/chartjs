@@ -2,12 +2,11 @@ import {Chart} from "../base"
 import {defaultHistogramOptions} from "../../defaults/histogram"
 import {minMax} from "../../helpers/min-max"
 import {merge} from "../../helpers/merge"
-import {expandPadding} from "../../helpers/expand-padding";
-import {drawRect} from "../../draw/rect";
-
+import {expandPadding} from "../../helpers/expand-padding"
+import {drawRect} from "../../draw/rect"
 import {MixinCross} from "../../mixins/cross"
 import {MixinAxis} from "../../mixins/axis"
-import {MixinAddTriplet} from "../../mixins/add-triplet";
+import {MixinAddPoint} from "../../mixins/add-point";
 
 export class HistogramChart extends Chart {
     constructor(el, data = [], options = {}) {
@@ -21,9 +20,11 @@ export class HistogramChart extends Chart {
 
         this.legendItems = []
         const legend = this.options.legend
+        const bars = this.options.bars
+        const colors = this.options.colors
         if (legend) {
             for (let i = 0; i < this.data.length; i++) {
-                this.legendItems.push([this.data[i].name, this.options.colors[i]])
+                this.legendItems.push([bars[i].name, colors[i]])
             }
         }
 
@@ -35,9 +36,7 @@ export class HistogramChart extends Chart {
         const o = this.options
         let a = []
 
-        for (let k in this.data) {
-            let _data = this.data[k].data
-
+        for (let _data of this.data) {
             if (!Array.isArray(_data)) continue
 
             for( const [x1, x2, y] of _data) {
@@ -73,21 +72,34 @@ export class HistogramChart extends Chart {
         if (!this.data || ! this.data.length) return
 
         for (let i = 0; i < this.data.length; i++) {
-            const graph = this.data[i]
-            const color = o.colors[i]
-            const stroke = graph.stroke || o.bars.stroke
+            const bar = o.bars[i]
+            const data = this.data[i]
+            const color = bar.color || o.colors[i] || "#000"
+            const stroke = bar.stroke || '#fff'
 
             bars = []
 
-            for (const [x1, x2, y] of graph.data) {
-                let _x1 = Math.floor((x1 - this.minX) * this.ratioX + padding.left)
-                let _x2 = Math.floor((x2 - this.minX) * this.ratioX + padding.left)
+            for (const [x1, x2, y] of data) {
+                let _x = Math.floor((x1 - this.minX) * this.ratioX + padding.left)
+                let _w = Math.floor((x2 - this.minX) * this.ratioX + padding.left) - _x
                 let _h = (y - this.minY) * this.ratioY
                 let _y = Math.floor(this.viewHeight + padding.top - _h)
 
-                drawRect(ctx, [_x1, _y, _x2 - _x1, _h], {fill: color, color: stroke})
+                drawRect(ctx, [_x, _y, _w, _h], {fill: color, color: stroke})
             }
         }
+    }
+
+    add(index, [x1, x2, y], shift = false){
+        this.addPoint(index, [x1, x2, y], shift)
+
+        this.minX = this.data[index][0][0]
+        this.maxX = x2
+
+        if (y < this.minY) this.minY = y
+        if (y > this.maxY) this.maxY = y
+
+        this.resize()
     }
 
     draw(){
@@ -102,6 +114,6 @@ export class HistogramChart extends Chart {
 
 Object.assign(HistogramChart.prototype, MixinCross)
 Object.assign(HistogramChart.prototype, MixinAxis)
-Object.assign(HistogramChart.prototype, MixinAddTriplet)
+Object.assign(HistogramChart.prototype, MixinAddPoint)
 
 export const histogramChart = (el, data, options) => new HistogramChart(el, data, options)

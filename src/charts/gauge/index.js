@@ -4,6 +4,7 @@ import {defaultGaugeOptions} from "../../defaults/gauge";
 import {expandPadding} from "../../helpers/expand-padding";
 import {drawText} from "../../draw/text";
 import {drawArc} from "../../draw/arc";
+import {getFillColor} from "../../helpers/get-fill-colors";
 
 export class Gauge extends Chart {
     constructor(el, data, options) {
@@ -13,21 +14,6 @@ export class Gauge extends Chart {
         this.max = this.options.boundaries.max
 
         this.resize()
-    }
-
-    _getFillColor(p, colors) {
-        let res = '#fff', min = 0
-
-        for (let i = 0; i < colors.length; i++) {
-            let c = colors[i][0]
-
-            if (p> min && p <= c) {
-                res = colors[i][1]
-                min = colors[i][0]
-            }
-        }
-
-        return res
     }
 
     gauge(){
@@ -57,7 +43,7 @@ export class Gauge extends Chart {
                 colors.push(c)
             }
         }
-        drawArc(ctx, [x, y, r, min, val], {size: o.valueWidth, stroke: this._getFillColor(p, colors)})
+        drawArc(ctx, [x, y, r, min, val], {size: o.valueWidth, stroke: getFillColor(p, colors)})
 
         drawText(ctx, textVal,[0, 0], {
             align: "center",

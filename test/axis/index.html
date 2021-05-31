@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Metro 4 Chart System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            padding: 20px;
+        }
+        h1, h2 {
+            text-align: center;
+            font-family: "Segoe UI", sans-serif;
+            font-weight: lighter;
+            font-size: 48px;
+        }
+
+        h2 {
+            font-weight: normal;
+            font-size: 36px;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .chart {
+            width: 50%;
+            /*max-width: 50%;*/
+        }
+
+        .full {
+            width: 100%;
+        }
+
+        @media all and (max-width: 767px) {
+            .chart {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="chart full" id="line1"></div>
+        <div class="chart full" id="line2"></div>
+    </div>
+
+
+<!--    <script src="index.js"></script>-->
+    <script src="index2.js"></script>
+</body>
+</html>

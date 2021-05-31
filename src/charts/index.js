@@ -8,6 +8,8 @@ import {pieChart, PieChart} from "./pie"
 import {stackedBarChart, StackedBarChart} from "./stacked"
 import {gauge, Gauge} from "./gauge"
 import {donut, Donut} from "./donut"
+import {segment, Segment} from "./segment"
+import {candlestickChart, CandlestickChart} from "./candlestick"
 
 export {
     Chart,
@@ -19,5 +21,7 @@ export {
     PieChart, pieChart,
     StackedBarChart, stackedBarChart,
     Gauge, gauge,
-    Donut, donut
+    Donut, donut,
+    Segment, segment,
+    CandlestickChart, candlestickChart
 }

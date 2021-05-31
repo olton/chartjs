@@ -34,9 +34,11 @@ export class LineChart extends Chart {
 
         this.legendItems = []
         const legend = this.options.legend
+        const lines = this.options.lines
+        const colors = this.options.colors
         if (legend) {
-            for (let i = 0; i < this.data.length; i++) {
-                this.legendItems.push([this.data[i].name, this.options.colors[i]])
+            for (let i = 0; i < lines.length; i++) {
+                this.legendItems.push([lines[i].name, colors[i]])
             }
         }
 
@@ -48,9 +50,7 @@ export class LineChart extends Chart {
         const o = this.options
         let a = []
 
-        for (let k in this.data) {
-            let _data = this.data[k].data
-
+        for (let _data of this.data) {
             if (!Array.isArray(_data)) continue
 
             for( const [x, y] of _data) {
@@ -85,30 +85,31 @@ export class LineChart extends Chart {
         if (!this.data || !this.data.length) return
 
         for (let i = 0; i < this.data.length; i++) {
-            const graph = this.data[i]
+            const line = o.lines[i]
+            const data = this.data[i]
             const color = o.colors[i]
-            const type = graph.type || o.type || DEFAULT_LINE_TYPE
+            const type = line.type || o.type || DEFAULT_LINE_TYPE
 
             coords = []
 
-            for (const [x, y] of graph.data) {
+            for (const [x, y] of data) {
                 let _x = Math.floor((x - this.minX) * this.ratioX + padding.left)
                 let _y = Math.floor(this.viewHeight + padding.top - (y - this.minY) * this.ratioY)
 
                 coords.push([_x, _y, x, y])
             }
 
-            if (graph.showLine !== false) {
+            if (line.showLine !== false) {
                 if (type !== DEFAULT_LINE_TYPE) {
-                    drawCurve(ctx, coords, {color: color, size: graph.size})
+                    drawCurve(ctx, coords, {color: color, size: line.size})
                 } else {
-                    drawLine(ctx, coords, {color: color, size: graph.size})
+                    drawLine(ctx, coords, {color: color, size: line.size})
                 }
             }
 
             let dots = mergeProps({
                 type: DEFAULT_DOT_TYPE,
-            }, o.dots, graph.dots)
+            }, o.dots, line.dots)
 
             let opt = {
                 color: dots.color ?? color,
@@ -131,14 +132,14 @@ export class LineChart extends Chart {
                 default: drawPointFn = drawCircle
             }
 
-            if (graph.dots && o.showDots !== false) {
+            if (line.dots && o.showDots !== false) {
                 coords.map(([x, y]) => {
                     drawPointFn(ctx, [x, y, opt.radius], opt)
                 })
             }
 
-            this.coords[graph.name] = {
-                graph,
+            this.coords[line.name] = {
+                line,
                 coords,
                 drawPointFn,
                 opt
@@ -190,6 +191,18 @@ export class LineChart extends Chart {
                 this.tooltip = null
             }
         }
+    }
+
+    add(index, [x, y], shift){
+        this.addPoint(index, [x, y], shift)
+
+        this.minX = this.data[index][0][0]
+        this.maxX = x
+
+        if (y < this.minY) this.minY = y
+        if (y > this.maxY) this.maxY = y
+
+        this.resize()
     }
 
     draw(){

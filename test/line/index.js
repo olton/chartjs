@@ -1,12 +1,18 @@
 import {lineChart} from "../../src"
 import {genData} from "../helpers"
-import {MetroColorPalette} from "../../src/defaults/elements/colors"
+import {defaultColors} from "../../src/defaults/elements/colors"
 
-const lines = [
+const data1 = [
+    genData(50, 70, 95),
+    genData(50, 50, 65),
+    genData(50, 30, 45),
+    genData(50, 0, 25),
+]
+
+const lines1 = [
     {
         name: "Line 1",
         size: 1,
-        data: genData(50, 70, 95),
         dots: {
             type: 'circle',
         }
@@ -14,7 +20,6 @@ const lines = [
     {
         name: "Line 2",
         size: 1,
-        data: genData(50, 50, 65),
         dots: {
             type: 'square',
         }
@@ -22,7 +27,6 @@ const lines = [
     {
         name: "Line 3",
         size: 1,
-        data: genData(50, 30, 45),
         dots: {
             type: 'triangle',
         }
@@ -30,48 +34,17 @@ const lines = [
     {
         name: "Line 4",
         size: 1,
-        data: genData(50, 0, 25),
         dots: {
             type: 'diamond',
         }
     },
 ]
 
-const lines2 = [
-    {
-        name: "Line 1",
-        size: 1,
-        data: genData(20, 0, 100),
-        showLine: false,
-        dots: {
-            type: 'dot',
-            fill: '#fff',
-            size: 3
-        }
-    },
-    {
-        name: "Line 2",
-        size: 1,
-        data: genData(20, 0, 70),
-        showLine: false,
-        dots: {
-            type: 'square',
-            fill: '#fff',
-            size: 3
-        }
-    },
-    {
-        name: "Line 3",
-        size: 1,
-        data: genData(20, 0, 50),
-        dots: false
-    },
-]
-
-lineChart("#line-1", lines, {
+lineChart("#line-1", data1, {
+    lines: lines1,
     height: 600,
     accuracy: 4,
-    colors: [MetroColorPalette.lime, MetroColorPalette.blue, MetroColorPalette.violet, MetroColorPalette.orange],
+    colors: [defaultColors.lime, defaultColors.blue, defaultColors.violet, defaultColors.orange],
     boundaries: {
         minY: -10,
         maxY: 110
@@ -108,16 +81,52 @@ lineChart("#line-1", lines, {
         }
     },
     padding: {
-        bottom: 80,
+        bottom: 60,
     },
     legend: {
         margin: {
-            top: 40
+            top: 30
         }
-    },
+    }
 })
 
-lineChart("#line-2", lines2, {
+
+const data2 = [
+    genData(20, 0, 100),
+    genData(20, 0, 70),
+    genData(20, 0, 50),
+]
+
+const lines2 = [
+    {
+        name: "Line 1",
+        size: 1,
+        showLine: false,
+        dots: {
+            type: 'dot',
+            fill: '#fff',
+            size: 3
+        }
+    },
+    {
+        name: "Line 2",
+        size: 1,
+        showLine: false,
+        dots: {
+            type: 'square',
+            fill: '#fff',
+            size: 3
+        }
+    },
+    {
+        name: "Line 3",
+        size: 1,
+        dots: false
+    },
+]
+
+lineChart("#line-2", data2, {
+    lines: lines2,
     height: 600,
     accuracy: 4,
     colors: ['red', 'green', 'blue'],

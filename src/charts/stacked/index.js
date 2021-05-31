@@ -17,6 +17,8 @@ export class StackedBarChart extends Chart {
         this.minY = 0
         this.minX = 0
         this.viewAxis = this.options.dataAxisX ? this.viewHeight : this.viewWidth
+        this.ratioX = 0
+        this.ratioY = 0
 
         this.legendItems = []
         const legend = this.options.legend
@@ -48,7 +50,7 @@ export class StackedBarChart extends Chart {
     }
 
     calcRatio(){
-        this.ratio = (this.options.dataAxisX ? this.viewWidth : this.viewHeight) / (this.maxY === this.minY ? this.maxY : this.maxY - this.minY)
+        this.ratio = this.ratioY = this.ratioX = (this.options.dataAxisX ? this.viewWidth : this.viewHeight) / (this.maxY === this.minY ? this.maxY : this.maxY - this.minY)
     }
 
     calcBarWidth(){
@@ -120,7 +122,7 @@ export class StackedBarChart extends Chart {
             drawText(ctx, name, [0, 0], {
                 align: 'center', color: labelColor, stroke: labelColor, font: o.font,
                 translate: [px - 20, py - this.barWidth / 2],
-                angle: Math.PI/2
+                angle: 90
             })
 
         }
@@ -188,7 +190,8 @@ export class StackedBarChart extends Chart {
 
             drawText(ctx, name, [0, 0], {
                 align: 'center', color: labelColor, stroke: labelColor, font: o.font,
-                translate: [px - o.groupDistance - this.barWidth / 2, py + 20]
+                translate: [px - o.groupDistance - this.barWidth / 2, py + 20],
+                angle: 0
             })
 
         }

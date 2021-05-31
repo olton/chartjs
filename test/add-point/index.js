@@ -2,19 +2,25 @@ import {lineChart} from "../../src";
 import {genData, rand} from "../helpers";
 import {areaChart} from "../../src";
 
-const lineChartAddPoint = lineChart("#line-add-point", [
+const lineData = [
+    genData(100, 30, 60),
+    genData(100, 10, 25),
+]
+
+const lineDesc = [
     {
         name: "Line 1",
         size: 1,
-        data: genData(100, 30, 60),
     },
     {
         name: "Line 2",
         size: 1,
-        data: genData(100, 10, 25),
         type: 'curve',
     },
-], {
+]
+
+const line = lineChart("#line-add-point", lineData, {
+    lines: lineDesc,
     height: 200,
     boundaries: {
         minY: 0,
@@ -29,16 +35,23 @@ const lineChartAddPoint = lineChart("#line-add-point", [
     showDots: false,
     dots: {
         size: 4
-    }
+    },
+    legend: false
 })
 
-const areaChartAddPoint = areaChart("#area-add-point", [
+const areaData = [
+    genData(100, 30, 60),
+]
+
+const areas = [
     {
         name: "Line 1",
         size: 1,
-        data: genData(100, 30, 60),
     },
-], {
+]
+
+const area = areaChart("#area-add-point", areaData, {
+    areas,
     height: 200,
     boundaries: {
         minY: 0,
@@ -47,17 +60,24 @@ const areaChartAddPoint = areaChart("#area-add-point", [
     colors: ['green'],
     title: {
         text: "The AreaChart :: Live data"
-    }
+    },
+    axis: {
+        x: {
+            arrow: false
+        },
+        y: {
+            arrow: false
+        }
+    },
+    legend: false
 })
 
 let x = 1000
 setInterval( () => {
     let y = rand(30, 60)
     x += 10
-    lineChartAddPoint.addPoint(0, [x, rand(30, 60)])
-    lineChartAddPoint.addPoint(1, [x, rand(10, 25)])
-    areaChartAddPoint.setBoundaries({
-        maxY: 100
-    })
-    areaChartAddPoint.addPoint(0, [x, y])
+
+    line.add(0, [x, rand(30, 60)], true)
+    line.add(1, [x, rand(10, 25)], true)
+    area.add(0, [x, y], true)
 }, 1000)
