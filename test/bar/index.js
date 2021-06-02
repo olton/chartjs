@@ -70,7 +70,7 @@ barChart("#bar-2", bars2, {
         position: 'top-right',
         titles: ['paper', 'laptop', 'pens', 'envelopes', 'binder', 'notepad', 'backpack'],
         margin: {
-            top: 10
+            top: 40
         },
         padding: 10,
         color: '#fffee0'
