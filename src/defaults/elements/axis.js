@@ -1,14 +1,5 @@
 import {labelFont} from "./font";
 
-const arrow = {
-    color: '#7d7d7d',
-    size: 1,
-    dash: [],
-    factorX: 5,
-    factorY: 5,
-    outside: 0
-}
-
 const line = {
     color: '#e3e3e3',
     size: 1,
@@ -35,7 +26,6 @@ const label = {
 }
 
 const axis = {
-    arrow,
     line,
     label,
 }

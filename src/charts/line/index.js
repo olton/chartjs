@@ -14,6 +14,7 @@ import {MixinAxis} from "../../mixins/axis"
 import {MixinAddPoint} from "../../mixins/add-point";
 import {drawCurve} from "../../draw/curve";
 import {mergeProps} from "../../helpers/merge-props";
+import {MixinArrows} from "../../mixins/arrows";
 
 const DEFAULT_LINE_TYPE = 'line'
 const DEFAULT_DOT_TYPE = 'circle'
@@ -209,6 +210,7 @@ export class LineChart extends Chart {
         super.draw()
         this.calcRatio()
         this.axisXY()
+        this.arrows()
         this.lines()
         this.floatPoint()
         this.cross()
@@ -219,5 +221,6 @@ export class LineChart extends Chart {
 Object.assign(LineChart.prototype, MixinCross)
 Object.assign(LineChart.prototype, MixinAxis)
 Object.assign(LineChart.prototype, MixinAddPoint)
+Object.assign(LineChart.prototype, MixinArrows)
 
 export const lineChart = (el, data, options) => new LineChart(el, data, options)

@@ -7,6 +7,7 @@ import {drawRect, drawRectAnimate} from "../../draw/rect";
 import {expandPadding} from "../../helpers/expand-padding";
 
 import {MixinAxis} from "../../mixins/axis"
+import {MixinArrows} from "../../mixins/arrows";
 
 export class BarChart extends Chart {
     constructor(el, data, options) {
@@ -187,13 +188,13 @@ export class BarChart extends Chart {
         }
         this.bars(o.dataAxisX)
 
-        this.arrowY()
-        this.arrowX()
+        this.arrows()
 
         this.legend()
     }
 }
 
 Object.assign(BarChart.prototype, MixinAxis)
+Object.assign(BarChart.prototype, MixinArrows)
 
 export const barChart = (el, data, options) => new BarChart(el, data, options)

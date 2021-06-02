@@ -9,6 +9,7 @@ import {drawVector} from "../../draw/vector";
 import {drawText} from "../../draw/text";
 import {drawRect} from "../../draw/rect";
 import {MixinTooltip} from "../../mixins/tooltip";
+import {MixinArrows} from "../../mixins/arrows";
 
 export class CandlestickChart extends Chart {
     constructor(el, data, options) {
@@ -202,11 +203,13 @@ export class CandlestickChart extends Chart {
         super.draw()
         this.calcRatio()
         this.axis()
+        this.arrows()
         this.candlesticks()
     }
 }
 
 Object.assign(CandlestickChart.prototype, MixinAxis)
 Object.assign(CandlestickChart.prototype, MixinTooltip)
+Object.assign(CandlestickChart.prototype, MixinArrows)
 
 export const candlestickChart = (el, data, options) => new CandlestickChart(el, data, options)

@@ -1,4 +1,5 @@
 import {defaultAxis} from "./elements/axis";
+import {defaultArrows} from "./elements/arrow";
 
 export const defaultCandlestickOptions = {
     axis: defaultAxis,
@@ -16,5 +17,6 @@ export const defaultCandlestickOptions = {
     ghost: {
         stroke: "#e3e3e3",
         fill: "#e3e3e3"
-    }
+    },
+    arrows: defaultArrows
 }

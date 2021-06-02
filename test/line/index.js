@@ -160,7 +160,11 @@ lineChart("#line-2", data2, {
     legend: {
         color: '#fff4db',
         vertical: true,
-        margin: 60,
+        position: "top-right",
+        margin: {
+            top: 40,
+            right: 10
+        },
         padding: {
             top: 10,
             left: 10,

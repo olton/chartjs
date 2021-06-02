@@ -6,6 +6,7 @@ import {Chart} from "../base"
 import {expandPadding} from "../../helpers/expand-padding";
 import {drawRect} from "../../draw/rect";
 import {drawText} from "../../draw/text";
+import {MixinArrows} from "../../mixins/arrows";
 
 export class StackedBarChart extends Chart {
     constructor(el, data, options) {
@@ -217,12 +218,12 @@ export class StackedBarChart extends Chart {
             this.barsY()
         }
 
-        this.arrowY()
-        this.arrowX()
+        this.arrows()
         this.legend()
     }
 }
 
 Object.assign(StackedBarChart.prototype, MixinAxis)
+Object.assign(StackedBarChart.prototype, MixinArrows)
 
 export const stackedBarChart = (el, data, options) => new StackedBarChart(el, data, options)

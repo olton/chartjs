@@ -1,5 +1,6 @@
 import {defaultAxis} from "./elements/axis";
 import {defaultCross} from "./elements/cross";
+import {defaultArrows} from "./elements/arrow";
 
 export const defaultLineChartOptions = {
     hoverMode: 'default', // default, advanced
@@ -8,5 +9,6 @@ export const defaultLineChartOptions = {
     showDots: true,
     type: 'line', // line, curve
     accuracy: 2,
-    lines: []
+    lines: [],
+    arrows: defaultArrows
 }

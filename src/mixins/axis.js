@@ -1,31 +1,8 @@
-import {drawArrowX} from "../draw/arrow-x";
 import {drawVector} from "../draw/vector";
 import {drawText} from "../draw/text";
-import {drawArrowY} from "../draw/arrow-y";
 import {expandPadding} from "../helpers/expand-padding";
 
 export const MixinAxis = {
-    arrowX(){
-        const o = this.options, ctx = this.ctx
-        const padding = expandPadding(o.padding)
-
-        if (!o.axis.x.arrow) return
-
-        const arrow = o.axis.x.arrow
-        const x1 = padding.left, y1 = this.viewHeight + padding.top
-        const x2 = padding.left + this.viewWidth + arrow.outside, y2 = y1
-
-        drawArrowX(
-            ctx,
-            [x1, y1, x2, y2, arrow.factorX, arrow.factorY],
-            {
-                color: arrow.color,
-                size: arrow.size,
-                dash: arrow.dash
-            }
-        )
-    },
-
     axisX(){
         const ctx = this.ctx, o = this.options
         const padding = expandPadding(o.padding)
@@ -94,27 +71,6 @@ export const MixinAxis = {
             value += labelStep
             x = padding.left + (value - this.minX) * this.ratioX
         }
-    },
-
-    arrowY(){
-        const o = this.options, ctx = this.ctx
-        const padding = expandPadding(o.padding)
-
-        if (!o.axis.y.arrow) return
-
-        const arrow = o.axis.y.arrow
-        const x = padding.left, y1 = this.viewHeight + padding.top
-        const y2 = padding.top - arrow.outside
-
-        drawArrowY(
-            ctx,
-            [x, y1, x, y2, arrow.factorX, arrow.factorY],
-            {
-                color: arrow.color,
-                size: arrow.size,
-                dash: arrow.dash
-            }
-        )
     },
 
     axisY(){
@@ -198,10 +154,7 @@ export const MixinAxis = {
         if (!this.options.axis) return
 
         this.axisX()
-        this.arrowX()
-
         this.axisY()
-        this.arrowY()
 
         return this
     }

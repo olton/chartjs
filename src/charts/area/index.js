@@ -13,6 +13,7 @@ import {MixinCross} from "../../mixins/cross"
 import {MixinAxis} from "../../mixins/axis"
 import {MixinAddPoint} from "../../mixins/add-point";
 import {drawLine} from "../../draw/line";
+import {MixinArrows} from "../../mixins/arrows";
 
 export class AreaChart extends Chart {
     constructor(el, data = [], options = {}) {
@@ -204,6 +205,7 @@ export class AreaChart extends Chart {
         super.draw()
         this.calcRatio()
         this.axisXY()
+        this.arrows()
         this.areas()
         this.floatPoint()
         this.cross()
@@ -214,5 +216,6 @@ export class AreaChart extends Chart {
 Object.assign(AreaChart.prototype, MixinCross)
 Object.assign(AreaChart.prototype, MixinAxis)
 Object.assign(AreaChart.prototype, MixinAddPoint)
+Object.assign(AreaChart.prototype, MixinArrows)
 
 export const areaChart = (el, data, options) => new AreaChart(el, data, options)

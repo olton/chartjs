@@ -6,6 +6,7 @@ import {minMax} from "../../helpers/min-max"
 import {expandPadding} from "../../helpers/expand-padding"
 import {drawCircle} from "../../draw/circle"
 import {merge} from "../../helpers/merge"
+import {MixinArrows} from "../../mixins/arrows";
 
 export class BubbleChart extends Chart {
     constructor(el, data, options) {
@@ -69,7 +70,7 @@ export class BubbleChart extends Chart {
         this.ratioZ = this.maxZ / (this.maxZ === this.minZ ? this.maxZ : this.maxZ - this.minZ)
     }
 
-    lines(){
+    bubbles(){
         const o = this.options, padding = expandPadding(o.padding)
         const ctx = this.ctx
 
@@ -110,7 +111,8 @@ export class BubbleChart extends Chart {
         super.draw()
         this.calcRatio()
         this.axisXY()
-        this.lines()
+        this.arrows()
+        this.bubbles()
         this.floatPoint()
         this.cross()
         this.legend()
@@ -119,5 +121,6 @@ export class BubbleChart extends Chart {
 
 Object.assign(BubbleChart.prototype, MixinCross)
 Object.assign(BubbleChart.prototype, MixinAxis)
+Object.assign(BubbleChart.prototype, MixinArrows)
 
 export const bubbleChart = (el, data, options) => new BubbleChart(el, data, options)
