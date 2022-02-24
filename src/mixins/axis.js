@@ -1,6 +1,7 @@
 import {drawVector} from "../draw/vector";
 import {drawText} from "../draw/text";
 import {expandPadding} from "../helpers/expand-padding";
+import {ceil} from "../helpers/round.js";
 
 export const MixinAxis = {
     axisX(){
@@ -11,7 +12,11 @@ export const MixinAxis = {
 
         const axis = o.axis.x, label = axis.label, line = axis.line, arrow = axis.arrow
         const font = (label && label.font) ?? o.font
-        const labelStep = label.count ? (this.maxX - this.minX) / label.count : 0
+
+        const lFactor = 10 ** ((""+this.maxX).length - 2)
+        const lMax = ceil(this.maxX, lFactor)
+        const labelStep = label.step === 'auto' ? label.count ? (this.maxX - this.minX) / label.count : 0 : label.step ? label.step : label.count ? Math.ceil(lMax / label.count) : 0
+
         let labelValue, value, k, x, y, labelY, shortLineSize = line.shortLineSize ?? 0
 
         x = padding.left
@@ -81,7 +86,11 @@ export const MixinAxis = {
 
         const axis = o.axis.y, label = axis.label, line = axis.line, arrow = axis.arrow
         const font = (label && label.font) ?? o.font
-        const labelStep = label.count ? (this.maxY - this.minY) / label.count : 0
+
+        const lFactor = 10 ** ((""+this.maxY).length - 2)
+        const lMax = ceil(this.maxY, lFactor)
+        const labelStep = label.step === 'auto' ? label.count ? (this.maxY - this.minY) / label.count : 0 : label.step ? label.step : label.count ? Math.ceil(lMax / label.count) : 0
+
         let labelValue, value, k, x, y, labelX, shortLineX
         const shortLineSize = line.shortLineSize ?? 0
 

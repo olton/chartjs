@@ -126,6 +126,7 @@ const lines2 = [
 ]
 
 lineChart("#line-2", data2, {
+    background: "#000",
     lines: lines2,
     height: 600,
     accuracy: 4,

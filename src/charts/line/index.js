@@ -15,6 +15,7 @@ import {MixinAddPoint} from "../../mixins/add-point";
 import {drawCurve} from "../../draw/curve";
 import {mergeProps} from "../../helpers/merge-props";
 import {MixinArrows} from "../../mixins/arrows";
+import {isObject} from "../../helpers/is-object";
 
 const DEFAULT_LINE_TYPE = 'line'
 const DEFAULT_DOT_TYPE = 'circle'
@@ -194,16 +195,42 @@ export class LineChart extends Chart {
         }
     }
 
-    add(index, [x, y], shift){
+    add(index, [x, y], shift, align){
         this.addPoint(index, [x, y], shift)
 
         this.minX = this.data[index][0][0]
         this.maxX = x
 
-        if (y < this.minY) this.minY = y
-        if (y > this.maxY) this.maxY = y
+        if (align) {
+            if (isObject(align)) {
+                this.align(align)
+            }
+        } else {
+            if (y < this.minY) this.minY = y
+            if (y > this.maxY) this.maxY = y
+        }
 
         this.resize()
+    }
+
+    align({minX, maxX, minY, maxY}){
+        let a = []
+
+        for (let _data of this.data) {
+            if (!Array.isArray(_data)) continue
+
+            for( const [x, y] of _data) {
+                a.push([x, y])
+            }
+        }
+
+        const [_minX, _maxX] = minMax(a, 'x')
+        const [_minY, _maxY] = minMax(a, 'y')
+
+        if (minX) this.minX = _minX
+        if (minY) this.minY = _minY
+        if (maxX) this.maxX = _maxX
+        if (maxY) this.maxY = _maxY
     }
 
     draw(){

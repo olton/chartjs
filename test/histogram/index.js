@@ -53,6 +53,8 @@ const data2 = [
     genTriplet(40, 0, 100)
 ]
 
+console.log(data2)
+
 const bars2 = [
     {
         name: "Line 1",

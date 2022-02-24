@@ -4,21 +4,21 @@ import {defaultSegmentOptions} from "../../defaults/segment"
 import {drawRoundedRect} from "../../draw/rounded-rect"
 import {expandPadding} from "../../helpers/expand-padding";
 import {getFillColor} from "../../helpers/get-fill-colors";
-import {defaultOptions} from "../../defaults/chart";
 
 export class Segment extends Chart {
     constructor(el, data, options) {
-        const values = Array.isArray(data) ? data : [data]
-        const opt = merge({}, defaultOptions, defaultSegmentOptions, options)
-        const padding = expandPadding(opt.padding)
-        const {height, distance, rowDistance} = opt.segment
-        let canvasHeight = (((height + rowDistance) * values.length - rowDistance) + (padding.top + padding.bottom)) * opt.dpi + rowDistance
-
-        super(el, data, {...opt, height: canvasHeight}, 'segment')
+        super(el, data, merge({}, defaultSegmentOptions, options), 'segment')
 
         this.min = 0
         this.max = 100
-        this.values = values
+
+        if (this.options.segment.height !== "auto") {
+            const o = this.options
+            const s = o.segment
+            const rowDistance = s.rowDistance * o.dpi
+
+            this.options.height = this.data.length * (rowDistance + 1 + s.height)
+        }
 
         this.resize()
     }
@@ -29,10 +29,16 @@ export class Segment extends Chart {
         const distance = s.distance * o.dpi
         const rowDistance = s.rowDistance * o.dpi
         const width = this.viewWidth / count - (distance)
-        const height = s.height
         const colors = []
         const padding = expandPadding(o.padding)
         let x, y = padding.top + distance
+        let height
+
+        if (s.height === 'auto') {
+            height = (o.height - rowDistance * (this.data.length)) / this.data.length
+        } else {
+            height = s.height
+        }
 
         if (typeof o.colors === "string") {
             colors.push([100, o.colors])
@@ -42,8 +48,8 @@ export class Segment extends Chart {
             }
         }
 
-        for(let k = 0; k < this.values.length; k++) {
-            const value = this.values[k]
+        for(let k = 0; k < this.data.length; k++) {
+            const value = this.data[k]
             const limit = (count * value / 100)
 
             x = padding.left + 1
@@ -74,7 +80,7 @@ export class Segment extends Chart {
     }
 
     setData(data, index = 0, redraw = true){
-        this.values[index] = data
+        this.data[index] = data
         if (redraw) this.resize()
     }
 

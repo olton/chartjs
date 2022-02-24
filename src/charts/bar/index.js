@@ -38,14 +38,10 @@ export class BarChart extends Chart {
         let a = [], length = 0
 
         for (let k in this.data) {
-            let data = this.data[k].data
-            a = [].concat(a, data)
+            a = [].concat(a, this.data[k])
         }
 
-        for (let k in this.data) {
-            length += this.data[k].data.length
-            this.groups++
-        }
+        this.groups = this.data.length
 
         const [, max] = minMaxLinear(a)
 
@@ -56,15 +52,15 @@ export class BarChart extends Chart {
     }
 
     calcRatio(){
-        this.ratio = (this.options.dataAxisX ? this.viewWidth : this.viewHeight) / (this.maxY === this.minY ? this.maxY : this.maxY - this.minY)
+        this.ratioX = this.ratioY = this.ratio = (this.options.dataAxisX ? this.viewWidth : this.viewHeight) / (this.maxY === this.minY ? this.maxY : this.maxY - this.minY)
     }
 
     calcBarWidth(){
         const o = this.options
         let bars = 0
 
-        for (const g of this.data) {
-            bars += g.data.length
+        for (let i = 0; i < this.data.length; i++) {
+            bars += Array.isArray(this.data[i]) ? this.data[i].length : 1
         }
 
         let availableSpace =
@@ -76,7 +72,7 @@ export class BarChart extends Chart {
     }
 
     bars(axisX = false){
-        const o = this.options
+        const o = this.options, bars = o.bars
         const padding = expandPadding(o.padding)
         const ctx = this.ctx
         const rect = this.canvas.getBoundingClientRect()
@@ -94,9 +90,9 @@ export class BarChart extends Chart {
 
         for (let g = 0; g < this.data.length; g++) {
             const graph = this.data[g]
-            const data = graph.data
+            const data = Array.isArray(graph) ? graph : [graph]
             const labelColor = o.labels.color
-            let name = graph.name
+            let name = bars[g]
 
             let groupWidth = 0
 

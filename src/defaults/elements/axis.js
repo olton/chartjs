@@ -22,7 +22,8 @@ const label = {
     skip: 0,
     showLine: true,
     showLabel: true,
-    showMin: true
+    showMin: true,
+    step: "auto"
 }
 
 const axis = {

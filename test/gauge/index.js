@@ -1,3 +1,4 @@
+import {rand} from "../helpers"
 import {gauge} from "../../src/"
 
 gauge("#gauge-1", [55], {
@@ -22,7 +23,7 @@ gauge("#gauge-1", [55], {
     }
 })
 
-gauge("#gauge-2", [-10], {
+let gauge2 = gauge("#gauge-2", [-10], {
     height: 600,
     fillStyle: "tomato",
     showValue: true,
@@ -56,3 +57,7 @@ gauge("#gauge-2", [-10], {
         return `${v} ℃`
     }
 })
+
+setInterval(()=>{
+    gauge2.update(rand(-20, 20))
+}, 3000)

@@ -3,7 +3,7 @@ export const defaultSegmentOptions = {
         count: 100,
         distance: 4,
         rowDistance: 4,
-        height: 10,
+        height: "auto",
         radius: 0,
     },
     ghost: {

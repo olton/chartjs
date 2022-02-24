@@ -84,6 +84,16 @@ export class Gauge extends Chart {
         super.draw()
         this.gauge()
     }
+
+    update(val, {
+        min = null,
+        max = null
+    } = {}){
+        this.data[0] = val
+        if (min !== null) this.min = min
+        if (max !== null) this.max = max
+        this.resize()
+    }
 }
 
 export const gauge = (el, data, options) => new Gauge(el, data, options)

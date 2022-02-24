@@ -14,6 +14,7 @@ import {MixinAxis} from "../../mixins/axis"
 import {MixinAddPoint} from "../../mixins/add-point";
 import {drawLine} from "../../draw/line";
 import {MixinArrows} from "../../mixins/arrows";
+import {isObject} from "../../helpers/is-object";
 
 export class AreaChart extends Chart {
     constructor(el, data = [], options = {}) {
@@ -123,8 +124,9 @@ export class AreaChart extends Chart {
             }
 
             if (area.dots && o.showDots !== false) {
-                coords.map(([x, y]) => {
-                    drawPointFn(ctx, [x, y, opt.radius], opt)
+                coords.map(([x, y], index) => {
+                    if (index && index < coords.length - 1)
+                        drawPointFn(ctx, [x, y, opt.radius], opt)
                 })
             }
 
@@ -189,16 +191,42 @@ export class AreaChart extends Chart {
         }
     }
 
-    add(index, [x, y], shift){
+    add(index, [x, y], shift, align){
         this.addPoint(index, [x, y], shift)
 
         this.minX = this.data[index][0][0]
         this.maxX = x
 
-        if (y < this.minY) this.minY = y
-        if (y > this.maxY) this.maxY = y
+        if (align) {
+            if (isObject(align)) {
+                this.align(align)
+            }
+        } else {
+            if (y < this.minY) this.minY = y
+            if (y > this.maxY) this.maxY = y
+        }
 
         this.resize()
+    }
+
+    align({minX, maxX, minY, maxY}){
+        let a = []
+
+        for (let _data of this.data) {
+            if (!Array.isArray(_data)) continue
+
+            for( const [x, y] of _data) {
+                a.push([x, y])
+            }
+        }
+
+        const [_minX, _maxX] = minMax(a, 'x')
+        const [_minY, _maxY] = minMax(a, 'y')
+
+        if (minX) this.minX = _minX
+        if (minY) this.minY = _minY
+        if (maxX) this.maxX = _maxX
+        if (maxY) this.maxY = _maxY
     }
 
     draw(){

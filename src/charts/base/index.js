@@ -8,9 +8,14 @@ import {expandPadding} from "../../helpers/expand-padding";
 
 export class Chart {
     constructor(el, data = [], options = {}, type = 'unknown') {
-        this.el = document.querySelector(el)
+        if (typeof el === "string") {
+            this.el = document.querySelector(el)
+        } else if (el instanceof HTMLElement) {
+            this.el = el
+        }
+
         if (!this.el) {
-            throw new Error("You must define a selector for chart wrapper element!")
+            throw new Error("You must define an element or a selector of element for chart container!")
         }
 
         this.options = merge({}, defaultOptions, options)
@@ -115,8 +120,18 @@ export class Chart {
         })
     }
 
+    setBackground(bg){
+        if (bg) {
+            this.options.background = bg
+        }
+
+        this.ctx.fillStyle = this.options.background
+        this.ctx.fillRect(0,0, this.canvas.width, this.canvas.height)
+    }
+
     draw(){
         this.clear()
+        this.setBackground()
         this.title()
     }
 
