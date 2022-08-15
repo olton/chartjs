@@ -12,3 +12,4 @@ packages/**/coverage
 .jest-*
 .cache
 .coverage
+.parcel-cache
