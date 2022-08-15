@@ -1,6 +1,6 @@
 {
     "name": "@olton/chart",
-    "version": "1.0.0",
+    "version": "0.4.0",
     "main": "./src/index.js",
     "license": "MIT",
     "type": "module",
@@ -11,19 +11,21 @@
         "src"
     ],
     "scripts": {
-        "serve": "parcel test/index.html --open --out-dir output -p 1234",
-        "build_demo": "rimraf -rf dist && parcel build test/index.html --out-dir dist --public-url .",
+        "serve": "parcel test/index.html --open --dist-dir output -p 1234",
+        "build_demo": "rimraf -rf dist && parcel build test/index.html --dist-dir dist --public-url .",
         "build_browser": "rollup -c .rollup/rollup.js && rollup -c .rollup/rollup.minify.js",
         "build": "rimraf -rf lib && npm run build_browser"
     },
     "devDependencies": {
-        "parcel-bundler": "^1.12.5",
+        "@babel/plugin-proposal-class-properties": "^7.17.12",
+        "@babel/preset-env": "^7.18.2",
         "rimraf": "^3.0.2",
         "rollup": "^2.41.2",
         "rollup-plugin-node-resolve": "^5.2.0",
         "rollup-plugin-terser": "^7.0.2"
     },
     "dependencies": {
+        "parcel": "^2.6.1",
         "rollup-plugin-babel": "^4.4.0",
         "rollup-plugin-commonjs": "^10.1.0"
     }
